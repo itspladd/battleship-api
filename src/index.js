@@ -17,6 +17,21 @@ app.get('/api/users', (req, res) => {
     .then(rows => res.json(rows))
 })
 
+app.get('/api/games', (req, res) => {
+  db.query(`SELECT * FROM games`, [])
+    .then(rows => res.json(rows))
+})
+
+app.get('/api/boards', (req, res) => {
+  db.query(`SELECT * FROM boards`, [])
+    .then(rows => res.json(rows))
+})
+
+app.get('/api/rulesets', (req, res) => {
+  db.query(`SELECT * FROM rulesets`, [])
+    .then(rows => res.json(rows))
+})
+
 app.get('/backend-test', (req, res) => {
   res.send({ msg: 'Successful connection!' })
 });
