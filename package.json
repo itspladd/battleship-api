@@ -4,7 +4,7 @@
   "description": "A database API for a React-frontend battleship game.",
   "main": "src/index.js",
   "scripts": {
-    "test": "test",
+    "test": "mocha",
     "db:reset": "node ./src/db/reset.js",
     "dev": "nodemon ./src/server.js localhost 8080"
   },
@@ -24,6 +24,8 @@
     "pg": "^8.6.0"
   },
   "devDependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^8.4.0",
     "nodemon": "^2.0.7",
     "pg-native": "^3.0.0"
   }

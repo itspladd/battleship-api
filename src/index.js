@@ -12,6 +12,11 @@ app.get('/', (req, res) => {
   res.json({ you: "are on the root page"})
 });
 
+app.get('/api/users', (req, res) => {
+  db.query(`SELECT * FROM users`, [])
+    .then(rows => res.json(rows))
+})
+
 app.get('/backend-test', (req, res) => {
   res.send({ msg: 'Successful connection!' })
 });
