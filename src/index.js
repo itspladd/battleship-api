@@ -45,4 +45,4 @@ io.on('connection', socket => {
   })
 });
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+http.listen(port, () => console.log(`Listening on port ${port}`));
