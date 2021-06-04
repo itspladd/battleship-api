@@ -1,0 +1,33 @@
+{
+  "name": "battleship-api",
+  "version": "1.0.0",
+  "description": "A database API for a React-frontend battleship game.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha",
+    "db:reset": "node ./src/db/reset.js",
+    "dev": "nodemon ./src/server.js localhost 8080"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itspladd/battleship-api.git"
+  },
+  "author": "Paul Ladd",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itspladd/battleship-api/issues"
+  },
+  "homepage": "https://github.com/itspladd/battleship-api#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "pg": "^8.6.0",
+    "socket.io": "^4.1.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^8.4.0",
+    "nodemon": "^2.0.7",
+    "pg-native": "^3.0.0"
+  }
+}
