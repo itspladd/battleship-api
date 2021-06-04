@@ -1,7 +1,12 @@
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const io = require('socket.io')(http, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ["GET", "POST"]
+  }
+});
 
 const port = process.env.PORT || 8080;
 const db = require('./db')
@@ -40,9 +45,16 @@ app.get('/backend-test', (req, res) => {
 
 io.on('connection', socket => {
   console.log('socket connection established');
+  socket.emit('connection');
+
   socket.on('ping', msg => {
     socket.emit('pong', msg);
   })
+
+  socket.on('disconnect', () => {
+    console.log('socket disconnected');
+  })
 });
+
 
 http.listen(port, () => console.log(`Listening on port ${port}`));
