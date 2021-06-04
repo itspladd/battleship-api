@@ -2,11 +2,12 @@ const should = require('chai').should()
 const GameEngine = require('../src/classes/GameEngine')
 
 describe('GameEngine', () => {
-  describe('GameEngine()', () => {
+  describe('GameEngine(), constructed with no parameters', () => {
     let testEngine;
+    const testPlayers = ["Trapezius"];
     before(() => {
       testEngine = new GameEngine({
-          players: ["Trapezius", "Tautrion"]
+          players: [...testPlayers]
         }
       );
     });
@@ -15,8 +16,7 @@ describe('GameEngine', () => {
     });
     it('should contain an array of the players', () => {
       should.exist(testEngine.players)
-      testEngine.players.should.deep.equal(["Trapezius", "Tautrion"])
+      testEngine.players.should.deep.equal(testPlayers)
     });
-    it('should contain an array of the moves taken');
   })
 })

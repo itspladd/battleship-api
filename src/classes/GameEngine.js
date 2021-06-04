@@ -1,6 +1,5 @@
 class GameEngine {
-  constructor(
-    {
+  constructor({
       players
     }) {
     console.log('constructed')

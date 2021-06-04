@@ -1,0 +1,19 @@
+const TILE_TYPES = {
+  EMPTY: "EMPTY",
+  HIT: "HIT",
+  MISS: "MISS",
+  SHIP: {
+    DESTROYER: "DESTROYER",
+    CRUISER: "CRUISER",
+    SUBMARINE: "SUBMARINE",
+    BATTLESHIP: "BATTLESHIP",
+    AIRCRAFT_CARRIER: "AIRCRAFT_CARRIER"
+  },
+  OBSTACLE: {
+    DEFAULT: "DEFAULT"
+  }
+}
+
+module.exports = {
+  TILE_TYPES
+};
