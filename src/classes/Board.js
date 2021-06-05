@@ -1,7 +1,10 @@
 const Tile = require("./Tile");
 
 class Board {
-  constructor() {
+  constructor({
+    owner = 'AI'
+  }={}) {
+    this.owner = owner;
     this.rows = 10;
     this.columns = 10;
 
@@ -15,7 +18,7 @@ class Board {
       for(let j = 0; j < columns; j++) {
         row.push(new Tile());
       }
-      result.push(row)
+      result.push(row);
     }
     return result;
   }
