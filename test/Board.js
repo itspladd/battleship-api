@@ -65,7 +65,6 @@ describe('Board', () => {
 
   describe('addShip(ship, position, angle)', () => {
     let testBoard;
-    let testShip;
     before(() => {
       testBoard = new Board();
     })
@@ -100,8 +99,37 @@ describe('Board', () => {
     })
   })
 
-  describe('findNeigbor(position, angle)', () => {
-    it('should require a position and an angle');
-    it('should return the neighboring tile in the given direction')
+  describe('getNeigbor(position, angle)', () => {
+    let testBoard;
+    before(() => {
+      testBoard = new Board();
+    })
+    it('should require a valid position and an angle', () => {
+      const bad1 = () => testBoard.getNeigbor();
+      const bad2 = () => testBoard.getNeigbor([3, 3]);
+      const good = () => testBoard.getNeigbor(testShip, goodPosition);
+    });
+    it('should return the position of the neighboring tile in the given direction');
+    it('should return null if there is no tile in the given direction')
+  })
+
+  describe('getAllNeighbors(position)', () => {
+    it('should return all neighboring tiles and their angle for the given position')
+  })
+
+  describe('positionInBoard(position)', () => {
+    let testBoard;
+    before(() => {
+      testBoard = new Board();
+    })
+    it('should return true if the given position is within the board', () => {
+      testBoard.positionInBoard([0, 0]).should.be.true;
+      testBoard.positionInBoard([testBoard.rows - 1, testBoard.columns - 1]).should.be.true;
+    });
+    it('should return false if the given position is outside the board', () => {
+      testBoard.positionInBoard([0, -1]).should.be.false;
+      testBoard.positionInBoard([-1, 0]).should.be.false;
+      testBoard.positionInBoard([testBoard.rows - 1, testBoard.columns]).should.be.false;
+    });
   })
 })
