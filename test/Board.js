@@ -34,7 +34,27 @@ describe('Board', () => {
       const newBoard = new Board({owner: 'Tautrion'});
       newBoard.owner.should.equal('Tautrion');
     })
-  })
+  });
+
+  describe('initTiles()', () => {
+    it('should require two positive integers 1-15 as input', () => {
+      let testBoard = new Board();
+      const bad1 = () => testBoard.initTiles();
+      const bad2 = () => testBoard.initTiles(0, 0);
+      const bad3 = () => testBoard.initTiles(16, 5);
+      const bad4 = () => testBoard.initTiles(-1, 10);
+      const bad5 = () => testBoard.initTiles("1", "2");
+      const good = () => testBoard.initTiles(10, 10);
+
+      bad1.should.throw(Error, /invalid arguments:/i);
+      bad2.should.throw(Error, /invalid arguments:/i);
+      bad3.should.throw(Error, /invalid arguments:/i);
+      bad4.should.throw(Error, /invalid arguments:/i);
+      bad5.should.throw(Error, /invalid arguments:/i);
+      good.should.not.throw(Error);
+
+    })
+  });
 
   describe('addShip()', () => {
     let testBoard;
