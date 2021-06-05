@@ -14,5 +14,8 @@ describe('Board', () => {
       testBoard.rows.should.equal(10);
       testBoard.columns.should.equal(10);
     })
+    it('should be full of Tile objects', () => {
+      
+    })
   })
 })
