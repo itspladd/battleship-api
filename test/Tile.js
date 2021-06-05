@@ -12,19 +12,19 @@ describe('Tile', () => {
       should.exist(testTile)
     });
     it('should default to EMPTY type', () => {
-      testTile.type.should.equal(TILE_TYPES.EMPTY);
+      testTile.typeStack.should.deep.equal([TILE_TYPES.EMPTY]);
     });
     it('should create a tile of the given type if given an input parameter', () => {
       testTile = new Tile({type: TILE_TYPES.MISS})
-      testTile.type.should.equal(TILE_TYPES.MISS);
+      testTile.typeStack.should.deep.equal([TILE_TYPES.MISS]);
     })
   })
 
-  describe('setType()', () => {
-    it('should change the type of the tile', () => {
+  describe('addType()', () => {
+    it('should add a new type to the tile', () => {
       const testTile = new Tile();
-      testTile.type = TILE_TYPES.HIT;
-      testTile.type.should.equal(TILE_TYPES.HIT)
+      testTile.addType(TILE_TYPES.HIT);
+      testTile.typeStack.should.deep.equal([TILE_TYPES.EMPTY, TILE_TYPES.HIT])
     })
   })
 })

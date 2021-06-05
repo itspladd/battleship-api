@@ -2,11 +2,11 @@ const { TILE_TYPES } = require('../constants/TILES')
 
 class Tile {
   constructor({ type = TILE_TYPES.EMPTY }={}) {
-    this.type = type;
+    this.typeStack = [type]
   }
 
-  set type(newType) {
-    this.type = newType;
+  addType(newType) {
+    this.typeStack.push(newType);
   }
 }
 
