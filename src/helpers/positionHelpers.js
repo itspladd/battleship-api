@@ -1,4 +1,4 @@
-const positionIsValid = (position) => {
+const validPosition = (position) => {
   return (
     Array.isArray(position) &&
     position.length === 2 &&
@@ -8,5 +8,5 @@ const positionIsValid = (position) => {
 }
 
 module.exports = {
-  positionIsValid
+  validPosition
 }

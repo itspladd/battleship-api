@@ -139,4 +139,23 @@ describe('Board', () => {
       bad2.should.throw(Error, /invalid argument:/i);
     })
   })
+
+  describe('validAngle(angle)', () => {
+    let testBoard;
+    before(() => {
+      testBoard = new Board();
+    })
+    it('should return false if the angle is not valid for this board', () => {
+      testBoard.validAngle(90).should.be.false;
+      testBoard.validAngle(270).should.be.false;
+    });
+    it('should return true if this is a valid angle for this board', () => {
+      testBoard.validAngle(0).should.be.true;
+      testBoard.validAngle(60).should.be.true;
+      testBoard.validAngle(120).should.be.true;
+      testBoard.validAngle(180).should.be.true;
+      testBoard.validAngle(240).should.be.true;
+      testBoard.validAngle(300).should.be.true;
+    })
+  })
 })

@@ -1,6 +1,6 @@
 const Tile = require('./Tile');
 const Ship = require('./Ship');
-const { positionIsValid } = require('../helpers/positionHelpers')
+const { validPosition } = require('../helpers/positionHelpers')
 
 class Board {
   constructor({
@@ -38,12 +38,7 @@ class Board {
     if (!(ship instanceof Ship)) {
       throw new Error(`Board.addShip called with invalid ship argument: ${ship}`);
     }
-    if (!Array.isArray(position)
-        || position.length !== 2
-        || position[0] > this.rows - 1
-        || position[0] < 0
-        || position[1] > this.columns - 1
-        || position[1] < 0) {
+    if (!validPosition(position)) {
       throw new Error(`Board.addShip called with invalid position argument: ${position}`);
     }
     if (!this.validAngles.includes(angle)) {
@@ -54,7 +49,7 @@ class Board {
   }
 
   positionInBoard(position) {
-    if (!positionIsValid(position)) {
+    if (!validPosition(position)) {
       throw new Error(`Board.positionInBoard() called with invalid argument: ${position}`)
     }
 
