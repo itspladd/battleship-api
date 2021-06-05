@@ -35,17 +35,19 @@ describe('validAngle(angle)', () => {
   })
 })
 
-describe('getNeighbor(position, angle)', () => {
-  it('should require a valid position and angle', () => {
+describe('getNeighbor(position, angle, maxPosition)', () => {
+  it('should require a valid position, angle, and maxPosition', () => {
     const bad1 = () => getNeighbor();
     const bad2 = () => getNeighbor([3, 3]);
-    const bad3 = () => getNeighbor([3, 3], 90);
-    const bad4 = () => getNeighbor([0, testBoard.rows], 90);
-    const good = () => getNeighbor([0, 0], 120);
+    const bad3 = () => getNeighbor([3, 3], 120);
+    const bad4 = () => getNeighbor([3, 3], 120, [3, 2]);
+    const good = () => getNeighbor([0, 0], 120, [5, 5]);
 
     bad1.should.throw(Error, /invalid position argument:/i);
     bad2.should.throw(Error, /invalid angle argument:/i);
-    bad3.should.throw(Error, /invalid argument:/i);
+    bad3.should.throw(Error, /invalid maxPosition argument:/i);
+    bad4.should.throw(Error, /position exceeds maxPosition:/i);
+    good.should.not.throw(Error);
   });
   it('should return the position of the neighboring tile in the given direction');
   it('should return null if there is no tile in the given direction')
