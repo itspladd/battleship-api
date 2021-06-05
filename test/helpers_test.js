@@ -46,7 +46,7 @@ describe('getNeighbor(position, angle, maxPosition)', () => {
     bad1.should.throw(Error, /invalid position argument:/i);
     bad2.should.throw(Error, /invalid angle argument:/i);
     bad3.should.throw(Error, /invalid maxPosition argument:/i);
-    bad4.should.throw(Error, /position exceeds maxPosition:/i);
+    bad4.should.throw(Error, /position exceeding maxPosition:/i);
     good.should.not.throw(Error);
   });
   it('should return the position of the neighboring tile in the given direction');
