@@ -9,7 +9,7 @@ class Board {
     this.rows = 10;
     this.columns = 10;
     this.ships = [];
-
+    this.validAngles = [0, 60, 120, 180, 240, 300];
     this.tiles = this.initTiles(this.rows, this.columns);
   }
 
@@ -36,6 +36,9 @@ class Board {
         || position[1] > this.columns - 1
         || position[1] < 0) {
       throw new Error(`Board.addShip called with invalid position argument: ${position}`);
+    }
+    if (!this.validAngles.includes(angle)) {
+      throw new Error(`Board.addShip called with invalid angle argument: ${angle}`);
     }
     this.ships.push(ship);
   }
