@@ -1,5 +1,6 @@
 const should = require('chai').should()
 const Board = require('../src/classes/Board')
+const Ship = require('../src/classes/Ship')
 const Tile = require('../src/classes/Tile')
 const { TILE_TYPES } = require('../src/constants/TILES')
 
@@ -32,6 +33,19 @@ describe('Board', () => {
       testBoard.owner.should.equal('AI');
       const newBoard = new Board({owner: 'Tautrion'});
       newBoard.owner.should.equal('Tautrion');
+    })
+  })
+
+  describe('addShip()', () => {
+    let testBoard;
+    let testShip;
+    before(() => {
+      testBoard = new Board();
+    })
+    it('should add the Ship to the Ships owned by the Board', () => {
+      const newShip = new Ship();
+      testBoard.addShip(newShip);
+      testBoard.ships[0].should.equal(newShip);
     })
   })
 })
