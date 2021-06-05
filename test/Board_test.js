@@ -99,17 +99,17 @@ describe('Board', () => {
     })
   })
 
-  describe('getNeigbor(position, angle)', () => {
+  describe('getNeighbor(position, angle)', () => {
     let testBoard;
     before(() => {
       testBoard = new Board();
     })
     it('should require a valid position and angle', () => {
-      const bad1 = () => testBoard.getNeigbor();
-      const bad2 = () => testBoard.getNeigbor([3, 3]);
-      const bad3 = () => testBoard.getNeigbor([3, 3], 90);
-      const bad4 = () => testBoard.getNeigbor([0, testBoard.rows], 90);
-      const good = () => testBoard.getNeigbor([0, 0], 120);
+      const bad1 = () => testBoard.getNeighbor();
+      const bad2 = () => testBoard.getNeighbor([3, 3]);
+      const bad3 = () => testBoard.getNeighbor([3, 3], 90);
+      const bad4 = () => testBoard.getNeighbor([0, testBoard.rows], 90);
+      const good = () => testBoard.getNeighbor([0, 0], 120);
 
       bad1.should.throw(Error, /invalid ship argument:/i);
       bad2.should.throw(Error, /invalid position argument:/i);
@@ -135,7 +135,7 @@ describe('Board', () => {
     it('should return false if the given position is outside the board', () => {
       testBoard.positionIsInsideBoard([0, -1]).should.be.false;
       testBoard.positionIsInsideBoard([-1, 0]).should.be.false;
-      testBoard.positionIsInsideBoard(testBoard.maxPosition).should.be.false;
+      testBoard.positionIsInsideBoard([testBoard.columns, testBoard.rows]).should.be.false;
     });
     it('should return an error if given an invalid position', () => {
       const bad1 = () => testBoard.positionIsInsideBoard(5)
