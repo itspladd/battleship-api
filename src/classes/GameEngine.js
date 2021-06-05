@@ -1,6 +1,6 @@
 class GameEngine {
   constructor({
-      players
+      players, //array of all players
     } = {}) {
     console.log('constructed')
     this.players = players;
