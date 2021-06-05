@@ -14,6 +14,14 @@ class Board {
   }
 
   initTiles(rows, columns) {
+    if (!Number.isInteger(rows)
+        || !Number.isInteger(columns)
+        || rows < 1
+        || columns < 1
+        || rows > 15
+        || columns > 15) {
+      throw new Error(`Board.initTiles called with invalid argument(s) [rows, columns]: [${rows}, ${columns}]`)
+    }
     const result = []
     for(let i = 0; i < rows; i++) {
       const row = [];

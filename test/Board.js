@@ -46,11 +46,11 @@ describe('Board', () => {
       const bad5 = () => testBoard.initTiles("1", "2");
       const good = () => testBoard.initTiles(10, 10);
 
-      bad1.should.throw(Error, /invalid arguments:/i);
-      bad2.should.throw(Error, /invalid arguments:/i);
-      bad3.should.throw(Error, /invalid arguments:/i);
-      bad4.should.throw(Error, /invalid arguments:/i);
-      bad5.should.throw(Error, /invalid arguments:/i);
+      bad1.should.throw(Error, /invalid argument\(s\)/i);
+      bad2.should.throw(Error, /invalid argument\(s\)/i);
+      bad3.should.throw(Error, /invalid argument\(s\)/i);
+      bad4.should.throw(Error, /invalid argument\(s\)/i);
+      bad5.should.throw(Error, /invalid argument\(s\)/i);
       good.should.not.throw(Error);
 
     })
