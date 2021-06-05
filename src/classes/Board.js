@@ -41,7 +41,7 @@ class Board {
     if (!validPosition(position)) {
       throw new Error(`Board.addShip called with invalid position argument: ${position}`);
     }
-    if (!this.positionInBoard(position)) {
+    if (!this.positionIsInsideBoard(position)) {
       throw new Error(`Board.addShip tried to add a ship outside the board bounds: 
         position: ${position}
         rows: ${this.rows}
@@ -54,9 +54,9 @@ class Board {
     this.ships.push({ ship, position, angle });
   }
 
-  positionInBoard(position) {
+  positionIsInsideBoard(position) {
     if (!validPosition(position)) {
-      throw new Error(`Board.positionInBoard() called with invalid argument: ${position}`)
+      throw new Error(`Board.positionIsInsideBoard() called with invalid argument: ${position}`)
     }
 
     const x = position[0];
