@@ -41,7 +41,7 @@ class Board {
     if (!validPosition(position)) {
       throw new Error(`Board.addShip called with invalid position argument: ${position}`);
     }
-    if (!this.validAngles.includes(angle)) {
+    if (!this.validAngle(angle)) {
       throw new Error(`Board.addShip called with invalid angle argument: ${angle}`);
     }
     // Input validation passed, add the ship to the board!
@@ -61,6 +61,10 @@ class Board {
       x < this.columns &&
       y < this.rows
     );
+  }
+
+  validAngle(angle) {
+    return this.validAngles.includes(angle);
   }
 }
 
