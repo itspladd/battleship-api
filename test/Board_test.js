@@ -156,7 +156,18 @@ describe('Board', () => {
       testBoard.getNeighbor([2, 1], 240).should.deep.equal([1, 1])
       testBoard.getNeighbor([2, 1], 300).should.deep.equal([1, 0])
     });
-    it('should return null if there is no tile in the given direction')
+    it('should return null if there is no tile in the given direction', () => {
+      should.not.exist(testBoard.getNeighbor([0, 0], 0));
+      should.not.exist(testBoard.getNeighbor([0, 0], 60));
+      should.exist(testBoard.getNeighbor([0, 0], 120));
+      should.exist(testBoard.getNeighbor([0, 0], 180));
+      should.not.exist(testBoard.getNeighbor([0, 0], 240));
+      should.not.exist(testBoard.getNeighbor([0, 0], 300));
+
+      should.exist(testBoard.getNeighbor([9, 9], 0));
+      should.not.exist(testBoard.getNeighbor([9, 9], 180));
+
+    })
   })
 
   describe('getAllNeighbors(position)', () => {
