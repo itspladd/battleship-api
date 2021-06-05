@@ -1,4 +1,6 @@
-const validPosition = (position) => {
+const { VALID_ANGLES } = require('../constants/GLOBAL')
+
+const validPosition = position => {
   return (
     Array.isArray(position) &&
     position.length === 2 &&
@@ -7,6 +9,11 @@ const validPosition = (position) => {
   )
 }
 
+const validAngle = angle => {
+  return VALID_ANGLES.includes(angle);
+}
+
 module.exports = {
-  validPosition
+  validPosition,
+  validAngle
 }

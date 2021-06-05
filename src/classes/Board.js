@@ -1,6 +1,6 @@
 const Tile = require('./Tile');
 const Ship = require('./Ship');
-const { validPosition } = require('../helpers/positionHelpers')
+const { validPosition, validAngle } = require('../helpers/positionHelpers')
 
 class Board {
   constructor({
@@ -11,7 +11,6 @@ class Board {
     this.columns = 10;
     this.maxPosition = [this.columns - 1, this.rows - 1];
     this.ships = [];
-    this.validAngles = [0, 60, 120, 180, 240, 300];
     this.tiles = this.initTiles(this.rows, this.columns);
   }
 
@@ -48,7 +47,7 @@ class Board {
         rows: ${this.rows}
         columns: ${this.columns}`);
     }
-    if (!this.validAngle(angle)) {
+    if (!validAngle(angle)) {
       throw new Error(`Board.addShip called with invalid angle argument: ${angle}`);
     }
     // Input validation passed, add the ship to the board!
@@ -70,9 +69,6 @@ class Board {
     );
   }
 
-  validAngle(angle) {
-    return this.validAngles.includes(angle);
-  }
 }
 
 module.exports = Board;

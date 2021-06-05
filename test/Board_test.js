@@ -99,30 +99,6 @@ describe('Board', () => {
     })
   })
 
-  describe('getNeighbor(position, angle)', () => {
-    let testBoard;
-    before(() => {
-      testBoard = new Board();
-    })
-    it('should require a valid position and angle', () => {
-      const bad1 = () => testBoard.getNeighbor();
-      const bad2 = () => testBoard.getNeighbor([3, 3]);
-      const bad3 = () => testBoard.getNeighbor([3, 3], 90);
-      const bad4 = () => testBoard.getNeighbor([0, testBoard.rows], 90);
-      const good = () => testBoard.getNeighbor([0, 0], 120);
-
-      bad1.should.throw(Error, /invalid ship argument:/i);
-      bad2.should.throw(Error, /invalid position argument:/i);
-      bad3.should.throw(Error, /invalid angle argument:/i);
-    });
-    it('should return the position of the neighboring tile in the given direction');
-    it('should return null if there is no tile in the given direction')
-  })
-
-  describe('getAllNeighbors(position)', () => {
-    it('should return all neighboring tiles and their angle for the given position')
-  })
-
   describe('positionIsInsideBoard(position)', () => {
     let testBoard;
     before(() => {
@@ -143,25 +119,6 @@ describe('Board', () => {
 
       bad1.should.throw(Error, /invalid argument:/i);
       bad2.should.throw(Error, /invalid argument:/i);
-    })
-  })
-
-  describe('validAngle(angle)', () => {
-    let testBoard;
-    before(() => {
-      testBoard = new Board();
-    })
-    it('should return false if the angle is not valid for this board', () => {
-      testBoard.validAngle(90).should.be.false;
-      testBoard.validAngle(270).should.be.false;
-    });
-    it('should return true if this is a valid angle for this board', () => {
-      testBoard.validAngle(0).should.be.true;
-      testBoard.validAngle(60).should.be.true;
-      testBoard.validAngle(120).should.be.true;
-      testBoard.validAngle(180).should.be.true;
-      testBoard.validAngle(240).should.be.true;
-      testBoard.validAngle(300).should.be.true;
     })
   })
 })
