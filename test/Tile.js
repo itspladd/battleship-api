@@ -26,5 +26,11 @@ describe('Tile', () => {
       testTile.addType(TILE_TYPES.HIT);
       testTile.typeStack.should.deep.equal([TILE_TYPES.EMPTY, TILE_TYPES.HIT])
     })
+    it('should replace the existing type if given an extra parameter', () => {
+      const testTile = new Tile();
+      testTile.addType(TILE_TYPES.MISS);
+      testTile.addType(TILE_TYPES.HIT, true);
+      testTile.typeStack.should.deep.equal([TILE_TYPES.EMPTY, TILE_TYPES.HIT])
+    })
   })
 })
