@@ -4,7 +4,7 @@ const GameEngine = require('../src/classes/GameEngine')
 describe('GameEngine', () => {
   describe('GameEngine(), constructed with no parameters', () => {
     let testEngine;
-    const testPlayers = ["Trapezius"];
+    const testPlayers = ['Trapezius', 'Tautrion'];
     before(() => {
       testEngine = new GameEngine({
           players: [...testPlayers]
