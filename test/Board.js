@@ -1,6 +1,7 @@
 const should = require('chai').should()
 const Board = require('../src/classes/Board')
 const Tile = require('../src/classes/Tile')
+const { TILE_TYPES } = require('../src/constants/TILES')
 
 describe('Board', () => {
   describe('Board()', () => {
@@ -23,7 +24,9 @@ describe('Board', () => {
       testBoard.tiles[rows - 1][cols - 1].should.be.an.instanceof(Tile);
     })
     it('should be able to change one Tile object without changing others', () => {
-
+      testBoard.tiles[0][1].type = TILE_TYPES.SHIP.CRUISER;
+      testBoard.tiles[0][0].type.should.equal(TILE_TYPES.EMPTY);
+      testBoard.tiles[0][1].type.should.equal(TILE_TYPES.SHIP.CRUISER);
     })
   })
 })
