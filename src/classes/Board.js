@@ -9,6 +9,7 @@ class Board {
     this.owner = owner;
     this.rows = 10;
     this.columns = 10;
+    this.maxPosition = [this.columns - 1, this.rows - 1];
     this.ships = [];
     this.validAngles = [0, 60, 120, 180, 240, 300];
     this.tiles = this.initTiles(this.rows, this.columns);

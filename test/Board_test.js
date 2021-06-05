@@ -104,10 +104,16 @@ describe('Board', () => {
     before(() => {
       testBoard = new Board();
     })
-    it('should require a valid position and an angle', () => {
+    it('should require a valid position and angle', () => {
       const bad1 = () => testBoard.getNeigbor();
       const bad2 = () => testBoard.getNeigbor([3, 3]);
-      const good = () => testBoard.getNeigbor(testShip, goodPosition);
+      const bad3 = () => testBoard.getNeigbor([3, 3], 90);
+      const bad4 = () => testBoard.getNeigbor([0, testBoard.rows], 90);
+      const good = () => testBoard.getNeigbor([0, 0], 120);
+
+      bad1.should.throw(Error, /invalid ship argument:/i);
+      bad2.should.throw(Error, /invalid position argument:/i);
+      bad3.should.throw(Error, /invalid angle argument:/i);
     });
     it('should return the position of the neighboring tile in the given direction');
     it('should return null if there is no tile in the given direction')
@@ -124,12 +130,12 @@ describe('Board', () => {
     })
     it('should return true if the given position is within the board', () => {
       testBoard.positionIsInsideBoard([0, 0]).should.be.true;
-      testBoard.positionIsInsideBoard([testBoard.rows - 1, testBoard.columns - 1]).should.be.true;
+      testBoard.positionIsInsideBoard(testBoard.maxPosition).should.be.true;
     });
     it('should return false if the given position is outside the board', () => {
       testBoard.positionIsInsideBoard([0, -1]).should.be.false;
       testBoard.positionIsInsideBoard([-1, 0]).should.be.false;
-      testBoard.positionIsInsideBoard([testBoard.rows - 1, testBoard.columns]).should.be.false;
+      testBoard.positionIsInsideBoard(testBoard.maxPosition).should.be.false;
     });
     it('should return an error if given an invalid position', () => {
       const bad1 = () => testBoard.positionIsInsideBoard(5)
