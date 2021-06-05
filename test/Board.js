@@ -45,16 +45,22 @@ describe('Board', () => {
     it('should require a valid Ship, position, and angle', () => {
       const testShip = new Ship(); // Ship object
       const goodPosition = [1, 1]; // x and y
-      const goodAngle = 60; // in degrees
+      const goodAngle = 120; // in degrees
+      const badPosition = [-1, 11];
+      const badAngle = 90;
 
       const bad1 = () => testBoard.addShip();
       const bad2 = () => testBoard.addShip(testShip);
       const bad3 = () => testBoard.addShip(testShip, goodPosition);
+      const bad4 = () => testBoard.addShip(testShip, badPosition, goodAngle);
+      const bad5 = () => testBoard.addShip(testShip, goodPosition, badAngle);
       const good = () => testBoard.addShip(testShip, goodPosition, goodAngle);
 
       bad1.should.throw(Error, /invalid ship argument:/i);
       bad2.should.throw(Error, /invalid position argument:/i);
       bad3.should.throw(Error, /invalid angle argument:/i);
+      bad4.should.throw(Error, /invalid position argument:/i);
+      bad5.should.throw(Error, /invalid angle argument:/i);
       good.should.not.throw(Error);
 
     })
