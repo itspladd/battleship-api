@@ -45,7 +45,7 @@ describe('Board', () => {
     it('should require a valid Ship, position, and angle', () => {
       const testShip = new Ship(); // Ship object
       const goodPosition = [1, 1]; // x and y
-      const goodAngle = 120; // in degrees
+      const goodAngle = 180; // in degrees
       const badPosition = [-1, 11];
       const badAngle = 90;
 
@@ -65,9 +65,11 @@ describe('Board', () => {
 
     })
     it('should add the Ship to the Ships owned by the Board', () => {
-      const newShip = new Ship();
-      testBoard.addShip(newShip);
-      testBoard.ships[testBoard.ships.length - 1].should.equal(newShip);
+      const ship = new Ship();
+      const position = [5, 5];
+      const angle = 0;
+      testBoard.addShip(ship, position, angle);
+      testBoard.ships[testBoard.ships.length - 1].should.deep.equal({ ship, position, angle });
     })
   })
 })
