@@ -20,7 +20,11 @@ describe('Tile', () => {
     })
   })
 
-  describe('changeType()', () => {
-    it('should change the type of the tile')
+  describe('setType()', () => {
+    it('should change the type of the tile', () => {
+      const testTile = new Tile();
+      testTile.type = TILE_TYPES.HIT;
+      testTile.type.should.equal(TILE_TYPES.HIT)
+    })
   })
 })
