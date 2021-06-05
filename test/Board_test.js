@@ -85,7 +85,7 @@ describe('Board', () => {
       bad1.should.throw(Error, /invalid ship argument:/i);
       bad2.should.throw(Error, /invalid position argument:/i);
       bad3.should.throw(Error, /invalid angle argument:/i);
-      bad4.should.throw(Error, /invalid position argument:/i);
+      bad4.should.throw(Error, /tried to add a ship outside the board/i);
       bad5.should.throw(Error, /invalid angle argument:/i);
       good.should.not.throw(Error);
 

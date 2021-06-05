@@ -41,6 +41,12 @@ class Board {
     if (!validPosition(position)) {
       throw new Error(`Board.addShip called with invalid position argument: ${position}`);
     }
+    if (!this.positionInBoard(position)) {
+      throw new Error(`Board.addShip tried to add a ship outside the board bounds: 
+        position: ${position}
+        rows: ${this.rows}
+        columns: ${this.columns}`);
+    }
     if (!this.validAngle(angle)) {
       throw new Error(`Board.addShip called with invalid angle argument: ${angle}`);
     }
