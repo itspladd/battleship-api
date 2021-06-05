@@ -1,5 +1,6 @@
 const Tile = require('./Tile');
 const Ship = require('./Ship');
+const { positionIsValid } = require('../helpers/positionHelpers')
 
 class Board {
   constructor({
@@ -53,16 +54,18 @@ class Board {
   }
 
   positionInBoard(position) {
-    if (!Array.isArray(position) || position.length !== 2) {
+    if (!positionIsValid(position)) {
       throw new Error(`Board.positionInBoard() called with invalid argument: ${position}`)
     }
 
     const x = position[0];
     const y = position[1];
-  }
-
-  positionIsValid(position) {
-    
+    return (
+      x >= 0 &&
+      y >= 0 &&
+      x < this.columns &&
+      y < this.rows
+    );
   }
 }
 

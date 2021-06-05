@@ -131,7 +131,7 @@ describe('Board', () => {
       testBoard.positionInBoard([-1, 0]).should.be.false;
       testBoard.positionInBoard([testBoard.rows - 1, testBoard.columns]).should.be.false;
     });
-    it('should return an error if not given a 2D array', () => {
+    it('should return an error if given an invalid position', () => {
       const bad1 = () => testBoard.positionInBoard(5)
       const bad2 = () => testBoard.positionInBoard([4])
 
