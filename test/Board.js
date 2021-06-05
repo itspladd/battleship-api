@@ -36,7 +36,7 @@ describe('Board', () => {
     })
   });
 
-  describe('initTiles()', () => {
+  describe('initTiles(rows, columns)', () => {
     it('should require two positive integers 1-15 as input', () => {
       let testBoard = new Board();
       const bad1 = () => testBoard.initTiles();
@@ -63,7 +63,7 @@ describe('Board', () => {
     })
   });
 
-  describe('addShip()', () => {
+  describe('addShip(ship, position, angle)', () => {
     let testBoard;
     let testShip;
     before(() => {
@@ -98,5 +98,10 @@ describe('Board', () => {
       testBoard.addShip(ship, position, angle);
       testBoard.ships[testBoard.ships.length - 1].should.deep.equal({ ship, position, angle });
     })
+  })
+
+  describe('findNeigbor(position, angle)', () => {
+    it('should require a position and an angle');
+    it('should return the neighboring tile in the given direction')
   })
 })
