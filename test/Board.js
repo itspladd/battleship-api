@@ -42,18 +42,26 @@ describe('Board', () => {
     before(() => {
       testBoard = new Board();
     })
-    it('should require a Ship, an angle, and a position', () => {
-      const bad1 = () => testBoard.addShip();
-      bad1.should.throw(Error, /no ship argument/i);
+    it('should require a valid Ship, position, and angle', () => {
+      const testShip = new Ship(); // Ship object
+      const goodPosition = [1, 1]; // x and y
+      const goodAngle = 60; // in degrees
 
-      const bad2 = () => testBoard.addShip(new Ship());
-      bad1.should.throw(Error, /no ship argument/i);
+      const bad1 = () => testBoard.addShip();
+      const bad2 = () => testBoard.addShip(testShip);
+      const bad3 = () => testBoard.addShip(testShip, goodPosition);
+      const good = () => testBoard.addShip(testShip, goodPosition, goodAngle);
+
+      bad1.should.throw(Error, /invalid ship argument:/i);
+      bad2.should.throw(Error, /invalid position argument:/i);
+      bad3.should.throw(Error, /invalid angle argument:/i);
+      good.should.not.throw(Error);
 
     })
     it('should add the Ship to the Ships owned by the Board', () => {
       const newShip = new Ship();
       testBoard.addShip(newShip);
-      testBoard.ships[0].should.equal(newShip);
+      testBoard.ships[testBoard.ships.length - 1].should.equal(newShip);
     })
   })
 })

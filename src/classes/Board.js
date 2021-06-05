@@ -27,7 +27,7 @@ class Board {
 
   addShip(ship) {
     if (!(ship instanceof Ship)) {
-      throw new Error('Board.addShip called with no ship argument');
+      throw new Error(`Board.addShip called with invalid ship argument: ${ship}`);
     }
     this.ships.push(ship);
   }
