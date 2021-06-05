@@ -40,7 +40,8 @@ class Board {
     if (!this.validAngles.includes(angle)) {
       throw new Error(`Board.addShip called with invalid angle argument: ${angle}`);
     }
-    this.ships.push(ship);
+    // Input validation passed, add the ship to the board!
+    this.ships.push({ ship, position, angle });
   }
 }
 
