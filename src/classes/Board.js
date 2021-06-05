@@ -51,6 +51,19 @@ class Board {
     // Input validation passed, add the ship to the board!
     this.ships.push({ ship, position, angle });
   }
+
+  positionInBoard(position) {
+    if (!Array.isArray(position) || position.length !== 2) {
+      throw new Error(`Board.positionInBoard() called with invalid argument: ${position}`)
+    }
+
+    const x = position[0];
+    const y = position[1];
+  }
+
+  positionIsValid(position) {
+    
+  }
 }
 
 module.exports = Board;
