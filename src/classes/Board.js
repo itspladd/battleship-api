@@ -25,9 +25,17 @@ class Board {
     return result;
   }
 
-  addShip(ship) {
+  addShip(ship, position, angle) {
     if (!(ship instanceof Ship)) {
       throw new Error(`Board.addShip called with invalid ship argument: ${ship}`);
+    }
+    if (!Array.isArray(position)
+        || position.length !== 2
+        || position[0] > this.rows - 1
+        || position[0] < 0
+        || position[1] > this.columns - 1
+        || position[1] < 0) {
+      throw new Error(`Board.addShip called with invalid position argument: ${position}`);
     }
     this.ships.push(ship);
   }
