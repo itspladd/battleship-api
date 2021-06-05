@@ -52,7 +52,14 @@ describe('Board', () => {
       bad4.should.throw(Error, /invalid argument\(s\)/i);
       bad5.should.throw(Error, /invalid argument\(s\)/i);
       good.should.not.throw(Error);
-
+    })
+    it('should return an array of Tiles of the requested dimensions', () => {
+      let testBoard = new Board;
+      const tiles = testBoard.initTiles(4, 8);
+      tiles.length.should.equal(4);
+      tiles[0].length.should.equal(8);
+      tiles[0][0].should.be.an.instanceof(Tile);
+      tiles[3][7].should.be.an.instanceof(Tile);
     })
   });
 
