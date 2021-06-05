@@ -1,6 +1,7 @@
 const Tile = require('./Tile');
 const Ship = require('./Ship');
-const { validPosition, validAngle } = require('../helpers/positionHelpers')
+const { validPosition, validAngle } = require('../helpers/positionHelpers');
+const { VALID_ANGLES } = require('../constants/GLOBAL');
 
 class Board {
   constructor({
@@ -67,6 +68,10 @@ class Board {
       x <= this.maxPosition[0] &&
       y <= this.maxPosition[1]
     );
+  }
+
+  getAllNeighbors(position) {
+    return VALID_ANGLES.map(angle => this.getNeighbor(position, angle))
   }
 
   getNeighbor(position, angle) {

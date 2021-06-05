@@ -171,6 +171,33 @@ describe('Board', () => {
   })
 
   describe('getAllNeighbors(position)', () => {
-    it('should return all neighboring tiles and their angle for the given position')
+    let testBoard;
+    before(() => {
+      testBoard = new Board();
+    })
+    it('should return all neighboring tiles and their angle for the given position', () => {
+      const position = [5, 5]
+      const result = [
+        [5, 4],
+        [6, 5],
+        [6, 6],
+        [5, 6],
+        [4, 6],
+        [4, 5]
+      ]
+      testBoard.getAllNeighbors(position).should.deep.equal(result);
+    })
+    it('should include null results for nonexistent neighbors', () => {
+      const position = [2, 0]
+      const result = [
+        null,
+        null,
+        [3, 0],
+        [2, 1],
+        [1, 0],
+        null
+      ]
+      testBoard.getAllNeighbors(position).should.deep.equal(result);
+    })
   })
 })
