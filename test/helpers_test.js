@@ -1,7 +1,7 @@
 const {
   validPosition,
-  validAngle,
-  getNeighbor } = require('../src/helpers/positionHelpers')
+  validAngle
+} = require('../src/helpers/positionHelpers')
 
 describe('validPosition(position)', () => {
   it('should return false if not given an array of size 2', () => {
@@ -35,24 +35,3 @@ describe('validAngle(angle)', () => {
   })
 })
 
-describe('getNeighbor(position, angle, maxPosition)', () => {
-  it('should require a valid position, angle, and maxPosition', () => {
-    const bad1 = () => getNeighbor();
-    const bad2 = () => getNeighbor([3, 3]);
-    const bad3 = () => getNeighbor([3, 3], 120);
-    const bad4 = () => getNeighbor([3, 3], 120, [3, 2]);
-    const good = () => getNeighbor([0, 0], 120, [5, 5]);
-
-    bad1.should.throw(Error, /invalid position argument:/i);
-    bad2.should.throw(Error, /invalid angle argument:/i);
-    bad3.should.throw(Error, /invalid maxPosition argument:/i);
-    bad4.should.throw(Error, /position exceeding maxPosition:/i);
-    good.should.not.throw(Error);
-  });
-  it('should return the position of the neighboring tile in the given direction');
-  it('should return null if there is no tile in the given direction')
-})
-
-describe('getAllNeighbors(position)', () => {
-  it('should return all neighboring tiles and their angle for the given position')
-})

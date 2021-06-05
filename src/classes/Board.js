@@ -56,7 +56,7 @@ class Board {
 
   positionIsInsideBoard(position) {
     if (!validPosition(position)) {
-      throw new Error(`Board.positionIsInsideBoard() called with invalid argument: ${position}`)
+      throw new Error(`positionIsInsideBoard() called with invalid argument: ${position}`)
     }
 
     const x = position[0];
@@ -64,11 +64,24 @@ class Board {
     return (
       x >= 0 &&
       y >= 0 &&
-      x < this.columns &&
-      y < this.rows
+      x <= this.maxPosition[0] &&
+      y <= this.maxPosition[1]
     );
   }
 
+  getNeighbor(position, angle) {
+    if (!validPosition(position)) {
+      throw new Error(`Board.getNeighbor called with invalid position argument: ${position}`);
+    }
+    if (!validAngle(angle)) {
+      throw new Error(`Board.getNeighbor called with invalid angle argument: ${angle}`);
+    }
+    if (!this.positionIsInsideBoard(position)) {
+      throw new Error(`Board.getNeighbor called with position outside board:
+        position: ${position}
+        maxPosition: ${this.maxPosition}`);
+    }
+  }
 }
 
 module.exports = Board;

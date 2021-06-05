@@ -121,4 +121,30 @@ describe('Board', () => {
       bad2.should.throw(Error, /invalid argument:/i);
     })
   })
+
+  describe('getNeighbor(position, angle)', () => {
+    let testBoard;
+    before(() => {
+      testBoard = new Board();
+    })
+    it('should require a valid position and angle', () => {
+      const bad1 = () => testBoard.getNeighbor();
+      const bad2 = () => testBoard.getNeighbor([3, 3]);
+      const bad3 = () => testBoard.getNeighbor([3, 11], 120);
+      const good = () => testBoard.getNeighbor([0, 0], 120);
+
+      bad1.should.throw(Error, /invalid position argument:/i);
+      bad2.should.throw(Error, /invalid angle argument:/i);
+      bad3.should.throw(Error, /position outside board:/i);
+      good.should.not.throw(Error);
+    });
+    it('should return the position of the neighboring tile in the given direction', () => {
+      testBoard.getNeighbor([0, 0], 60)
+    });
+    it('should return null if there is no tile in the given direction')
+  })
+  
+  describe('getAllNeighbors(position)', () => {
+    it('should return all neighboring tiles and their angle for the given position')
+  })
 })
