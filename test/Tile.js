@@ -33,8 +33,4 @@ describe('Tile', () => {
       testTile.type.should.equal(TILE_TYPES.HIT);
     })
   })
-
-  describe('baseType', () => {
-    it('should')
-  })
 })
