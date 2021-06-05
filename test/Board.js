@@ -42,6 +42,14 @@ describe('Board', () => {
     before(() => {
       testBoard = new Board();
     })
+    it('should require a Ship, an angle, and a position', () => {
+      const bad1 = () => testBoard.addShip();
+      bad1.should.throw(Error, /no ship argument/i);
+
+      const bad2 = () => testBoard.addShip(new Ship());
+      bad1.should.throw(Error, /no ship argument/i);
+
+    })
     it('should add the Ship to the Ships owned by the Board', () => {
       const newShip = new Ship();
       testBoard.addShip(newShip);
