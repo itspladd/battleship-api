@@ -5,7 +5,7 @@ class Board {
     this.rows = 10;
     this.columns = 10;
 
-    this.tiles= this.initTiles(this.rows, this.columns);
+    this.tiles = this.initTiles(this.rows, this.columns);
   }
 
   initTiles(rows, columns) {
