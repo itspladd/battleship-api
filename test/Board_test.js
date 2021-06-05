@@ -138,12 +138,27 @@ describe('Board', () => {
       bad3.should.throw(Error, /position outside board:/i);
       good.should.not.throw(Error);
     });
-    it('should return the position of the neighboring tile in the given direction', () => {
-      testBoard.getNeighbor([0, 0], 60)
+    it('should return the position of the neighboring tile in the given direction when x is odd', () => {
+      // odd X
+      testBoard.getNeighbor([1, 1], 0).should.deep.equal([1, 0])
+      testBoard.getNeighbor([1, 1], 60).should.deep.equal([2, 1])
+      testBoard.getNeighbor([1, 1], 120).should.deep.equal([2, 2])
+      testBoard.getNeighbor([1, 1], 180).should.deep.equal([1, 2])
+      testBoard.getNeighbor([1, 1], 240).should.deep.equal([0, 2])
+      testBoard.getNeighbor([1, 1], 300).should.deep.equal([0, 1])
+    });
+    it('should return the position of the neighboring tile in the given direction when x is even', () => {
+      // even X
+      testBoard.getNeighbor([2, 1], 0).should.deep.equal([2, 0])
+      testBoard.getNeighbor([2, 1], 60).should.deep.equal([3, 0])
+      testBoard.getNeighbor([2, 1], 120).should.deep.equal([3, 1])
+      testBoard.getNeighbor([2, 1], 180).should.deep.equal([2, 2])
+      testBoard.getNeighbor([2, 1], 240).should.deep.equal([1, 1])
+      testBoard.getNeighbor([2, 1], 300).should.deep.equal([1, 0])
     });
     it('should return null if there is no tile in the given direction')
   })
-  
+
   describe('getAllNeighbors(position)', () => {
     it('should return all neighboring tiles and their angle for the given position')
   })
