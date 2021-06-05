@@ -20,17 +20,21 @@ describe('Tile', () => {
     })
   })
 
-  describe('addType()', () => {
-    it('should add a new type to the tile', () => {
+  describe('type() getter and setter', () => {
+    it('should add a new type to the tile stack', () => {
       const testTile = new Tile();
-      testTile.addType(TILE_TYPES.HIT);
+      testTile.type = TILE_TYPES.HIT;
       testTile.typeStack.should.deep.equal([TILE_TYPES.EMPTY, TILE_TYPES.HIT])
     })
-    it('should replace the existing type if given an extra parameter', () => {
+    it('should return the top type in the stack', () => {
       const testTile = new Tile();
-      testTile.addType(TILE_TYPES.MISS);
-      testTile.addType(TILE_TYPES.HIT, true);
-      testTile.typeStack.should.deep.equal([TILE_TYPES.EMPTY, TILE_TYPES.HIT])
+      testTile.type = TILE_TYPES.SHIP.BATTLESHIP;
+      testTile.type = TILE_TYPES.HIT;
+      testTile.type.should.equal(TILE_TYPES.HIT);
     })
+  })
+
+  describe('baseType', () => {
+    it('should')
   })
 })

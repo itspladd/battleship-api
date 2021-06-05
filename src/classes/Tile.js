@@ -5,8 +5,12 @@ class Tile {
     this.typeStack = [type]
   }
 
-  addType(newType) {
+  set type(newType) {
     this.typeStack.push(newType);
+  }
+
+  get type() {
+    return this.typeStack[this.typeStack.length - 1];
   }
 }
 
