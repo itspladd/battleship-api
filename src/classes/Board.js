@@ -1,7 +1,8 @@
 
 class Board {
   constructor() {
-    console.log('Board constructed')
+    this.rows = 10;
+    this.columns = 10;
   }
 }
 
