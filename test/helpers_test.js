@@ -77,14 +77,21 @@ describe('getNeighbor(position, angle)', () => {
   })
 })
 
-describe('getNeighborsInDirection(position, angle)', () => {
-  it('should require a valid position and angle', () => {
+describe('getNeighborsInDirection(position, angle, distance)', () => {
+  it('should require a valid position, angle, and distance', () => {
     const bad1 = () => getNeighborsInDirection([0, 1.5], 120);
     const bad2 = () => getNeighborsInDirection([0, 1], 90);
-    const good = () => getNeighborsInDirection([0, 0], 180);
+    const bad3 = () => getNeighborsInDirection([0, 1], 120, -1);
+    const good = () => getNeighborsInDirection([0, 0], 180, 3);
 
     bad1.should.throw(Error, /invalid position argument:/i);
     bad2.should.throw(Error, /invalid angle argument:/i);
+    bad3.should.throw(Error, /invalid length argument:/i);
+    good.should.not.throw(Error);
+  })
+  it('should return an array', () => {
+    getNeighborsInDirection([0,0], 120, 1).should.be.an.instanceof(Array)
+    getNeighborsInDirection([0,0], 120, 2).should.be.an.instanceof(Array)
   })
 })
 

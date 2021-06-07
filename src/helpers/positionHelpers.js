@@ -73,13 +73,26 @@ const getNeighbor = (position, angle) => {
   return neighborPosition;
 };
 
-const getNeighborsInDirection = (position, angle) => {
+// length represents the final length of the return array.
+const getNeighborsInDirection = (position, angle, length) => {
   if (!validPosition(position)) {
     throw new Error(`getNeighborsInDirection called with invalid position argument: ${position}`);
   }
   if (!validAngle(angle)) {
     throw new Error(`getNeighborsInDirection called with invalid angle argument: ${angle}`);
   }
+  if (!Number.isInteger(length) || length < 1) {
+    throw new Error(`getNeighborsInDirection called with invalid length argument: ${length}`);
+  }
+
+  let results = [];
+  let lastPosition = position;
+  let i = 0;
+  do {
+    i++;
+  } while (i < length)
+
+  return results;
 };
 
 const getAllNeighbors = position => {
