@@ -1,6 +1,8 @@
 const {
   validPosition,
-  validAngle
+  validAngle,
+  getNeighbor,
+  getAllNeighbors
 } = require('../src/helpers/positionHelpers')
 
 describe('validPosition(position)', () => {
@@ -32,6 +34,72 @@ describe('validAngle(angle)', () => {
     validAngle(180).should.be.true;
     validAngle(240).should.be.true;
     validAngle(300).should.be.true;
+  })
+})
+
+describe('getNeighbor(position, angle)', () => {
+  it('should require a valid position and angle', () => {
+    const bad1 = () => getNeighbor();
+    const bad2 = () => getNeighbor([3, 3]);
+    const good1 = () => getNeighbor([3, -1], 120); // Yes, we can get the "neighbor" of a negative tile!
+    const good2 = () => getNeighbor([0, 0], 120);
+
+    bad1.should.throw(Error, /invalid position argument:/i);
+    bad2.should.throw(Error, /invalid angle argument:/i);
+    good1.should.not.throw(Error);
+    good2.should.not.throw(Error);
+  });
+  it('should return the position of the neighboring tile in the given direction when x is odd', () => {
+    // odd X
+    getNeighbor([1, 1], 0).should.deep.equal([1, 0])
+    getNeighbor([1, 1], 60).should.deep.equal([2, 1])
+    getNeighbor([1, 1], 120).should.deep.equal([2, 2])
+    getNeighbor([1, 1], 180).should.deep.equal([1, 2])
+    getNeighbor([1, 1], 240).should.deep.equal([0, 2])
+    getNeighbor([1, 1], 300).should.deep.equal([0, 1])
+  });
+  it('should return the position of the neighboring tile in the given direction when x is even', () => {
+    // even X
+    getNeighbor([2, 1], 0).should.deep.equal([2, 0])
+    getNeighbor([2, 1], 60).should.deep.equal([3, 0])
+    getNeighbor([2, 1], 120).should.deep.equal([3, 1])
+    getNeighbor([2, 1], 180).should.deep.equal([2, 2])
+    getNeighbor([2, 1], 240).should.deep.equal([1, 1])
+    getNeighbor([2, 1], 300).should.deep.equal([1, 0])
+  });
+  it('should return a value even if the result is negative', () => {
+    getNeighbor([0, 0], 0).should.deep.equal([0, -1])
+    getNeighbor([0, 0], 60).should.deep.equal([1, -1])
+    getNeighbor([0, 0], 240).should.deep.equal([-1, 0])
+    getNeighbor([0, 0], 300).should.deep.equal([-1, -1])
+    getNeighbor([02, 0], 0).should.deep.equal([2, -1])
+  })
+})
+
+describe('getAllNeighbors(position)', () => {
+  it('should return all neighboring tiles and their angle for the given position', () => {
+    const position = [5, 5]
+    const result = [
+      [5, 4],
+      [6, 5],
+      [6, 6],
+      [5, 6],
+      [4, 6],
+      [4, 5]
+    ]
+    getAllNeighbors(position).should.deep.equal(result);
+  })
+  it('should include negative results if appropriate', () => {
+    const position = [2, 0]
+    const result = [
+      [2, -1],
+      [3, -1],
+      [3, 0],
+      [2, 1],
+      [1, 0],
+      [1, -1]
+    ]
+    getAllNeighbors(position).should.deep.equal(result);
   })
 })
 

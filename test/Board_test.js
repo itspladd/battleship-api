@@ -88,7 +88,6 @@ describe('Board', () => {
       bad4.should.throw(Error, /tried to add a ship outside the board/i);
       bad5.should.throw(Error, /invalid angle argument:/i);
       good.should.not.throw(Error);
-
     })
     it('should add the Ship to the Ships owned by the Board', () => {
       const ship = new Ship();
@@ -122,82 +121,7 @@ describe('Board', () => {
     })
   })
 
-  describe('getNeighbor(position, angle)', () => {
-    let testBoard;
-    before(() => {
-      testBoard = new Board();
-    })
-    it('should require a valid position and angle', () => {
-      const bad1 = () => testBoard.getNeighbor();
-      const bad2 = () => testBoard.getNeighbor([3, 3]);
-      const bad3 = () => testBoard.getNeighbor([3, 11], 120);
-      const good = () => testBoard.getNeighbor([0, 0], 120);
-
-      bad1.should.throw(Error, /invalid position argument:/i);
-      bad2.should.throw(Error, /invalid angle argument:/i);
-      bad3.should.throw(Error, /position outside board:/i);
-      good.should.not.throw(Error);
-    });
-    it('should return the position of the neighboring tile in the given direction when x is odd', () => {
-      // odd X
-      testBoard.getNeighbor([1, 1], 0).should.deep.equal([1, 0])
-      testBoard.getNeighbor([1, 1], 60).should.deep.equal([2, 1])
-      testBoard.getNeighbor([1, 1], 120).should.deep.equal([2, 2])
-      testBoard.getNeighbor([1, 1], 180).should.deep.equal([1, 2])
-      testBoard.getNeighbor([1, 1], 240).should.deep.equal([0, 2])
-      testBoard.getNeighbor([1, 1], 300).should.deep.equal([0, 1])
-    });
-    it('should return the position of the neighboring tile in the given direction when x is even', () => {
-      // even X
-      testBoard.getNeighbor([2, 1], 0).should.deep.equal([2, 0])
-      testBoard.getNeighbor([2, 1], 60).should.deep.equal([3, 0])
-      testBoard.getNeighbor([2, 1], 120).should.deep.equal([3, 1])
-      testBoard.getNeighbor([2, 1], 180).should.deep.equal([2, 2])
-      testBoard.getNeighbor([2, 1], 240).should.deep.equal([1, 1])
-      testBoard.getNeighbor([2, 1], 300).should.deep.equal([1, 0])
-    });
-    it('should return null if there is no tile in the given direction', () => {
-      should.not.exist(testBoard.getNeighbor([0, 0], 0));
-      should.not.exist(testBoard.getNeighbor([0, 0], 60));
-      should.exist(testBoard.getNeighbor([0, 0], 120));
-      should.exist(testBoard.getNeighbor([0, 0], 180));
-      should.not.exist(testBoard.getNeighbor([0, 0], 240));
-      should.not.exist(testBoard.getNeighbor([0, 0], 300));
-
-      should.exist(testBoard.getNeighbor([9, 9], 0));
-      should.not.exist(testBoard.getNeighbor([9, 9], 180));
-
-    })
-  })
-
-  describe('getAllNeighbors(position)', () => {
-    let testBoard;
-    before(() => {
-      testBoard = new Board();
-    })
-    it('should return all neighboring tiles and their angle for the given position', () => {
-      const position = [5, 5]
-      const result = [
-        [5, 4],
-        [6, 5],
-        [6, 6],
-        [5, 6],
-        [4, 6],
-        [4, 5]
-      ]
-      testBoard.getAllNeighbors(position).should.deep.equal(result);
-    })
-    it('should include null results for nonexistent neighbors', () => {
-      const position = [2, 0]
-      const result = [
-        null,
-        null,
-        [3, 0],
-        [2, 1],
-        [1, 0],
-        null
-      ]
-      testBoard.getAllNeighbors(position).should.deep.equal(result);
-    })
+  describe('getShipLocations', () => {
+    it('should require a Ship, an initial position, and an angle')
   })
 })

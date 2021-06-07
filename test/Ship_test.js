@@ -8,9 +8,9 @@ describe('Ship', () => {
     let testShip;
     let testBoard;
     before(() => {
-      testBoard = new Board;
+      testBoard = new Board();
       testShip = new Ship();
-      testBoard.addShip(testShip);
+      testBoard.addShip(testShip)
     });
     it('should create an instance of a Ship', () => {
       should.exist(testShip);
