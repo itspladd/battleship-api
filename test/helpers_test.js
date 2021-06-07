@@ -104,7 +104,7 @@ describe('getNeighborsInDirection(position, angle, distance)', () => {
     result = getNeighborsInDirection(pos, angle, length);
     result.should.be.an.instanceof(Array);
     result.length.should.equal(3);
-    result.should.deep.equal([[0, 0]])
+    result.should.deep.equal([[0, 0], [1, -1], [2, -1]]);
 
   })
 })
