@@ -8,6 +8,9 @@ class Ship {
   }
 
   setOwner(board) {
+    if(!(board instanceof Object)) {
+      throw new Error(`Ship.setOwner called with invalid board argument: ${board}`)
+    }
     this.owner = board;
     return this.owner;
   }

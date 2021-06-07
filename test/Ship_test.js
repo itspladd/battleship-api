@@ -17,11 +17,23 @@ describe('Ship', () => {
   })
 
   describe('setOwner()', () => {
+    it('should require an input Object', () => {
+      const testShip = new Ship();
+      const bad = () => testShip.setOwner("hi");
+      const good = () => testShip.setOwner({ key: "value" })
+
+      bad.should.throw(Error, /invalid board argument:/i);
+      good.should.not.throw(Error);
+    });
     it('should set the owner of this Ship to the input object and return the same object', () => {
       const testShip = new Ship()
       const testObj = { blah: 5 };
 
       testShip.setOwner(testObj).should.equal(testObj);
     });
+  })
+
+  describe('setPositions()', () => {
+    it('should require an ')
   })
 })
