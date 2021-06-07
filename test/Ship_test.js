@@ -1,6 +1,5 @@
 const should = require('chai').should()
 const Ship = require('../src/classes/Ship')
-const Board = require('../src/classes/Board')
 const { SHIP_TYPES } = require('../src/constants/SHIPS')
 
 describe('Ship', () => {
