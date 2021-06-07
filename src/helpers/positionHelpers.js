@@ -13,9 +13,13 @@ const validAngle = angle => {
   return VALID_ANGLES.includes(angle);
 }
 
-const validateAngleAndPosition = (angle, position, callingFunc) => {
+const validatePositionAndAngle = (position, angle, callingFunc) => {
+  const messageGen = (arg, argType) => `${callingFunc.name} called with invalid ${argType} argument: ${arg}`
+  if(!validPosition(position)) {
+    throw new Error(messageGen(position, 'position'));
+  }
   if(!validAngle(angle)) {
-    
+    throw new Error(messageGen(angle, 'angle'));
   }
 }
 
@@ -110,6 +114,7 @@ const getAllNeighbors = position => {
 module.exports = {
   validPosition,
   validAngle,
+  validatePositionAndAngle,
   getNeighbor,
   getNeighborsInDirection,
   getAllNeighbors
