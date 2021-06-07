@@ -17,12 +17,11 @@ describe('Ship', () => {
   })
 
   describe('setOwner()', () => {
-    it('should set the owner of this Ship to the input object', () => {
+    it('should set the owner of this Ship to the input object and return the same object', () => {
       const testShip = new Ship()
       const testObj = { blah: 5 };
 
-      testShip.setOwner(testObj);
-      testShip.owner.should.equal(testObj);
+      testShip.setOwner(testObj).should.equal(testObj);
     });
   })
 })

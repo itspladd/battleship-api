@@ -9,6 +9,7 @@ class Ship {
 
   setOwner(board) {
     this.owner = board;
+    return this.owner;
   }
 }
 
