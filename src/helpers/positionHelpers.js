@@ -15,10 +15,10 @@ const validAngle = angle => {
 
 const getNeighbor = (position, angle) => {
   if (!validPosition(position)) {
-    throw new Error(`Board.getNeighbor called with invalid position argument: ${position}`);
+    throw new Error(`getNeighbor called with invalid position argument: ${position}`);
   }
   if (!validAngle(angle)) {
-    throw new Error(`Board.getNeighbor called with invalid angle argument: ${angle}`);
+    throw new Error(`getNeighbor called with invalid angle argument: ${angle}`);
   }
   const x = position[0];
   const y = position[1];
@@ -73,6 +73,15 @@ const getNeighbor = (position, angle) => {
   return neighborPosition;
 };
 
+const getNeighborsInDirection = (position, angle) => {
+  if (!validPosition(position)) {
+    throw new Error(`getNeighborsInDirection called with invalid position argument: ${position}`);
+  }
+  if (!validAngle(angle)) {
+    throw new Error(`getNeighborsInDirection called with invalid angle argument: ${angle}`);
+  }
+};
+
 const getAllNeighbors = position => {
   return VALID_ANGLES.map(angle => getNeighbor(position, angle))
 };
@@ -81,5 +90,6 @@ module.exports = {
   validPosition,
   validAngle,
   getNeighbor,
+  getNeighborsInDirection,
   getAllNeighbors
 }

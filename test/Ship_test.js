@@ -22,4 +22,5 @@ describe('Ship', () => {
       testShip.owner.should.equal(testBoard)
     })
   })
+
 })

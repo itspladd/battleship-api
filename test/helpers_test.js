@@ -2,6 +2,7 @@ const {
   validPosition,
   validAngle,
   getNeighbor,
+  getNeighborsInDirection,
   getAllNeighbors
 } = require('../src/helpers/positionHelpers')
 
@@ -73,6 +74,17 @@ describe('getNeighbor(position, angle)', () => {
     getNeighbor([0, 0], 240).should.deep.equal([-1, 0])
     getNeighbor([0, 0], 300).should.deep.equal([-1, -1])
     getNeighbor([02, 0], 0).should.deep.equal([2, -1])
+  })
+})
+
+describe('getNeighborsInDirection(position, angle)', () => {
+  it('should require a valid position and angle', () => {
+    const bad1 = () => getNeighborsInDirection([0, 1.5], 120);
+    const bad2 = () => getNeighborsInDirection([0, 1], 90);
+    const good = () => getNeighborsInDirection([0, 0], 180);
+
+    bad1.should.throw(Error, /invalid position argument:/i);
+    bad2.should.throw(Error, /invalid angle argument:/i);
   })
 })
 
