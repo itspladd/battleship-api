@@ -89,6 +89,7 @@ const getNeighborsInDirection = (position, angle, length) => {
   let lastPosition = position;
   let i = 0;
   do {
+    results.push(lastPosition)
     i++;
   } while (i < length)
 

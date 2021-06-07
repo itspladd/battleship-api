@@ -89,9 +89,23 @@ describe('getNeighborsInDirection(position, angle, distance)', () => {
     bad3.should.throw(Error, /invalid length argument:/i);
     good.should.not.throw(Error);
   })
-  it('should return an array', () => {
-    getNeighborsInDirection([0,0], 120, 1).should.be.an.instanceof(Array)
-    getNeighborsInDirection([0,0], 120, 2).should.be.an.instanceof(Array)
+  it('should return an array of the input length containing the proper positions', () => {
+    let pos = [0, 0];
+    let angle = 120;
+    let length = 1;
+    let result = getNeighborsInDirection(pos, angle, length);
+    result.should.be.an.instanceof(Array);
+    result.length.should.equal(1);
+    result.should.deep.equal([[0, 0]])
+
+    pos = [0, 0];
+    angle = 60;
+    length = 3;
+    result = getNeighborsInDirection(pos, angle, length);
+    result.should.be.an.instanceof(Array);
+    result.length.should.equal(3);
+    result.should.deep.equal([[0, 0]])
+
   })
 })
 
