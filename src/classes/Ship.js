@@ -1,5 +1,5 @@
 const { SHIP_TYPES } = require('../constants/SHIPS');
-const { getNeighborsInDirection } = require('../helpers/positionHelpers');
+const { getNeighborsInDirection, validAngle } = require('../helpers/positionHelpers');
 
 class Ship {
   constructor() {
@@ -13,6 +13,9 @@ class Ship {
     }
     this.owner = board;
     return this.owner;
+  }
+
+  setPositions(position, angle) {
   }
 }
 

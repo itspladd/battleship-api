@@ -38,6 +38,20 @@ describe('validAngle(angle)', () => {
   })
 })
 
+describe('validateAngleAndPosition', () => {
+  it('should throw an error with the calling function\'s name and the offending argument', () => {
+    const func1 = () => { console.log('hi') };
+
+    const bad1 = () => validateAngleAndPosition([0.5, 1], 120, func1);
+    const bad2 = () => validateAngleAndPosition([1, 1], 4, func1);
+    const good = () => validateAngleAndPosition([1, 1], 120, func1);
+
+    bad1.should.throw(Error, /func1 called with invalid position argument:/i);
+    bad2.should.throw(Error, /func1 called with invalid angle argument:/i);
+    good.should.not.throw(Error);
+  })
+})
+
 describe('getNeighbor(position, angle)', () => {
   it('should require a valid position and angle', () => {
     const bad1 = () => getNeighbor();

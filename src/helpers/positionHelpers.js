@@ -13,6 +13,12 @@ const validAngle = angle => {
   return VALID_ANGLES.includes(angle);
 }
 
+const validateAngleAndPosition = (angle, position, callingFunc) => {
+  if(!validAngle(angle)) {
+    
+  }
+}
+
 const getNeighbor = (position, angle) => {
   if (!validPosition(position)) {
     throw new Error(`getNeighbor called with invalid position argument: ${position}`);
