@@ -54,7 +54,7 @@ class Board {
     }
 
     // Input validation passed, now see if this is a legal placement
-    if (validShipLocation(ship)) {
+    if (this.validShipLocation(ship)) {
       this.ships.push(ship)
       return true;
     } else {

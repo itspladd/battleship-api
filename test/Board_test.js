@@ -155,11 +155,24 @@ describe('Board', () => {
     let testShip1;
     before(() => {
       testBoard = new Board();
+      testShip1 = new Ship();
       testShip1.setPositions([0, 0], 180);
-      testBoard.addShip(testShip1);
+      testBoard.ships = [testShip1];
     });
     it('should return true if the ship is in the board and will not collide with other ships', () => {
       const newShip = new Ship();
+      newShip.setPositions([1, 1], 60);
+      testBoard.validShipLocation(newShip).should.be.true;
+    })
+    it('should return false if the ship is outside the board', () => {
+      const newShip = new Ship();
+      newShip.setPositions([1, 1], 0);
+      testBoard.validShipLocation(newShip).should.be.false;
+    })
+    it('should return false if the ship collides with existing ships on the board', () => {
+      const newShip = new Ship();
+      newShip.setPositions([2, 1], 240);
+      testBoard.validShipLocation(newShip).should.be.false;
     })
   })
 })
