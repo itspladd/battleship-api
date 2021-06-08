@@ -68,26 +68,19 @@ describe('Board', () => {
     before(() => {
       testBoard = new Board();
     })
-    it('should require a valid Ship, position, and angle', () => {
+    it('should return false and raise an error if any inputs are invalid', () => {
       const testShip = new Ship(); // Ship object
       const goodPosition = [1, 1]; // x and y
       const goodAngle = 180; // in degrees
       const badPosition = [-1, 11];
       const badAngle = 90;
 
-      const bad1 = () => testBoard.addShip();
-      const bad2 = () => testBoard.addShip(testShip);
-      const bad3 = () => testBoard.addShip(testShip, goodPosition);
-      const bad4 = () => testBoard.addShip(testShip, badPosition, goodAngle);
-      const bad5 = () => testBoard.addShip(testShip, goodPosition, badAngle);
-      const good = () => testBoard.addShip(testShip, goodPosition, goodAngle);
-
-      bad1.should.throw(Error, /invalid ship argument:/i);
-      bad2.should.throw(Error, /invalid position argument:/i);
-      bad3.should.throw(Error, /invalid angle argument:/i);
-      bad4.should.throw(Error, /tried to add a ship outside the board/i);
-      bad5.should.throw(Error, /invalid angle argument:/i);
-      good.should.not.throw(Error);
+      testBoard.addShip().should.be.false;
+      testBoard.addShip(testShip).should.be.false;
+      testBoard.addShip(testShip, goodPosition).should.be.false;
+      testBoard.addShip(testShip, badPosition, goodAngle).should.be.false;
+      testBoard.addShip(testShip, goodPosition, badAngle).should.be.false;
+      testBoard.addShip(testShip, goodPosition, goodAngle).should.not.be.false;
     })
     it('should add the Ship to the Ships owned by the Board', () => {
       const ship = new Ship();

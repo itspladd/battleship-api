@@ -87,14 +87,14 @@ const getNeighbor = (position, angle) => {
 
 // length represents the final length of the return array.
 const getNeighborsInDirection = (position, angle, length) => {
-  if (!validPosition(position)) {
-    throw new Error(`getNeighborsInDirection called with invalid position argument: ${position}`);
-  }
-  if (!validAngle(angle)) {
-    throw new Error(`getNeighborsInDirection called with invalid angle argument: ${angle}`);
-  }
-  if (!Number.isInteger(length) || length < 1) {
-    throw new Error(`getNeighborsInDirection called with invalid length argument: ${length}`);
+  try {
+    validatePositionAndAngle(position, angle);
+    if (!Number.isInteger(length) || length < 1) {
+      throw new Error(`getNeighborsInDirection called with invalid length argument: ${length}`);
+    }
+  } catch(err) {
+    handleError(err);
+    return false;
   }
 
   let results = [];
