@@ -68,7 +68,13 @@ class Ship {
   }
 
   collidesWithShip(ship) {
-    return this.collidesWith(ship.segments.map(seg => seg.position))
+    const collisions = this.collidesWith(ship.segments.map(seg => seg.position));
+    const results = {
+      ship,
+      collisions
+    }
+
+    return collisions.length > 0 ? results : false;
   }
 
   get position() {

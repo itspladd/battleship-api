@@ -79,10 +79,13 @@ describe('Ship', () => {
       const collidingShip = new Ship();
       collidingShip.setPositions([0, 1], 180);
       const results = collidingShip.collidesWithShip(testShip);
-      results.should.deep.equal(testShip, [[0, 1], [0, 2]]);
+      results.should.deep.equal({ ship: testShip, collisions: [[0, 1], [0, 2]] });
     })
     it('should return false if there are no collisions', () => {
-
+      const nonCollidingShip = new Ship();
+      nonCollidingShip.setPositions([1, 0], 120);
+      const results = nonCollidingShip.collidesWithShip(testShip);
+      results.should.be.false;
     })
   })
 })
