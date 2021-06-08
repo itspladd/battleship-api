@@ -4,7 +4,6 @@ const argErrorMsg = (arg, argName, callingFunc) => {
 
 const handleError = err => {
   const redTextStr = '\x1b[31m%s\x1b[0m';
-  const err = new TypeError();
   console.error(redTextStr, '** ERROR *********')
   console.error(redTextStr, err);
   console.error(redTextStr, '******************')
@@ -12,4 +11,5 @@ const handleError = err => {
 
 module.exports = {
   argErrorMsg,
+  handleError
 }

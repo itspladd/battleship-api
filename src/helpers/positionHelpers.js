@@ -1,5 +1,5 @@
 const { VALID_ANGLES } = require('../constants/GLOBAL')
-const { argErrorMsg } = require('./errorHelpers')
+const { argErrorMsg, handleError } = require('./errorHelpers')
 
 const validPosition = position => {
   return (
@@ -29,7 +29,7 @@ const getNeighbor = (position, angle) => {
     validatePositionAndAngle(position, angle);
   } catch(err) {
     handleError(err);
-    return;
+    return false;
   }
 
   const x = position[0];

@@ -1,3 +1,4 @@
+const { should } = require('chai')
 const {
   validPosition,
   validAngle,
@@ -54,16 +55,11 @@ describe('validatePositionAndAngle', () => {
 })
 
 describe('getNeighbor(position, angle)', () => {
-  it('should require a valid position and angle', () => {
-    const bad1 = () => getNeighbor();
-    const bad2 = () => getNeighbor([3, 3]);
-    const good1 = () => getNeighbor([3, -1], 120); // Yes, we can get the "neighbor" of a negative tile!
-    const good2 = () => getNeighbor([0, 0], 120);
-
-    bad1.should.throw(Error, /invalid position argument:/i);
-    bad2.should.throw(Error, /invalid angle argument:/i);
-    good1.should.not.throw(Error);
-    good2.should.not.throw(Error);
+  it('should return undefined if given invalid position or angle', () => {
+    getNeighbor().should.be.false;
+    getNeighbor([3, 3]).should.be.false;
+    getNeighbor([3, -1], 120).should.not.be.false; // Yes, we can get the "neighbor" of a negative tile!
+    getNeighbor([0, 0], 120).should.not.be.false;
   });
   it('should return the position of the neighboring tile in the given direction when x is odd', () => {
     // odd X
