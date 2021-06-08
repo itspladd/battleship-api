@@ -1,7 +1,8 @@
 const Tile = require('./Tile');
 const Ship = require('./Ship');
-const { validPosition, validAngle } = require('../helpers/positionHelpers');
+const { validPosition, validAngle, validatePositionAndAngle } = require('../helpers/positionHelpers');
 const { VALID_ANGLES } = require('../constants/GLOBAL');
+const { handleError } = require('../helpers/errorHelpers');
 
 class Board {
   constructor({
@@ -36,23 +37,24 @@ class Board {
   }
 
   addShip(ship, position, angle) {
-    if (!(ship instanceof Ship)) {
-      throw new Error(`Board.addShip called with invalid ship argument: ${ship}`);
-    }
-    if (!validPosition(position)) {
-      throw new Error(`Board.addShip called with invalid position argument: ${position}`);
-    }
-    if (!this.positionIsInsideBoard(position)) {
-      throw new Error(`Board.addShip tried to add a ship outside the board bounds: 
-        position: ${position}
-        rows: ${this.rows}
-        columns: ${this.columns}`);
-    }
-    if (!validAngle(angle)) {
-      throw new Error(`Board.addShip called with invalid angle argument: ${angle}`);
+    try {
+      if (!(ship instanceof Ship)) {
+        throw new Error(`Board.addShip called with invalid ship argument: ${ship}`);
+      }
+      if (!this.positionIsInsideBoard(position)) {
+        throw new Error(`Board.addShip tried to add a ship outside the board bounds: 
+          position: ${position}
+          rows: ${this.rows}
+          columns: ${this.columns}`);
+      }
+      validatePositionAndAngle(position, angle);
+    } catch (err) {
+      handleError(err);
+      return false;
     }
     // Input validation passed, add the ship to the board!
     this.ships.push({ ship, position, angle });
+    return true;
   }
 
   positionIsInsideBoard(position) {
