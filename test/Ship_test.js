@@ -68,4 +68,21 @@ describe('Ship', () => {
       testShip.collidesWith([[4, 5], [1, 1]]);
     });
   })
+
+  describe('collidesWithShip(ship)', () => {
+    let testShip;
+    before(() => {
+      testShip = new Ship();
+      testShip.setPositions([0, 0], 180);
+    })
+    it('should return the ship and the locations if it collides with it', () => {
+      const collidingShip = new Ship();
+      collidingShip.setPositions([0, 1], 180);
+      const results = collidingShip.collidesWithShip(testShip);
+      results.should.deep.equal(testShip, [[0, 1], [0, 2]]);
+    })
+    it('should return false if there are no collisions', () => {
+
+    })
+  })
 })
