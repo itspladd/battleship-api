@@ -36,15 +36,15 @@ class Board {
     return result;
   }
 
-  addShip(ship, position, angle) {
+  addShip(ship) {
     try {
-      validatePositionAndAngle(position, angle);
+      validatePositionAndAngle(ship.position, ship.angle);
       if (!(ship instanceof Ship)) {
         throw new Error(`Board.addShip called with invalid ship argument: ${ship}`);
       }
-      if (!this.positionIsInsideBoard(position)) {
+      if (!this.positionIsInsideBoard(ship.position)) {
         throw new Error(`Board.addShip tried to add a ship outside the board bounds: 
-          position: ${position}
+          position: ${ship.position}
           rows: ${this.rows}
           columns: ${this.columns}`);
       }
@@ -52,9 +52,21 @@ class Board {
       handleError(err);
       return false;
     }
-    // Input validation passed, add the ship to the board!
-    this.ships.push({ ship, position, angle });
-    return true;
+
+    // Input validation passed, now see if this is a legal placement
+    if (validShipLocation(ship)) {
+      this.ships.push(ship)
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  validShipLocation(ship) {
+    return (
+      this.entireShipInsideBoard(ship) &&
+      this.noShipCollisions(ship)
+    )
   }
 
   positionIsInsideBoard(position) {
@@ -87,6 +99,9 @@ class Board {
     return true;
   }
 
+  noShipCollisions(ship) {
+    
+  }
 
 }
 

@@ -7,7 +7,7 @@ const { handleError } = require('../helpers/errorHelpers')
 class Ship {
   constructor() {
     this.segments = [ ...SHIP_TYPES.DEFAULT.SEGMENTS ];
-    this.position = null;
+    this._position = null;
     this.angle = 0;
   }
 
@@ -47,6 +47,40 @@ class Ship {
     });
 
     return this.segments;
+  }
+
+  // Does this ship collide with a given position?
+  collidesWith(positions) {
+    // Filtering function returns true if the position matches any segment positions
+    const filterFunc = position => {
+      for (const segment of this.segments) {
+        const [segX, segY] = segment.position;
+        const [x, y] = position;
+        if (segX === x && segY === y) {
+          return true;
+        }
+      }
+      return false; // No matches, return false
+    }
+    const result = positions.filter(filterFunc)
+    // Return the collision locations if they exist, or false if no collisions
+    return result.length > 0 ? result : false;
+  }
+
+  collidesWithShip(ship) {
+    return this.collidesWith(ship.segments.map(seg => seg.position))
+  }
+
+  get position() {
+    return [...this._position];
+  }
+
+  set position(newVal) {
+    if(Array.isArray(newVal)) {
+      this._position = [...newVal];
+    } else {
+      this._position = newVal;
+    }
   }
 }
 

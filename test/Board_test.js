@@ -69,26 +69,19 @@ describe('Board', () => {
       testBoard = new Board();
     })
     it('should return false and raise an error if any inputs are invalid', () => {
-      const testShip = new Ship(); // Ship object
-      const goodPosition = [1, 1]; // x and y
-      const goodAngle = 180; // in degrees
-      const badPosition = [-1, 11];
-      const badAngle = 90;
-
+      const testShip = new Ship();
       testBoard.addShip().should.be.false;
-      testBoard.addShip(testShip).should.be.false;
-      testBoard.addShip(testShip, goodPosition).should.be.false;
-      testBoard.addShip(testShip, badPosition, goodAngle).should.be.false;
-      testBoard.addShip(testShip, goodPosition, badAngle).should.be.false;
-      testBoard.addShip(testShip, goodPosition, goodAngle).should.not.be.false;
     })
-    it('should return false if any of the Ship segments would be placed outside the board')
+    it('should return false if any of the Ship segments would be placed outside the board', () => {
+      const testShip = new Ship();
+      testShip.setPositions([0,0], 0);
+      testBoard.addShip(testShip).should.be.false;
+    });
     it('should add the Ship to the Ships owned by the Board', () => {
       const ship = new Ship();
-      const position = [5, 5];
-      const angle = 0;
-      testBoard.addShip(ship, position, angle);
-      testBoard.ships[testBoard.ships.length - 1].should.deep.equal({ ship, position, angle });
+      ship.setPositions([1, 1], 180)
+      testBoard.addShip(ship).should.be.true;
+      testBoard.ships[testBoard.ships.length - 1].should.deep.equal(ship);
     })
   })
 
