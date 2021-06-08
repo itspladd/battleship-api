@@ -109,6 +109,29 @@ describe('Board', () => {
     it('should return false and log an error if given an invalid position', () => {
       testBoard.positionIsInsideBoard(5).should.be.false;
       testBoard.positionIsInsideBoard([4]).should.be.false;
-    })
+    });
+  })
+
+  describe('entireShipInsideBoard(ship)', () => {
+    let testBoard;
+    let testShip;
+    before(() => {
+      testBoard = new Board();
+    });
+    it('should return false if any of the Ship segments are outside the Board', () => {
+      testShip = new Ship();
+      testShip.setPositions([2, 0], 60);
+      testBoard.entireShipInsideBoard(testShip).should.be.false;
+      testShip.setPositions([2, 0], 300);
+      testBoard.entireShipInsideBoard(testShip).should.be.false;
+      testShip.setPositions([1, 2], 300);
+      testBoard.entireShipInsideBoard(testShip).should.be.false;
+    });
+    it('should return true if the entire Ship is inside the Board', () => {
+      testShip = new Ship();
+      testShip.setPositions([0, 0], 120);
+      testBoard.entireShipInsideBoard(testShip).should.be.true;
+
+    });
   })
 })

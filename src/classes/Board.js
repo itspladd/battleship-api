@@ -64,6 +64,7 @@ class Board {
       }
     } catch (err) {
       handleError(err);
+      return false;
     }
 
     const x = position[0];
@@ -77,7 +78,13 @@ class Board {
   }
 
   entireShipInsideBoard(ship) {
+    for (const segment of ship.segments) {
+      if(!this.positionIsInsideBoard(segment.position)) {
+        return false;
+      }
+    }
 
+    return true;
   }
 
 

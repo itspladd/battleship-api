@@ -38,13 +38,15 @@ class Ship {
     const shipLength = this.segments.length;
     const positions = getNeighborsInDirection(position, angle, shipLength)
     // Map the positions into the segments array.
-    return this.segments.map((segment, index) => {
+    this.segments = this.segments.map((segment, index) => {
       const newSeg = {
         ...segment,
         position: positions[index]
       };
       return newSeg;
     });
+
+    return this.segments;
   }
 }
 
