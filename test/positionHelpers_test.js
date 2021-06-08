@@ -40,7 +40,7 @@ describe('validAngle(angle)', () => {
 })
 
 describe('validatePositionAndAngle', () => {
-  it('should throw an error with the calling function\'s name and the offending argument', () => {
+  it('should throw an error when given bad arguments', () => {
     const func1 = () => { };
 
     const bad1 = () => validatePositionAndAngle([0.5, 1], 120, func1);
