@@ -14,6 +14,7 @@ const validAngle = angle => {
   return VALID_ANGLES.includes(angle);
 }
 
+// Throw errors if validation is bad, else do nothing.
 const validatePositionAndAngle = (position, angle, callingFunc) => {
   if(!validPosition(position)) {
     throw new Error(argErrorMsg(position, 'position', callingFunc));
