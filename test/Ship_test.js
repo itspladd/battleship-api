@@ -61,8 +61,11 @@ describe('Ship', () => {
     });
     it('should return true if any of the positions in the array are the same as a ship segment', () => {
       testShip.setPositions([5, 5], 0);
-      testShip.collidesWith([[5, 6], [4, 5], [1, 1], [5, 3]]).should.deep.equal([[5, 3]]);
+      testShip.collidesWith([[5, 6], [5, 5], [4, 5], [1, 1], [5, 3]]).should.deep.equal([[5, 5], [5, 3]]);
     });
-    it('should return false if none of the positions in the array are the same as a ship segment');
+    it('should return false if none of the positions in the array are the same as a ship segment', () => {
+      testShip.setPositions([5, 5], 180);
+      testShip.collidesWith([[4, 5], [1, 1]]);
+    });
   })
 })
