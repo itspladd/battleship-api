@@ -6,8 +6,9 @@ const { handleError } = require('../helpers/errorHelpers')
 
 class Ship {
   constructor() {
-    this.segments = SHIP_TYPES.DEFAULT.SEGMENTS
-    this.positions = null;
+    this.segments = [ ...SHIP_TYPES.DEFAULT.SEGMENTS ];
+    this.position = null;
+    this.angle = 0;
   }
 
   setOwner(board) {
@@ -31,8 +32,19 @@ class Ship {
       handleError(err);
       return false;
     }
-    this.positions = [1, 1]
-    return this.positions;
+    this.position = position;
+    this.angle = angle;
+
+    const shipLength = this.segments.length;
+    const positions = getNeighborsInDirection(position, angle, shipLength)
+    // Map the positions into the segments array.
+    return this.segments.map((segment, index) => {
+      const newSeg = {
+        ...segment,
+        position: positions[index]
+      };
+      return newSeg;
+    });
   }
 }
 

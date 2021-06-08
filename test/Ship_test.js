@@ -43,12 +43,14 @@ describe('Ship', () => {
       testShip.setPositions([0,0]).should.be.false
       testShip.setPositions([0,0], 0).should.not.be.false // Outside-board positions are fine.
     })
-    it('should return the correct positions for the input value', () => {
-      const result1 = testShip.setPositions([0, 0], 0);
-      const result2 = testShip.setPositions([1, 1], 240);
+    it('should return the correct positions for the input value within the segments array', () => {
+      const result1 = testShip.setPositions([0, 0], 0)
+      result1[0].position.should.deep.equal([0, 0]);
+      result1[0].hp.should.equal(1);
 
-      result1.should.deep.equal([[0, 0], [0, -1], [0, -2]]);
-      result2.should.deep.equal([[1, 1], [0, 1], [-1, 0]]);
+      const result2 = testShip.setPositions([1, 1], 300)
+      result2[2].position.should.deep.equal([-1, 0]);
+      result2[2].hp.should.equal(1);
     })
   })
 })

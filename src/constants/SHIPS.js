@@ -1,6 +1,10 @@
 const SHIP_TYPES = {
   DEFAULT: {
-    SEGMENTS: [1, 1, 1]
+    SEGMENTS: [
+      { hp: 1},
+      { hp: 1},
+      { hp: 1}
+    ]
   }
 };
 
