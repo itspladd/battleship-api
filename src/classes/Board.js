@@ -38,6 +38,7 @@ class Board {
 
   addShip(ship, position, angle) {
     try {
+      validatePositionAndAngle(position, angle);
       if (!(ship instanceof Ship)) {
         throw new Error(`Board.addShip called with invalid ship argument: ${ship}`);
       }
@@ -47,7 +48,6 @@ class Board {
           rows: ${this.rows}
           columns: ${this.columns}`);
       }
-      validatePositionAndAngle(position, angle);
     } catch (err) {
       handleError(err);
       return false;

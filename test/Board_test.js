@@ -105,12 +105,9 @@ describe('Board', () => {
       testBoard.positionIsInsideBoard([-1, 0]).should.be.false;
       testBoard.positionIsInsideBoard([testBoard.columns, testBoard.rows]).should.be.false;
     });
-    it('should return an error if given an invalid position', () => {
-      const bad1 = () => testBoard.positionIsInsideBoard(5)
-      const bad2 = () => testBoard.positionIsInsideBoard([4])
-
-      bad1.should.throw(Error, /invalid argument:/i);
-      bad2.should.throw(Error, /invalid argument:/i);
+    it('should return false and log an error if given an invalid position', () => {
+      testBoard.positionIsInsideBoard(5).should.be.false;
+      testBoard.positionIsInsideBoard([4]).should.be.false;
     })
   })
 
