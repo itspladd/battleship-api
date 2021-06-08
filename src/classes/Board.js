@@ -1,8 +1,8 @@
 const Tile = require('./Tile');
 const Ship = require('./Ship');
-const { validPosition, validAngle, validatePositionAndAngle } = require('../helpers/positionHelpers');
-const { VALID_ANGLES } = require('../constants/GLOBAL');
+const { validPosition, validatePositionAndAngle } = require('../helpers/positionHelpers');
 const { handleError } = require('../helpers/errorHelpers');
+const { VALID_ANGLES } = require('../constants/GLOBAL');
 
 class Board {
   constructor({
@@ -58,8 +58,12 @@ class Board {
   }
 
   positionIsInsideBoard(position) {
-    if (!validPosition(position)) {
-      throw new Error(`positionIsInsideBoard() called with invalid argument: ${position}`)
+    try {
+      if (!validPosition(position)) {
+        throw new Error(`positionIsInsideBoard() called with invalid argument: ${position}`)
+      }
+    } catch (err) {
+      handleError(err);
     }
 
     const x = position[0];
