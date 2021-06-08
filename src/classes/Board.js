@@ -76,6 +76,10 @@ class Board {
     );
   }
 
+  entireShipInsideBoard(ship) {
+
+  }
+
 
 }
 

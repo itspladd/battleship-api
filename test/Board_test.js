@@ -82,6 +82,7 @@ describe('Board', () => {
       testBoard.addShip(testShip, goodPosition, badAngle).should.be.false;
       testBoard.addShip(testShip, goodPosition, goodAngle).should.not.be.false;
     })
+    it('should return false if any of the Ship segments would be placed outside the board')
     it('should add the Ship to the Ships owned by the Board', () => {
       const ship = new Ship();
       const position = [5, 5];
@@ -109,9 +110,5 @@ describe('Board', () => {
       testBoard.positionIsInsideBoard(5).should.be.false;
       testBoard.positionIsInsideBoard([4]).should.be.false;
     })
-  })
-
-  describe('getShipLocations', () => {
-    it('should require a Ship, an initial position, and an angle')
   })
 })
