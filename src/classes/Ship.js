@@ -1,5 +1,7 @@
 const { SHIP_TYPES } = require('../constants/SHIPS');
-const { getNeighborsInDirection, validAngle } = require('../helpers/positionHelpers');
+const { getNeighborsInDirection,
+        validAngle,
+        validatePositionAndAngle } = require('../helpers/positionHelpers');
 
 class Ship {
   constructor() {

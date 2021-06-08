@@ -41,7 +41,10 @@ describe('Ship', () => {
     it('should require an input position and an angle', () => {
       const bad1 = testShip.setPositions();
       const bad2 = testShip.setPositions([0,0]);
-      const good = testShip.setPositions([0,0], 0); // Outside-board is fine.
+      const good = testShip.setPositions([0,0], 0); // Outside-board positions are fine.
+
+      bad1.should.throw(Error);
+      bad2.should.throw(Error);
     })
   })
 })

@@ -1,4 +1,5 @@
 const { VALID_ANGLES } = require('../constants/GLOBAL')
+const { argErrorMsg } = require('./errorHelpers')
 
 const validPosition = position => {
   return (
@@ -14,12 +15,11 @@ const validAngle = angle => {
 }
 
 const validatePositionAndAngle = (position, angle, callingFunc) => {
-  const messageGen = (arg, argType) => `${callingFunc.name} called with invalid ${argType} argument: ${arg}`
   if(!validPosition(position)) {
-    throw new Error(messageGen(position, 'position'));
+    throw new Error(argErrorMsg(position, 'position', callingFunc));
   }
   if(!validAngle(angle)) {
-    throw new Error(messageGen(angle, 'angle'));
+    throw new Error(argErrorMsg(angle, 'angle', callingFunc));
   }
 }
 
