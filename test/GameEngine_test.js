@@ -1,12 +1,12 @@
 const should = require('chai').should()
-const BattleshipGame = require('../src/classes/BattleshipGame')
+const GameEngine = require('../src/classes/GameEngine')
 
-describe('BattleshipGame', () => {
-  describe('BattleshipGame(), constructed with no parameters', () => {
+describe('GameEngine', () => {
+  describe('GameEngine(), constructed with no parameters', () => {
     let testEngine;
     const testPlayers = ['Trapezius', 'Tautrion'];
     before(() => {
-      testEngine = new BattleshipGame({
+      testEngine = new GameEngine({
           players: [...testPlayers]
         }
       );
