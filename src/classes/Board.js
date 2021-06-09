@@ -1,7 +1,7 @@
 const Tile = require('./Tile');
 const Ship = require('./Ship');
 const { validPosition, validatePositionAndAngle } = require('../helpers/positionHelpers');
-const { handleError } = require('../helpers/errorHelpers');
+const { handleError, argErrorMsg } = require('../helpers/errorHelpers');
 const { VALID_ANGLES } = require('../constants/GLOBAL');
 
 class Board {
@@ -38,28 +38,15 @@ class Board {
 
   addShip(ship) {
     try {
-      validatePositionAndAngle(ship.position, ship.angle);
-      if (!(ship instanceof Ship)) {
-        throw new Error(`Board.addShip called with invalid ship argument: ${ship}`);
-      }
-      if (!this.positionIsInsideBoard(ship.position)) {
-        throw new Error(`Board.addShip tried to add a ship outside the board bounds: 
-          position: ${ship.position}
-          rows: ${this.rows}
-          columns: ${this.columns}`);
+      if(!(ship instanceof Ship)) {
+        throw new Error(argErrorMsg(ship, "Ship", this.addShip))
       }
     } catch (err) {
       handleError(err);
       return false;
     }
-
-    // Input validation passed, now see if this is a legal placement
-    if (this.validShipLocation(ship)) {
-      this.ships.push(ship)
-      return true;
-    } else {
-      return false;
-    }
+    this.ships.push(ship)
+    return true;
   }
 
   validShipLocation(ship) {

@@ -68,15 +68,9 @@ describe('Board', () => {
     before(() => {
       testBoard = new Board();
     })
-    it('should return false and raise an error if any inputs are invalid', () => {
-      const testShip = new Ship();
+    it('should return false and raise an error if the input is not a Ship', () => {
       testBoard.addShip().should.be.false;
     })
-    it('should return false if any of the Ship segments would be placed outside the board', () => {
-      const testShip = new Ship();
-      testShip.setPositions([0,0], 0);
-      testBoard.addShip(testShip).should.be.false;
-    });
     it('should add the Ship to the Ships owned by the Board', () => {
       const ship = new Ship();
       ship.setPositions([1, 1], 180)
