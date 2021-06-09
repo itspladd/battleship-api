@@ -111,17 +111,7 @@ class Ship {
   // Does this ship collide with a given position?
   collidesWith(positions) {
     // Filtering function returns true if the position matches any segment positions
-    const filterFunc = position => {
-      for (const segment of this.segments) {
-        const [segX, segY] = segment.position;
-        const [x, y] = position;
-        if (segX === x && segY === y) {
-          return true;
-        }
-      }
-      return false; // No matches, return false
-    }
-    const result = positions.filter(filterFunc)
+    const result = positions.filter(position => this.segmentAt(position))
     // Return the collision locations if they exist, or false if no collisions
     return result.length > 0 ? result : false;
   }
