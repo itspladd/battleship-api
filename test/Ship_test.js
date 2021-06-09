@@ -16,6 +16,18 @@ describe('Ship', () => {
     });
   })
 
+  describe('totalHP()', () => {
+    let testShip;
+    before(() => {
+      testShip = new Ship();
+    });
+    it('should return the combined HP value of all segments when fetched', () => {
+      testShip.totalHP.should.equal(3); // default is 1, 1, 1
+      testShip.segments[0].hp = -1; // now it's -1, 1, 1
+      testShip.totalHP.should.equal(1);
+    })
+  })
+
   describe('setOwner()', () => {
     it('should require an input Object', () => {
       const testShip = new Ship();

@@ -49,6 +49,14 @@ class Ship {
     return this.segments;
   }
 
+  set totalHP(value) {
+
+  }
+
+  get totalHP() {
+
+  }
+
   // Does this ship collide with a given position?
   collidesWith(positions) {
     // Filtering function returns true if the position matches any segment positions
