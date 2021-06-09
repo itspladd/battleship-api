@@ -118,12 +118,8 @@ class Ship {
 
   collidesWithShip(ship) {
     const collisions = this.collidesWith(ship.segments.map(seg => seg.position));
-    const results = {
-      ship,
-      collisions
-    }
 
-    return collisions.length > 0 ? results : false;
+    return collisions ? { ship, collisions } : false;
   }
 
   get position() {
@@ -145,10 +141,14 @@ class Ship {
     if(!Array.isArray(positions[0])) {
       positions = [positions]
     }
-    for (const segment of this.segments) {
 
-    }
-    const affectedSegments = this.collidesWith(positions);
+    positions.forEach(position => {
+      this.segmentAt(position).hp -= value;
+    })
+  }
+
+  destroy() {
+    this.owner.ships = this.owner.ships.filter(ship => ship !== this)
   }
 }
 

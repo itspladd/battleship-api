@@ -149,8 +149,37 @@ describe('Ship', () => {
   })
 
   describe('damageSegments(positions, value)', () => {
-    it('should reduce the HP of the segments at matching positions by the given value');
-    it('should work properly given a nested array or a single position')
-
+    let testShip;
+    before(() => {
+      testShip = new Ship();
+      testShip.setPositions([0, 0], 180);
+    })
+    it('should reduce the HP of the segments at matching positions by the given value', () => {
+      testShip.damageSegments([[0, 0], [0, 1]], 2);
+      testShip.segments[0].hp.should.equal(-1)
+      testShip.segments[1].hp.should.equal(-1)
+      testShip.segments[2].hp.should.equal(1)
+    });
+    it('should work properly given a nested array or a single position', () => {
+      testShip.damageSegments([[0, 2]], 1);
+      testShip.segments[2].hp.should.equal(0)
+    })
   });
+
+  describe('destroy()', () => {
+    let testShip;
+    let fakeBoard
+    before(() => {
+      testShip = new Ship();
+      testShip2 = new Ship();
+      fakeBoard = { ships: [testShip, testShip2] }
+      testShip.setOwner(fakeBoard);
+      testShip2.setOwner(fakeBoard);
+    })
+    it('should remove the ship from its owning object', () => {
+      testShip.destroy();
+      fakeBoard.ships.includes(testShip).should.be.false;
+      fakeBoard.ships.should.deep.equal([testShip2]);
+    })
+  })
 })
