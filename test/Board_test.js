@@ -169,4 +169,21 @@ describe('Board', () => {
       testBoard.validShipLocation(newShip).should.be.false;
     })
   })
+
+  describe('shipAt(position)', () => {
+    let testBoard;
+    let testShip;
+    before(() => {
+      testBoard = new Board();
+      testShip = new Ship();
+      testBoard.addShip(testShip);
+      testShip.setPositions([0, 0], 180);
+    });
+    it('should return the ship at the given position if there is one', () => {
+      testBoard.shipAt([0, 2]).should.equal(testShip);
+    });
+    it('should return false if there are no ships at that position', () => {
+      testBoard.shipAt([0, 3]).should.be.false;
+    });
+  })
 })

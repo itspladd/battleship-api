@@ -92,6 +92,13 @@ class Board {
     return results.length === 0;
   }
 
+  // Return the Ship at the target position if there is one.
+  shipAt(position) {
+    const results = this.ships
+                    .filter(ship => ship.segmentAt(position));
+    return results[0] ? results[0] : false;
+  }
+
 }
 
 module.exports = Board;
