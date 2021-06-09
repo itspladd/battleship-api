@@ -16,6 +16,18 @@ describe('Ship', () => {
     });
   })
 
+  describe('length()', () => {
+    let testShip;
+    before(() => {
+      testShip = new Ship();
+    });
+    it('should return the length of the ship in total segments', () => {
+      testShip.length.should.equal(3);
+      testShip.segments.push({ hp: 1 });
+      testShip.length.should.equal(4);
+    })
+  })
+
   describe('totalHP()', () => {
     let testShip;
     before(() => {
@@ -30,8 +42,8 @@ describe('Ship', () => {
       const bad1 = () => testShip.totalHP = 1.1;
       const bad2 = () => testShip.totalHP = "5";
 
-      bad1.should.throw(Error, '/totalHP called with invalid value argument:/i')
-      bad2.should.throw(Error, '/totalHP called with invalid value argument:/i')
+      bad1.should.throw(Error, /invalid value argument:/i)
+      bad2.should.throw(Error, /invalid value argument:/i)
     })
     it('should distribute the input number as evenly as possible when used as a setter', () => {
       testShip.totalHP = 5;

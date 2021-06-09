@@ -2,7 +2,8 @@ const { SHIP_TYPES } = require('../constants/SHIPS');
 const { getNeighborsInDirection,
         validAngle,
         validatePositionAndAngle } = require('../helpers/positionHelpers');
-const { handleError } = require('../helpers/errorHelpers')
+const { handleError,
+        argErrorMsg } = require('../helpers/errorHelpers')
 
 class Ship {
   constructor() {
@@ -56,12 +57,21 @@ class Ship {
   }
 
   set totalHP(value) {
+    if (!Number.isInteger(value)) {
+      throw new Error(argErrorMsg(value, "value", { name: "totalHP" }));
+    }
 
+    const division = value / this.length;
+    const remainder = value % this.length
   }
 
   get totalHP() {
     const reducer = (total, segment) => total + segment.hp;
     return this.segments.reduce(reducer, 0);
+  }
+
+  get length() {
+    return this.segments.length;
   }
 
   // Does this ship collide with a given position?
