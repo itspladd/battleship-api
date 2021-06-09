@@ -6,9 +6,15 @@ const { handleError } = require('../helpers/errorHelpers')
 
 class Ship {
   constructor() {
-    this.segments = [ ...SHIP_TYPES.DEFAULT.SEGMENTS ];
+    this.segments = this.initSegments();
     this._position = null;
     this.angle = 0;
+  }
+
+  // Spread each segment from the constants into a new object.
+  initSegments() {
+    return SHIP_TYPES.DEFAULT.SEGMENTS
+          .map(SEGMENT => ({ ...SEGMENT }))
   }
 
   setOwner(board) {
