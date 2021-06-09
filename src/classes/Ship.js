@@ -42,9 +42,10 @@ class Ship {
     this.position = position;
     this.angle = angle;
 
-    const shipLength = this.segments.length;
+    const shipLength = this.length;
     const positions = getNeighborsInDirection(position, angle, shipLength)
     // Map the positions into the segments array.
+    // Each segment now looks like { position: [x, y], hp: Int }
     this.segments = this.segments.map((segment, index) => {
       const newSeg = {
         ...segment,
@@ -56,19 +57,31 @@ class Ship {
     return this.segments;
   }
 
-  set totalHP(value) {
-    if (!Number.isInteger(value)) {
-      throw new Error(argErrorMsg(value, "value", { name: "totalHP" }));
-    }
-
-    const division = value / this.length;
-    const remainder = value % this.length
-  }
-
   get totalHP() {
     const reducer = (total, segment) => total + segment.hp;
     return this.segments.reduce(reducer, 0);
   }
+
+  set totalHP(value) {
+    if (!Number.isInteger(value)) {
+      throw new Error(argErrorMsg(value, "value", { name: "totalHP" }));
+    }
+    // If the value is 0, just set it all to 0.
+    if (value === 0) {
+      this.segments = this.segments.map(seg => ({ ...seg, hp: 0}));
+    } else {
+      //Otherwise, recursively call this function to set segments to 0,
+      //then distribute HP along the rest of the segments
+      this.totalHP = 0;
+      for(let i = 0; i < value; i++) {
+        const segIndex = i % this.length;
+        console.log(segIndex)
+        this.segments[segIndex].hp += 1;
+      }
+    }
+  }
+
+
 
   get length() {
     return this.segments.length;

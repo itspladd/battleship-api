@@ -45,6 +45,10 @@ describe('Ship', () => {
       bad1.should.throw(Error, /invalid value argument:/i)
       bad2.should.throw(Error, /invalid value argument:/i)
     })
+    it('should set all hp to 0 if the input is 0', () => {
+      testShip.totalHP = 0;
+      testShip.totalHP.should.equal(0);
+    })
     it('should distribute the input number as evenly as possible when used as a setter', () => {
       testShip.totalHP = 5;
       testShip.segments.map(segment => segment.hp).should.deep.equal([2, 2, 1]);
