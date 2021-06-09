@@ -1,6 +1,6 @@
 const { GAME_STATES, MOVE_TYPES } = require('../constants/GLOBAL');
 
-class GameEngine {
+class BattleshipGame {
   constructor({
     players // Number of players
     } = {}) {
@@ -10,4 +10,4 @@ class GameEngine {
   }
 }
 
-module.exports = GameEngine;
+module.exports = BattleshipGame;
