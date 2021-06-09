@@ -25,6 +25,19 @@ describe('Ship', () => {
       testShip.totalHP.should.equal(3); // default is 1, 1, 1
       testShip.segments[0].hp = -1; // now it's -1, 1, 1
       testShip.totalHP.should.equal(1);
+    });
+    it('should require an integer when used as a setter', () => {
+      const bad1 = () => testShip.totalHP = 1.1;
+      const bad2 = () => testShip.totalHP = "5";
+
+      bad1.should.throw(Error, '/totalHP called with invalid value argument:/i')
+      bad2.should.throw(Error, '/totalHP called with invalid value argument:/i')
+    })
+    it('should distribute the input number as evenly as possible when used as a setter', () => {
+      testShip.totalHP = 5;
+      testShip.segments.map(segment => segment.hp).should.deep.equal([2, 2, 1]);
+      testShip.totalHP = 1;
+      testShip.segments.map(segment => segment.hp).should.deep.equal([1, 0, 0]);
     })
   })
 
