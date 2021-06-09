@@ -129,4 +129,28 @@ describe('Ship', () => {
       results.should.be.false;
     })
   })
+
+  describe('segmentAt(position)', () => {
+    let testShip;
+    before(() => {
+      testShip = new Ship();
+      testShip.setPositions([0, 0], 180);
+    })
+    it('should throw an error if the position is invalid', () => {
+      const bad = () => testShip.segmentAt([1, 1.1]);
+      bad.should.throw(Error, /invalid position argument:/i)
+    })
+    it('should return the segment at the given position if there is one', () => {
+      testShip.segmentAt([0, 2]).should.equal(testShip.segments[2])
+    })
+    it('should return false if there are no segments at the given position', () => {
+      testShip.segmentAt([0, 3]).should.be.false
+    })
+  })
+
+  describe('damageSegments(positions, value)', () => {
+    it('should reduce the HP of the segments at matching positions by the given value');
+    it('should work properly given a nested array or a single position')
+
+  });
 })

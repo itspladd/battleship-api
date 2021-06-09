@@ -1,6 +1,7 @@
 const { SHIP_TYPES } = require('../constants/SHIPS');
 const { getNeighborsInDirection,
         validAngle,
+        validPosition,
         validatePositionAndAngle } = require('../helpers/positionHelpers');
 const { handleError,
         argErrorMsg } = require('../helpers/errorHelpers')
@@ -16,6 +17,28 @@ class Ship {
   initSegments() {
     return SHIP_TYPES.DEFAULT.SEGMENTS
           .map(SEGMENT => ({ ...SEGMENT }))
+  }
+
+  segmentAt(position) {
+    if (!validPosition(position)) {
+      throw new Error(argErrorMsg(position, "position", this.segmentAt))
+    }
+    const filterFunc = (segment) => {
+      const [segX, segY] = segment.position;
+      const [x, y] = position;
+      if (segX === x && segY === y) {
+        return true;
+      }
+    }
+    const results = this.segments.filter(filterFunc)
+
+    if (results.length > 1) {
+      throw new Error('Ship.segmentAt found multiple segments with the same position');
+    } else if (results.length === 1) {
+      return results[0];
+    } else if (results.length < 1) {
+      return false;
+    }
   }
 
   setOwner(board) {
@@ -81,8 +104,6 @@ class Ship {
     }
   }
 
-
-
   get length() {
     return this.segments.length;
   }
@@ -125,6 +146,19 @@ class Ship {
     } else {
       this._position = newVal;
     }
+  }
+
+  // Reduce the HP of the segments at the input positions by the input value.
+  // Assumes that collision checking has already been done,
+  // and that all positions are valid.
+  damageSegments(positions, value = 1) {
+    if(!Array.isArray(positions[0])) {
+      positions = [positions]
+    }
+    for (const segment of this.segments) {
+
+    }
+    const affectedSegments = this.collidesWith(positions);
   }
 }
 
