@@ -54,7 +54,8 @@ class Ship {
   }
 
   get totalHP() {
-
+    const reducer = (total, segment) => total + segment.hp;
+    return this.segments.reduce(reducer, 0);
   }
 
   // Does this ship collide with a given position?
