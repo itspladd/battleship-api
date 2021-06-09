@@ -15,5 +15,5 @@ const MOVE_TYPES = {
 module.exports = {
   VALID_ANGLES,
   GAME_STATES,
-  MOVE,TYPES
+  MOVE_TYPES
 }
