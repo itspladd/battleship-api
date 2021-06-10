@@ -12,12 +12,32 @@ class GameEngine {
     } = {}) {
     console.log('constructed')
 
+    this._stateStack = [GAME_STATES.INTIALIZING]
     this._players = this.initPlayers(players);
     this._playerOrder = shuffleArray(Object.keys(this._players))
+    this._moveStack = []
   }
 
   get nextPlayer() {
     return this_players[0];
+  }
+
+  // Return the most recent state in the stack
+  get state() {
+    return this._stateStack[this._stateStack.length - 1]
+  }
+
+  // Add a new current state to the stack
+  set state(newState) {
+    this._stateStack.push(newState);
+  }
+
+  get lastMove() {
+    return this._moveHistory[this._moveHistory.length -1];
+  }
+
+  get nextMove() {
+    return this._moveStack[0];
   }
 
   advancePlayers() {
@@ -30,6 +50,9 @@ class GameEngine {
             typeof player.name === 'string'
   }
 
+  moveIsValid(move) {
+    
+  }
   initPlayers(players) {
     try {
       // If called with no players array

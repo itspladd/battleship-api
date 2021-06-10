@@ -61,4 +61,28 @@ describe('GameEngine', () => {
       testEngine._playerOrder[2].should.equal(prevOrder[0]);
     })
   })
+
+  describe('moveIsValid()', () => {
+    let testEngine;
+    before(() => {
+      testEngine = new GameEngine();
+    });
+    it('should return false if the move is not in the MOVE_TYPES constant', () => {
+      testEngine.moveIsValid({ moveType: 'WIN_GAME' }).should.be.false
+    });
+    it('should return false if the move does not have the keys in the MOVE_TYPES[TYPE].REQUIRES constant', () => {
+      const move = { moveType: 'PLACE_SHIP', playerID: '4', targetPlayerID: '4'}
+      testEngine.moveIsValid(move).should.be.false;
+    })
+  })
+
+  describe('addValidatedMove()', () => {
+    let testEngine;
+    before(() => {
+      testEngine = new GameEngine();
+    });
+    it('should add the input move to the moveStack', () => {
+
+    })
+  })
 })
