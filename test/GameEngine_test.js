@@ -11,10 +11,8 @@ describe('GameEngine', () => {
     it('should create an instance of a game engine', () => {
       should.exist(testEngine);
     });
-    it('should contain a Board for each player (default 2)', () => {
-      should.exist(testEngine.boards);
-      testEngine.boards.length.should.equal(2);
-      testEngine.boards[0].should.be.an.instanceof(Board);
+    it('should contain two Players by default', () => {
+      should.exist(testEngine.players)
     });
   })
 
@@ -50,16 +48,6 @@ describe('GameEngine', () => {
       console.log(results)
       results["1X3"].name.should.equal("Dave");
       results[8].name.should.equal("Rose");
-    })
-  })
-
-  describe('initBoards()', () => {
-    let testEngine;
-    before(() => {
-      testEngine = new GameEngine();
-    });
-    it('should require an array input for players', () => {
-      const bad1 = testEngine.initBoards("player1");
     })
   })
 })

@@ -12,7 +12,6 @@ class GameEngine {
     console.log('constructed')
 
     this.players = this.initPlayers(players)
-    this.boards = this.initBoards(players, aiPlayers);
   }
 
   validPlayerData(player) {
@@ -51,27 +50,6 @@ class GameEngine {
       results[playerData.id] = new Player(playerData)
     });
     return results
-  }
-
-  initBoards(players, aiPlayers) {
-    try {
-      if (!Array.isArray(players)) {
-        throw new Error(argErrorMsg(players, "players", this.intiBoards));
-      }
-    } catch (err) {
-      handleError(err);
-      return false;
-    }
-    const results = {}
-    for(const player of players) {
-      results[i] = new Board(i);
-    }
-
-    for(let i = 0; i < aiPlayers; i++) {
-      results.push(new Board(`ai${i}`));
-    }
-
-    return results;
   }
 }
 
