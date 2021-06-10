@@ -1,5 +1,6 @@
 const SHIP_TYPES = {
   DEFAULT: {
+    TYPE: "DEFAULT",
     SEGMENTS: [
       { hp: 1 },
       { hp: 1 },

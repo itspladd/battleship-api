@@ -35,6 +35,10 @@ class Board {
     }
     return result;
   }
+  
+  initShips() {
+    
+  }
 
   addShip(ship) {
     try {

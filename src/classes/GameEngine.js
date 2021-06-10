@@ -2,16 +2,23 @@ const Board = require('../classes/Board')
 
 const { GAME_STATES, MOVE_TYPES } = require('../constants/GLOBAL');
 const { argErrorMsg, handleError } = require('../helpers/errorHelpers');
+const Player = require('./Player');
 
 class GameEngine {
   constructor({
-    players = ["Player1", "Player2"],
+    players,
     aiPlayers = [], // Number of players
     } = {}) {
     console.log('constructed')
 
     this.numPlayers = players;
     this.boards = this.initBoards(players, aiPlayers);
+  }
+
+  mockPlayers() {
+    return [
+      new Player(0, 'Trapezius')
+    ]
   }
 
   initBoards(players, aiPlayers) {

@@ -7,15 +7,17 @@ const { handleError,
         argErrorMsg } = require('../helpers/errorHelpers')
 
 class Ship {
-  constructor() {
-    this.segments = this.initSegments();
+  constructor(type) {
+    this.type = type || SHIP_TYPES.DEFAULT.TYPE;
+    this.segments = this.initSegments(this.type);
     this._position = null;
     this.angle = 0;
   }
 
   // Spread each segment from the constants into a new object.
-  initSegments() {
-    return SHIP_TYPES.DEFAULT.SEGMENTS
+  initSegments(type) {
+    console.log(type)
+    return SHIP_TYPES[type].SEGMENTS
           .map(SEGMENT => ({ ...SEGMENT }))
   }
 
