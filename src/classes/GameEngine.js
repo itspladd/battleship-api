@@ -51,7 +51,12 @@ class GameEngine {
   }
 
   moveIsValid(move) {
-    
+    let valid = false;
+    let msg = "";
+    if (!MOVE_TYPES[move.moveType]) {
+      msg = `invalid move type: ${move.moveType}`;
+      return { valid, msg };
+    }
   }
   initPlayers(players) {
     try {

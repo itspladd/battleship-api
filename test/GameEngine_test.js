@@ -67,12 +67,16 @@ describe('GameEngine', () => {
     before(() => {
       testEngine = new GameEngine();
     });
-    it('should return false if the move is not in the MOVE_TYPES constant', () => {
-      testEngine.moveIsValid({ moveType: 'WIN_GAME' }).should.be.false
+    it('should return an object with a bool and message if the move is not in the MOVE_TYPES constant', () => {
+      const result = testEngine.moveIsValid({ moveType: 'WIN_GAME' })
+      result.valid.should.be.false;
+      result.msg.should.equal('invalid move type: WIN_GAME');
     });
-    it('should return false if the move does not have the keys in the MOVE_TYPES[TYPE].REQUIRES constant', () => {
+    it('should return an object with a bool and message if the move does not have the keys in the MOVE_TYPES[TYPE].REQUIRES constant', () => {
       const move = { moveType: 'PLACE_SHIP', playerID: '4', targetPlayerID: '4'}
-      testEngine.moveIsValid(move).should.be.false;
+      const result = testEngine.moveIsValid(move)
+      result.valid.should.be.false;
+      result.msg.should.equal('missing move data: shipType')
     })
   })
 
