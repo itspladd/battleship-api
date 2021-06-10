@@ -24,7 +24,7 @@ describe('GameEngine', () => {
       testEngine = new GameEngine();
     });
     it('should return an array of default players if given no arguments', () => {
-      testEngine.initPlayers()[0].name.should.equal('DEFAULT-PLAYER-1')
+      testEngine.initPlayers()["p1"].name.should.equal('DEFAULT-PLAYER-1')
     })
     it('should return false if given bad player data', () => {
       const badPlayers = [{ name: "Dave", id: 4 }, { name: ["bad"], id: 3 }]
@@ -35,9 +35,10 @@ describe('GameEngine', () => {
     })
     it('should return an object of Player objects with the correct properties when given proper inputs', () => {
       const goodPlayers = [{ name: "Dave", id: "1X3" }, { name: "Rose", id: 8 }]
-      testEngine.initPlayers(goodPlayers)
-      testEngine.goodPlayers["1X3"].name.should.equal("Dave");
-      testEngine.goodPlayers[8].name.should.equal("Rose");
+      const results = testEngine.initPlayers(goodPlayers)
+      console.log(results)
+      results["1X3"].name.should.equal("Dave");
+      results[8].name.should.equal("Rose");
     })
   })
 

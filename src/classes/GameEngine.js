@@ -12,12 +12,11 @@ class GameEngine {
     console.log('constructed')
 
     this.players = this.initPlayers(players)
-    console.log(this.players)
     this.boards = this.initBoards(players, aiPlayers);
   }
 
   validPlayerData(player) {
-    return  player.name && 
+    return  player.name &&
             player.id &&
             typeof player.name === 'string'
   }
@@ -26,10 +25,9 @@ class GameEngine {
     try {
       // If called with no players array
       if (!players) {
-        return [
-          new Player({id: 1, name: 'DEFAULT-PLAYER-1' }),
-          new Player({id: 2, name: 'DEFAULT-PLAYER-2' }),
-        ]
+        const p1 = new Player({id: "p1", name: 'DEFAULT-PLAYER-1' })
+        const p2 = new Player({id: "p2", name: 'DEFAULT-PLAYER-2' })
+        return { p1, p2 }
       }
       const invalidPlayers = players.filter(this.validPlayerData)
       const uniqueIDs = new Set(players.map(player => player.id))
@@ -44,12 +42,15 @@ class GameEngine {
         throw new Error(`Duplicate player ids found`)
       }
     } catch (err) {
+      console.log(err)
       handleError(err);
       return false;
     }
-
-    return players
-      .map(player => new Player(player))
+    const results = {};
+    players.forEach(playerData => {
+      results[player.id] = new Player(playerData)
+    });
+    return results
   }
 
   initBoards(players, aiPlayers) {
