@@ -5,6 +5,7 @@ const GAME_STATES = {
   PLACE_SHIPS: "PLACE_SHIPS", // Game allows players to place ships.
   FREE_MOVES: "FREE_MOVES", // Game allows any move at any time.
   TAKE_TURNS: "TAKE_TURNS", // Game enforces turn-based moves.
+  GAME_OVER: "GAME_OVER"
 }
 
 const MOVE_TYPES = {

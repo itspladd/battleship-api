@@ -8,7 +8,7 @@ const RULES = require('../constants/RULES');
 const { argErrorMsg, handleError } = require('../helpers/errorHelpers');
 
 class Player {
-  constructor (id, name, rules) {
+  constructor ({ id, name, rules }) {
     this.id = id;
     this.name = name;
     this.rules = rules || RULES.DEFAULT;
