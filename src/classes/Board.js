@@ -62,6 +62,7 @@ class Board {
       handleError(err);
       return false;
     }
+    ship.setOwner(this);
     this.ships.push(ship)
     return true;
   }

@@ -21,13 +21,13 @@ class Ship {
 
   // Spread each segment from the constants into a new object.
   initSegments(type) {
-    console.log(type)
     return SHIP_TYPES[type].SEGMENTS
           .map(SEGMENT => ({ ...SEGMENT }))
   }
 
   segmentAt(position) {
     if (!validPosition(position)) {
+      console.log("invalid position!!")
       throw new Error(argErrorMsg(position, "position", this.segmentAt))
     }
     const filterFunc = (segment) => {
@@ -37,7 +37,11 @@ class Ship {
         return true;
       }
     }
-    const results = this.segments.filter(filterFunc)
+
+    // If position hasn't been set yet, then return false.
+    const results = this.position ?
+      this.segments.filter(filterFunc) :
+      [];
 
     if (results.length > 1) {
       throw new Error('Ship.segmentAt found multiple segments with the same position');
@@ -134,7 +138,7 @@ class Ship {
   }
 
   get position() {
-    return [...this._position];
+    return this._position ? [...this._position] : null;
   }
 
   set position(newVal) {
