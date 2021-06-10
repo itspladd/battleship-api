@@ -29,8 +29,8 @@ describe('Board', () => {
       testBoard.tiles[0][0].type.should.equal(TILE_TYPES.EMPTY);
       testBoard.tiles[0][1].type.should.equal(TILE_TYPES.SHIP.CRUISER);
     });
-    it('should be owned by a player, AI by default', () => {
-      testBoard.owner.should.equal('AI');
+    it('should be owned by a player, "none" by default', () => {
+      testBoard.owner.should.equal('none');
       const newBoard = new Board({owner: 'Tautrion'});
       newBoard.owner.should.equal('Tautrion');
     })
