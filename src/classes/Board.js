@@ -6,7 +6,7 @@ const { VALID_ANGLES } = require('../constants/GLOBAL');
 
 class Board {
   constructor({
-    owner = 'AI'
+    owner = 'none'
   }={}) {
     this.owner = owner;
     this.rows = 10;

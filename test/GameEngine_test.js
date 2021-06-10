@@ -17,4 +17,14 @@ describe('GameEngine', () => {
       testEngine.boards[0].should.be.an.instanceof(Board);
     });
   })
+
+  describe('initBoards()', () => {
+    let testEngine;
+    before(() => {
+      testEngine = new GameEngine();
+    });
+    it('should require an array input for players', () => {
+      const bad1 = testEngine.initBoards("player1");
+    })
+  })
 })
