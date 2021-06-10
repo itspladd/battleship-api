@@ -12,7 +12,7 @@ class Player {
     this.id = id;
     this.name = name;
     this.rules = rules || RULES.DEFAULT;
-    this.board = new Board({ owner: this });
+    this.board = new Board({ owner: this, ships: this.rules.SHIP_LIST });
   }
 
   get id() {

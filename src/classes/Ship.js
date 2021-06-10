@@ -8,10 +8,14 @@ const { handleError,
 
 class Ship {
   constructor(type) {
-    this.typeName = type ? type.NAME : SHIP_TYPES.DEFAULT.NAME;
-    this.segments = this.initSegments(this.typeName);
+    this.typeStr = type ? type.NAME : SHIP_TYPES.DEFAULT.NAME;
+    this.segments = this.initSegments(this.typeStr);
     this._position = null;
     this.angle = 0;
+  }
+
+  get type() {
+    return this.typeStr;
   }
 
   // Spread each segment from the constants into a new object.

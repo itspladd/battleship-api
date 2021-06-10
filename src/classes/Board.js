@@ -35,9 +35,13 @@ class Board {
     }
     return result;
   }
-  
+
   initShips() {
-    
+
+  }
+
+  get shipTypes() {
+    return this.ships.map(ship => ship.type)
   }
 
   addShip(ship) {

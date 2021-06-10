@@ -1,5 +1,7 @@
 const Player = require('../src/classes/Player')
 
+const RULES = require('../src/constants/RULES')
+
 describe('Player', () => {
   describe('Player()', () => {
     let testPlayer;
@@ -11,6 +13,10 @@ describe('Player', () => {
     it('should create a Board object owned by the Player if not given a board', () => {
       testPlayer = new Player(54, 'Trapezius');
       testPlayer.board.owner.should.equal(testPlayer);
+    });
+    it('should use the default ruleset if no rules are specified', () => {
+      testPlayer = new Player(1, 'Tautrion');
+      testPlayer.rules.should.equal(RULES.DEFAULT)
     })
   });
 });

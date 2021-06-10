@@ -3,6 +3,8 @@ const Board = require('../src/classes/Board')
 const Ship = require('../src/classes/Ship')
 const Tile = require('../src/classes/Tile')
 const { TILE_TYPES } = require('../src/constants/TILES')
+const { SHIP_TYPES } = require('../src/constants/SHIPS')
+const RULES = require('../src/constants/RULES')
 
 describe('Board', () => {
   describe('Board()', () => {
@@ -33,8 +35,28 @@ describe('Board', () => {
       testBoard.owner.should.equal('none');
       const newBoard = new Board({owner: 'Tautrion'});
       newBoard.owner.should.equal('Tautrion');
+    }),
+    it('should contain the correct ships for its given ruleset', () => {
+      testBoard.shipTypes.should.deep.equal(RULES.DEFAULT.SHIP_LIST)
     })
   });
+
+  describe('initShips(rules)', () => {
+    let testBoard;
+    before(() => {
+      testBoard = new Board();
+    });
+    it('should return a list of Ship objects for the given list of ships', () => {
+      const results = testBoard.initShips(
+        [
+          SHIP_TYPES.DESTROYER.NAME,
+          SHIP_TYPES.AIRCRAFT_CARRIER.NAME
+        ]);
+      const destroyer = new Ship(SHIP_TYPES.DESTROYER)
+      const aircraftCarrier = new Ship(SHIP_TYPES.AIRCRAFT_CARRIER)
+      results.should.deep.equal([destroyer, aircraftCarrier])
+    })
+  })
 
   describe('initTiles(rows, columns)', () => {
     it('should require two positive integers 1-15 as input', () => {
