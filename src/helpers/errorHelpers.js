@@ -1,4 +1,5 @@
 const argErrorMsg = (arg, argName, callingFunc) => {
+  let argStr = "";
   if(arg instanceof Object) {
     argStr = JSON.stringify(arg);
   }

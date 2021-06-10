@@ -29,17 +29,17 @@ class GameEngine {
         const p2 = new Player({id: "p2", name: 'DEFAULT-PLAYER-2' })
         return { p1, p2 }
       }
-      const invalidPlayers = players.filter(this.validPlayerData)
+      const validPlayers = players.filter(this.validPlayerData)
       const uniqueIDs = new Set(players.map(player => player.id))
       // If array has bad data
       if (!Array.isArray(players) ||
-          invalidPlayers.length > 0
+          validPlayers.length !== players.length
       ) {
         throw new Error(argErrorMsg(players, "players", this.initPlayers))
       }
       // If we were provided duplicate player IDs
-      if (uniqueIDs.length !== players.length) {
-        throw new Error(`Duplicate player ids found`)
+      if (uniqueIDs.size !== players.length) {
+        throw new Error(`Duplicate player ids found`);
       }
     } catch (err) {
       console.log(err)
@@ -48,7 +48,7 @@ class GameEngine {
     }
     const results = {};
     players.forEach(playerData => {
-      results[player.id] = new Player(playerData)
+      results[playerData.id] = new Player(playerData)
     });
     return results
   }

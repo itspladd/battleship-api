@@ -7,6 +7,8 @@ describe('argErrorMsg(arg, argName, callingFunc)', () => {
     const callingFunc = () => { };
     const result = argErrorMsg(5, 'testArg', callingFunc);
 
-    result.should.equal("callingFunc called with invalid testArg argument: [number]5");
+    result.should.equal(`callingFunc called with invalid testArg argument:
+  * [number]
+  * 5`);
   })
 })

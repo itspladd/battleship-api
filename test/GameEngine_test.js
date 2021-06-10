@@ -18,6 +18,17 @@ describe('GameEngine', () => {
     });
   })
 
+  describe('validPlayerData(player)', () => {
+    let testEngine;
+      before(() => {
+        testEngine = new GameEngine();
+      });
+    it('should return true if the input data has a string name and id', () => {
+      testEngine.validPlayerData({ name: "Dave", id: "1X3" }).should.be.true;
+      testEngine.validPlayerData({ name: "Rose", id: 8 }).should.be.true;
+    })
+  })
+
   describe('initPlayers(players)', () => {
     let testEngine;
     before(() => {
