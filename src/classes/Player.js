@@ -1,11 +1,17 @@
+// Classes
 const Board = require('../classes/Board')
 
+// Constants
+const RULES = require('../constants/RULES');
+
+// Helpers
 const { argErrorMsg, handleError } = require('../helpers/errorHelpers');
 
 class Player {
   constructor (id, name, rules) {
     this.id = id;
     this.name = name;
+    this.rules = rules || RULES.DEFAULT;
     this.board = new Board({ owner: this });
   }
 
