@@ -11,9 +11,24 @@ describe('Ship', () => {
     it('should create an instance of a Ship', () => {
       should.exist(testShip);
     });
-    it('should default to the DEFAULT constant for ships', () => {
+    it('should default to the DEFAULT type', () => {
+      testShip.type.should.equal(SHIP_TYPES.DEFAULT.TYPE)
       testShip.segments.should.deep.equal(SHIP_TYPES.DEFAULT.SEGMENTS);
     });
+    it('should contain the proper segments and type if given a type', () => {
+      const destroyer = new Ship(SHIP_TYPES.DESTROYER);
+      const battleship = new Ship(SHIP_TYPES.BATTLESHIP);
+
+      destroyer.segments.should.deep.equal(SHIP_TYPES.DESTROYER.SEGMENTS);
+      battleship.segments.should.deep.equal(SHIP_TYPES.BATTLESHIP.SEGMENTS);
+    })
+    it('should NOT contain a reference to the original segments', () => {
+      const destroyer = new Ship(SHIP_TYPES.DESTROYER);
+      const battleship = new Ship(SHIP_TYPES.BATTLESHIP);
+
+      destroyer.segments.should.not.equal(SHIP_TYPES.DESTROYER.SEGMENTS);
+      battleship.segments.should.not.equal(SHIP_TYPES.BATTLESHIP.SEGMENTS);
+    })
   })
 
   describe('length()', () => {
