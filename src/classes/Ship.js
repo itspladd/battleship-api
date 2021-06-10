@@ -8,8 +8,8 @@ const { handleError,
 
 class Ship {
   constructor(type) {
-    this.type = type || SHIP_TYPES.DEFAULT.TYPE;
-    this.segments = this.initSegments(this.type);
+    this.typeName = type ? type.NAME : SHIP_TYPES.DEFAULT.NAME;
+    this.segments = this.initSegments(this.typeName);
     this._position = null;
     this.angle = 0;
   }

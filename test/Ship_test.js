@@ -12,7 +12,7 @@ describe('Ship', () => {
       should.exist(testShip);
     });
     it('should default to the DEFAULT type', () => {
-      testShip.type.should.equal(SHIP_TYPES.DEFAULT.TYPE)
+      testShip.typeName.should.equal(SHIP_TYPES.DEFAULT.NAME)
       testShip.segments.should.deep.equal(SHIP_TYPES.DEFAULT.SEGMENTS);
     });
     it('should contain the proper segments and type if given a type', () => {
