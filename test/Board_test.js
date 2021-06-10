@@ -54,6 +54,9 @@ describe('Board', () => {
         ]);
       const destroyer = new Ship(SHIP_TYPES.DESTROYER)
       const aircraftCarrier = new Ship(SHIP_TYPES.AIRCRAFT_CARRIER)
+      destroyer.setOwner(testBoard);
+      aircraftCarrier.setOwner(testBoard);
+
       results.should.deep.equal([destroyer, aircraftCarrier])
     })
   })

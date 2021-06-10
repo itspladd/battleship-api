@@ -3,16 +3,19 @@ const Ship = require('./Ship');
 const { validPosition, validatePositionAndAngle } = require('../helpers/positionHelpers');
 const { handleError, argErrorMsg } = require('../helpers/errorHelpers');
 const { VALID_ANGLES } = require('../constants/GLOBAL');
+const { SHIP_TYPES } = require('../constants/SHIPS');
+const RULES = require('../constants/RULES');
 
 class Board {
   constructor({
-    owner = 'none'
+    owner = 'none',
+    ships = RULES.DEFAULT.SHIP_LIST
   }={}) {
     this.owner = owner;
     this.rows = 10;
     this.columns = 10;
     this.maxPosition = [this.columns - 1, this.rows - 1];
-    this.ships = [];
+    this.ships = this.initShips(ships);
     this.tiles = this.initTiles(this.rows, this.columns);
   }
 
@@ -36,8 +39,14 @@ class Board {
     return result;
   }
 
-  initShips() {
+  initShips(list) {
+    const results = []
+    for (const type of list) {
+      const newShip = new Ship(SHIP_TYPES[type], this)
+      results.push(newShip)
+    }
 
+    return results;
   }
 
   get shipTypes() {

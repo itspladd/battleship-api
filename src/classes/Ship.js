@@ -7,10 +7,11 @@ const { handleError,
         argErrorMsg } = require('../helpers/errorHelpers')
 
 class Ship {
-  constructor(type) {
+  constructor(type, owner) {
     this.typeStr = type ? type.NAME : SHIP_TYPES.DEFAULT.NAME;
     this.segments = this.initSegments(this.typeStr);
     this._position = null;
+    owner && this.setOwner(owner);
     this.angle = 0;
   }
 
