@@ -62,21 +62,31 @@ describe('GameEngine', () => {
     })
   })
 
-  describe('moveIsValid()', () => {
+  describe('validateMove()', () => {
     let testEngine;
     before(() => {
       testEngine = new GameEngine();
     });
-    it('should return an object with a bool and message if the move is not in the MOVE_TYPES constant', () => {
-      const result = testEngine.moveIsValid({ moveType: 'WIN_GAME' })
+    it('should return an object with a false bool and message if the move is not in the MOVE_TYPES constant', () => {
+      const result = testEngine.validateMove({ moveType: 'WIN_GAME' })
       result.valid.should.be.false;
-      result.msg.should.equal('invalid move type: WIN_GAME');
+      result.msg.should.match(/invalid move type: WIN_GAME/i);
     });
-    it('should return an object with a bool and message if the move does not have the keys in the MOVE_TYPES[TYPE].REQUIRES constant', () => {
-      const move = { moveType: 'PLACE_SHIP', playerID: '4', targetPlayerID: '4'}
-      const result = testEngine.moveIsValid(move)
+    it('should return an object with a false bool and message if the move does not have the keys in the MOVE_TYPES[TYPE].REQUIRES constant', () => {
+      const move = { moveType: 'PLACE_SHIP', targetPlayerID: '4'}
+      const result = testEngine.validateMove(move)
       result.valid.should.be.false;
-      result.msg.should.equal('missing move data: shipType')
+      result.msg.should.match(/missing move data/i)
+      result.msg.should.match(/shipType/i)
+      result.msg.should.match(/playerID/i)
+    })
+    it('should return an object with a false bool and message if the move has keys not found in the MOVE_TYPES[TYPE].REQUIRES constant', () => {
+      const move = { moveType: 'PLACE_SHIP', playerID: '4', targetPlayerID: '4' }
+      const result = testEngine.validateMove(move)
+      result.valid.should.be.false;
+      result.msg.should.match(/missing move data/i)
+      result.msg.should.match(/shipType/i)
+      result.msg.should.match(/playerID/i)
     })
   })
 

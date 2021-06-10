@@ -50,11 +50,28 @@ class GameEngine {
             typeof player.name === 'string'
   }
 
-  moveIsValid(move) {
+  validateMove(move) {
+    // All moves are false until proven otherwise
     let valid = false;
-    let msg = "";
+    let msg = `Board.validateMove: `;
+    if (!(move instanceof Object)) {
+      msg += `invalid move argument: ${typeof move}, should be an object`;
+      return { valid, msg }
+    }
     if (!MOVE_TYPES[move.moveType]) {
-      msg = `invalid move type: ${move.moveType}`;
+      msg += `invalid move type: ${move.moveType}`;
+      return { valid, msg };
+    }
+    const moveKeys = Object.keys(move);
+    const neededKeys = MOVE_TYPES[move.moveType].REQUIRES;
+    const missingKeys = neededKeys.filter(key => !moveKeys.includes(key));
+    const extraKeys = moveKeys.filter(key => !neededKeys.includes(key))
+    if (missingKeys.length) {
+      msg += `missing move data: ${missingKeys.join(' ')}`
+      return { valid, msg };
+    }
+    if (extraKeys.length) {
+      msg += `extra move data given: ${extraKeys.join(' ')}`
       return { valid, msg };
     }
   }
