@@ -12,7 +12,7 @@ describe('GameEngine', () => {
       should.exist(testEngine);
     });
     it('should contain two Players by default', () => {
-      should.exist(testEngine.players)
+      should.exist(testEngine._players)
     });
   })
 
@@ -45,9 +45,20 @@ describe('GameEngine', () => {
     it('should return an object of Player objects with the correct properties when given proper inputs', () => {
       const goodPlayers = [{ name: "Dave", id: "1X3" }, { name: "Rose", id: 8 }]
       const results = testEngine.initPlayers(goodPlayers)
-      console.log(results)
       results["1X3"].name.should.equal("Dave");
       results[8].name.should.equal("Rose");
+    })
+  })
+
+  describe('advancePlayers()', () => {
+    it('should return the players cycled by 1, so that the current player is now the last', () => {
+      const players = [{ name: "1", id: 1}, { name: "2", id: 2}, { name: "3", id: 3}];
+      const testEngine = new GameEngine({ players });
+      const prevOrder = [...testEngine._playerOrder];
+      testEngine.advancePlayers();
+      testEngine._playerOrder[0].should.equal(prevOrder[1]);
+      testEngine._playerOrder[1].should.equal(prevOrder[2]);
+      testEngine._playerOrder[2].should.equal(prevOrder[0]);
     })
   })
 })

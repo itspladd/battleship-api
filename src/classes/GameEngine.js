@@ -2,16 +2,26 @@ const Board = require('../classes/Board')
 
 const { GAME_STATES, MOVE_TYPES } = require('../constants/GLOBAL');
 const { argErrorMsg, handleError } = require('../helpers/errorHelpers');
+const { shuffleArray } = require('../helpers/generalHelpers')
 const Player = require('./Player');
 
 class GameEngine {
   constructor({
     players,
-    aiPlayers = [], // Number of players
+    aiPlayers, // Number of AI players
     } = {}) {
     console.log('constructed')
 
-    this.players = this.initPlayers(players)
+    this._players = this.initPlayers(players);
+    this._playerOrder = shuffleArray(Object.keys(this._players))
+  }
+
+  get nextPlayer() {
+    return this_players[0];
+  }
+
+  advancePlayers() {
+    this._playerOrder.push(this._playerOrder.shift())
   }
 
   validPlayerData(player) {
@@ -41,7 +51,6 @@ class GameEngine {
         throw new Error(`Duplicate player ids found`);
       }
     } catch (err) {
-      console.log(err)
       handleError(err);
       return false;
     }
@@ -49,7 +58,7 @@ class GameEngine {
     players.forEach(playerData => {
       results[playerData.id] = new Player(playerData)
     });
-    return results
+    return results;
   }
 }
 
