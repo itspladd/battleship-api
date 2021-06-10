@@ -1,6 +1,7 @@
 const should = require('chai').should()
 const GameEngine = require('../src/classes/GameEngine')
 const Board = require('../src/classes/Board')
+const Ship = require('../src/classes/Ship')
 
 describe('GameEngine', () => {
   describe('GameEngine(), constructed with no parameters', () => {
@@ -76,17 +77,16 @@ describe('GameEngine', () => {
       const move = { moveType: 'PLACE_SHIP', targetPlayerID: '4'}
       const result = testEngine.validateMove(move)
       result.valid.should.be.false;
-      result.msg.should.match(/missing move data/i)
+      result.msg.should.match(/missing move data for move PLACE_SHIP/i)
       result.msg.should.match(/shipType/i)
       result.msg.should.match(/playerID/i)
     })
     it('should return an object with a false bool and message if the move has keys not found in the MOVE_TYPES[TYPE].REQUIRES constant', () => {
-      const move = { moveType: 'PLACE_SHIP', playerID: '4', targetPlayerID: '4' }
+      const move = { moveType: 'PLACE_SHIP', playerID: '4', targetPlayerID: '4', shipType: "DESTROYER", damage: 5 }
       const result = testEngine.validateMove(move)
       result.valid.should.be.false;
-      result.msg.should.match(/missing move data/i)
-      result.msg.should.match(/shipType/i)
-      result.msg.should.match(/playerID/i)
+      result.msg.should.match(/extra move data for move PLACE_SHIP/i)
+      result.msg.should.match(/damage/i)
     })
   })
 

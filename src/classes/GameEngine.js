@@ -67,11 +67,11 @@ class GameEngine {
     const missingKeys = neededKeys.filter(key => !moveKeys.includes(key));
     const extraKeys = moveKeys.filter(key => !neededKeys.includes(key))
     if (missingKeys.length) {
-      msg += `missing move data: ${missingKeys.join(' ')}`
+      msg += `missing move data for move ${move.moveType}: ${missingKeys.join(' ')}`
       return { valid, msg };
     }
     if (extraKeys.length) {
-      msg += `extra move data given: ${extraKeys.join(' ')}`
+      msg += `extra move data for move ${move.moveType}: ${extraKeys.join(' ')}`
       return { valid, msg };
     }
   }
