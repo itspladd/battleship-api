@@ -121,7 +121,7 @@ describe('Ship', () => {
     });
     it('should return false if none of the positions in the array are the same as a ship segment', () => {
       testShip.setPositions([5, 5], 180);
-      testShip.collidesWith([[4, 5], [1, 1]]);
+      testShip.collidesWith([[4, 5], [1, 1]]).should.be.false;
     });
   })
 

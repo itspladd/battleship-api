@@ -70,6 +70,25 @@ class Board {
     return true;
   }
 
+  // Validate a Ship's location on the board, and then add it
+  // to the placedShips array
+  placeShip(ship) {
+    if (!this.ships.includes(ship)) {
+      return {
+        valid: false,
+        msg: `Can't place a ship owned by another board!
+        This board owned by: ${this.owner.name}
+        Ship is on board owned by: ${ship.owner.owner.name}`
+      }
+    }
+    if (!this.validShipLocation(ship)) {
+      return {
+        valid: false,
+        msg: `Can't place a ship at position ${ship.position} with angle ${ship.angle}`
+      };
+    }
+  }
+
   validShipLocation(ship) {
     return (
       this.entireShipInsideBoard(ship) &&

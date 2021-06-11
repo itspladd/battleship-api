@@ -132,6 +132,11 @@ class Ship {
   }
 
   collidesWithShip(ship) {
+    // Positions will be invalid if the target ship has no position.
+    // And if this ship has position null, then we can skip collision checking as well.
+    if (!ship.position || !this.position) {
+      return false;
+    }
     const collisions = this.collidesWith(ship.segments.map(seg => seg.position));
 
     return collisions ? { ship, collisions } : false;
