@@ -51,17 +51,22 @@ class GameEngine {
   }
 
   validateMove(move) {
-    // All moves are false until proven otherwise
+    // All moves are false until checked!
     let valid = false;
     let msg = `Board.validateMove: `;
+
+    // Check that we got an Object for the move
     if (!(move instanceof Object)) {
       msg += `invalid move argument: ${typeof move}, should be an object`;
       return { valid, msg }
     }
+    // Check that it matches a MOVE_TYPE in GLOBAL.js
     if (!MOVE_TYPES[move.moveType]) {
       msg += `invalid move type: ${move.moveType}`;
       return { valid, msg };
     }
+
+    // Check that it includes the keys in MOVE_TYPE.REQUIRES
     const moveKeys = Object.keys(move);
     const neededKeys = MOVE_TYPES[move.moveType].REQUIRES;
     const missingKeys = neededKeys.filter(key => !moveKeys.includes(key));
@@ -70,6 +75,8 @@ class GameEngine {
       msg += `missing move data for move ${move.moveType}: ${missingKeys.join(' ')}`
       return { valid, msg };
     }
+
+    // And check that we didn't accidentally include extra data
     if (extraKeys.length) {
       msg += `extra move data for move ${move.moveType}: ${extraKeys.join(' ')}`
       return { valid, msg };

@@ -16,6 +16,7 @@ class Board {
     this.columns = 10;
     this.maxPosition = [this.columns - 1, this.rows - 1];
     this.ships = this.initShips(ships);
+    this.placedShips = [];
     this.tiles = this.initTiles(this.rows, this.columns);
   }
 
@@ -53,6 +54,8 @@ class Board {
     return this.ships.map(ship => ship.type)
   }
 
+  // Add a ship to the list of ships tracked by the Board.
+  // Use this to add a Ship to the board after board initialization.
   addShip(ship) {
     try {
       if(!(ship instanceof Ship)) {
