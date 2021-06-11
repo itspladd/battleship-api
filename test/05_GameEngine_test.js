@@ -105,7 +105,7 @@ describe('GameEngine', () => {
         targetPlayerID: 'p2',
         shipID: '1'
       }
-      testEngine.validateMoveShipMove().should.
+      testEngine.validateMoveShipMove(move).valid.should.be.false;
     });
     it('should not allow the repositioning of an already placed ship')
   })

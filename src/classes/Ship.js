@@ -36,10 +36,14 @@ class Ship {
   }
 
   set id(id) {
+    if(!id && id !== 0) {
+      this._id = 'null';
+      return;
+    }
     if(typeof id !== 'string' && typeof id !== 'number') {
       throw new Error(`Tried to set a ship ID with a non-string/non-number value`);
     }
-    this._id = `ship${id};
+    this._id = `ship${id}`;
   }
 
   get totalHP() {
@@ -185,10 +189,6 @@ class Ship {
     positions.forEach(position => {
       this.segmentAt(position).hp -= value;
     })
-  }
-
-  destroy() {
-    this.owner.ships = this.owner.shipsArr.filter(ship => ship !== this)
   }
 }
 

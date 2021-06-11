@@ -52,14 +52,16 @@ describe('Board', () => {
           SHIP_TYPES.DESTROYER.NAME,
           SHIP_TYPES.AIRCRAFT_CARRIER.NAME
         ]);
+
+      console.log(testBoard.ships);
       const destroyer = new Ship(SHIP_TYPES.DESTROYER)
       const aircraftCarrier = new Ship(SHIP_TYPES.AIRCRAFT_CARRIER)
       destroyer.owner = testBoard;
-      destroyer.id = 1;
+      destroyer.id = 0;
       aircraftCarrier.owner = testBoard;
-      aircraftCarrier.id = 2;
+      aircraftCarrier.id = 1;
 
-      results.should.deep.equal([destroyer, aircraftCarrier])
+      results.should.deep.equal({ 'ship0': destroyer, 'ship1': aircraftCarrier })
     })
   })
 
@@ -96,7 +98,8 @@ describe('Board', () => {
       testBoard = new Board();
     });
     it('should return false with a message if the Ship position is not a valid board location', () => {
-      let badResult = testBoard.placeShip(testBoard.ships[1])
+      let badResult = testBoard.placeShip(testBoard.ships['ship0'])
+      console.log(testBoard.ships)
       badResult.valid.should.be.false;
       badResult.msg.should.match(/position/i);
       badResult.msg.should.match(/null/i);
@@ -110,10 +113,10 @@ describe('Board', () => {
       badResult.msg.should.match(/owned by another Board/i);
     });
     it('should add the ship to the placedShips array and return true if validation succeeds', () => {
-      testBoard.ships[1].setPositions([0, 0], 120);
-      console.log(testBoard.validShipLocation(testBoard.ships[1]))
-      const result = testBoard.placeShip(testBoard.ships[1]);
-      testBoard.placedShips[1].should.equal(testBoard.ships[1]);
+      testBoard.ships['ship0'].setPositions([0, 0], 120);
+      console.log(testBoard.validShipLocation(testBoard.ships['ship0']))
+      const result = testBoard.placeShip(testBoard.ships['ship0']);
+      testBoard.placedShips['ship0'].should.equal(testBoard.ships['ship0']);
       result.valid.should.be.true;
     })
 
@@ -168,8 +171,8 @@ describe('Board', () => {
     let testShip2;
     before(() => {
       testBoard = new Board();
-      testShip1 = testBoard.ships[1]
-      testShip2 = testBoard.ships[2]
+      testShip1 = testBoard.ships['ship0']
+      testShip2 = testBoard.ships['ship1']
       testShip1.setPositions([0, 0], 180);
     });
     it('should return true if no ships on the board collide with the input ship', () => {
@@ -189,9 +192,8 @@ describe('Board', () => {
     let testShip1;
     before(() => {
       testBoard = new Board();
-      testShip1 = new Ship();
+      testShip1 = testBoard.ships['ship0'];
       testShip1.setPositions([0, 0], 180);
-      testBoard.ships = [testShip1];
     });
     it('should return true if the ship is in the board and will not collide with other ships', () => {
       const newShip = new Ship();
@@ -205,7 +207,7 @@ describe('Board', () => {
     })
     it('should return false if the ship collides with existing ships on the board', () => {
       const newShip = new Ship();
-      newShip.setPositions([2, 1], 240);
+      newShip.setPositions([2, 0], 240);
       testBoard.validShipLocation(newShip).should.be.false;
     })
   })
@@ -214,7 +216,7 @@ describe('Board', () => {
     let testBoard;
     before(() => {
       testBoard = new Board();
-      testShip = testBoard.ships[0];
+      testShip = testBoard.ships['ship0'];
       testShip.setPositions([0, 0], 180);
     });
     it('should return the ship at the given position if there is one', () => {

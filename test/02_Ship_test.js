@@ -184,20 +184,4 @@ describe('Ship', () => {
       testShip.segments[2].hp.should.equal(0)
     })
   });
-
-  describe('destroy()', () => {
-    let testShip;
-    let fakeBoard
-    before(() => {
-      fakeBoard = {}
-      testShip = new Ship(SHIP_TYPES.DEFAULT, fakeBoard, 1);
-      testShip2 = new Ship(SHIP_TYPES.DEFAULT, fakeBoard, 2);
-      fakeBoard.ships = [testShip, testShip2] 
-    })
-    it('should remove the ship from its owning object', () => {
-      testShip.destroy();
-      fakeBoard.ships.includes(testShip).should.be.false;
-      fakeBoard.ships.should.equal([testShip2]);
-    })
-  })
 })

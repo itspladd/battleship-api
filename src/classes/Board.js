@@ -16,7 +16,7 @@ class Board {
     this.columns = 10;
     this.maxPosition = [this.columns - 1, this.rows - 1];
     this.ships = this.initShips(ships);
-    this.placedShips = [];
+    this.placedShips = {};
     this.tiles = this.initTiles(this.rows, this.columns);
   }
 
@@ -29,10 +29,7 @@ class Board {
   }
 
   set ships(ships) {
-    this._ships = {};
-    ships.forEach(ship => {
-      this._ships[ship.id] = ship;
-    })
+    this._ships = ships
   }
 
   get shipTypes() {
@@ -60,12 +57,12 @@ class Board {
   }
 
   initShips(list) {
-    const results = []
-    let id = 1;
+    const results = {}
+    let id = 0;
     for (const type of list) {
       const newShip = new Ship(SHIP_TYPES[type], this, id);
+      results[newShip.id] = newShip;
       id++;
-      results.push(newShip);
     }
 
     return results;
@@ -88,14 +85,14 @@ class Board {
         msg: `Can't place a ship at position ${ship.position} with angle ${ship.angle}`
       };
     }
-    if (this.placedShips.includes(ship)) {
+    if (this.placedShips[ship.id]) {
       return {
         valid: false,
         msg: `Can't place an already placed ship!`
       }
     }
 
-    this.placedShips.push(ship);
+    this.placedShips[ship.id] = ship;
     return { valid: true };
   }
 
