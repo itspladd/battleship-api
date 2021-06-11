@@ -166,20 +166,20 @@ describe('Ship', () => {
     })
   })
 
-  describe('damageSegments(positions, value)', () => {
+  describe('damageSegmentsAt(positions, value)', () => {
     let testShip;
     before(() => {
       testShip = new Ship();
       testShip.setPositions([0, 0], 180);
     })
     it('should reduce the HP of the segments at matching positions by the given value', () => {
-      testShip.damageSegments([[0, 0], [0, 1]], 2);
+      testShip.damageSegmentsAt([[0, 0], [0, 1]], 2);
       testShip.segments[0].hp.should.equal(-1)
       testShip.segments[1].hp.should.equal(-1)
       testShip.segments[2].hp.should.equal(1)
     });
     it('should work properly given a nested array or a single position', () => {
-      testShip.damageSegments([[0, 2]], 1);
+      testShip.damageSegmentsAt([0, 2], 1);
       testShip.segments[2].hp.should.equal(0)
     })
   });

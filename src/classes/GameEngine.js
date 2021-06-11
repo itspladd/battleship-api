@@ -82,14 +82,14 @@ class GameEngine {
       return { valid, msg };
     }
   }
+
   initPlayers(players) {
+    // If called with no players array
+    if (!players) {
+      return this.makeDefaultPlayers();
+    }
     try {
-      // If called with no players array
-      if (!players) {
-        const p1 = new Player({id: "p1", name: 'DEFAULT-PLAYER-1' })
-        const p2 = new Player({id: "p2", name: 'DEFAULT-PLAYER-2' })
-        return { p1, p2 }
-      }
+
       const validPlayers = players.filter(this.validPlayerData)
       const uniqueIDs = new Set(players.map(player => player.id))
       // If array has bad data
@@ -111,6 +111,12 @@ class GameEngine {
       results[playerData.id] = new Player(playerData)
     });
     return results;
+  }
+
+  makeDefaultPlayers() {
+    const p1 = new Player({id: "p1", name: 'DEFAULT-PLAYER-1' })
+    const p2 = new Player({id: "p2", name: 'DEFAULT-PLAYER-2' })
+    return { p1, p2 }
   }
 }
 

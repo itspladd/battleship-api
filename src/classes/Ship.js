@@ -161,7 +161,7 @@ class Ship {
   // Reduce the HP of the segments at the input positions by the input value.
   // Assumes that collision checking has already been done,
   // and that all positions are valid.
-  damageSegments(positions, value = 1) {
+  damageSegmentsAt(positions, value = 1) {
     if(!Array.isArray(positions[0])) {
       positions = [positions]
     }
