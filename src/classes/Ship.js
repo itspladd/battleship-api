@@ -7,16 +7,70 @@ const { handleError,
         argErrorMsg } = require('../helpers/errorHelpers')
 
 class Ship {
-  constructor(type, owner) {
+  constructor(type, owner, id) {
     this.typeStr = type ? type.NAME : SHIP_TYPES.DEFAULT.NAME;
     this.segments = this.initSegments(this.typeStr);
     this._position = null;
-    owner && this.setOwner(owner);
+    this.owner = owner || null;
+    this.id = id;
     this.angle = 0;
+  }
+
+  get owner() {
+    return this._owner;
+  }
+
+  set owner(board) {
+    if(!(board instanceof Object) && board !== null) {
+      throw new Error(`Ship.owner setter called with invalid board argument: ${board}`)
+    }
+    this._owner = board;
   }
 
   get type() {
     return this.typeStr;
+  }
+
+  get id() {
+    return this._id;
+  }
+
+  set id(id) {
+    if(typeof id !== 'string' && typeof id !== 'number') {
+      throw new Error(`Tried to set a ship ID with a non-string/non-number value`);
+    }
+    this._id = `ship${id};
+  }
+
+  get totalHP() {
+    const reducer = (total, segment) => total + segment.hp;
+    return this.segments.reduce(reducer, 0);
+  }
+
+  set totalHP(value) {
+    if (!Number.isInteger(value)) {
+      throw new Error(argErrorMsg(value, "value", { name: "totalHP" }));
+    }
+    // If the value is 0, just set it all to 0.
+    if (value === 0) {
+      this.segments = this.segments.map(seg => ({ ...seg, hp: 0}));
+    } else {
+      //Otherwise, recursively call this function to set segments to 0,
+      //then distribute HP along the rest of the segments
+      this.totalHP = 0;
+      for(let i = 0; i < value; i++) {
+        const segIndex = i % this.length;
+        this.segments[segIndex].hp += 1;
+      }
+    }
+  }
+
+  get length() {
+    return this.segments.length;
+  }
+
+  get destroyed() {
+    return this.totalHP > 0;
   }
 
   // Spread each segment from the constants into a new object.
@@ -52,17 +106,9 @@ class Ship {
     }
   }
 
-  setOwner(board) {
-    if(!(board instanceof Object)) {
-      throw new Error(`Ship.setOwner called with invalid board argument: ${board}`)
-    }
-    this.owner = board;
-    return this.owner;
-  }
-
   /**
    * Set the location of this ship. Note that this does NOT
-   * necessarily mean the location is valid; this is just where
+   * necessarily mean the location is valid on a board; this is just where
    * the ship exists right now. The Board should handle whether
    * or not you can actually PLACE the ship in this location.
    */
@@ -91,37 +137,7 @@ class Ship {
     return this.segments;
   }
 
-  get totalHP() {
-    const reducer = (total, segment) => total + segment.hp;
-    return this.segments.reduce(reducer, 0);
-  }
 
-  set totalHP(value) {
-    if (!Number.isInteger(value)) {
-      throw new Error(argErrorMsg(value, "value", { name: "totalHP" }));
-    }
-    // If the value is 0, just set it all to 0.
-    if (value === 0) {
-      this.segments = this.segments.map(seg => ({ ...seg, hp: 0}));
-    } else {
-      //Otherwise, recursively call this function to set segments to 0,
-      //then distribute HP along the rest of the segments
-      this.totalHP = 0;
-      for(let i = 0; i < value; i++) {
-        const segIndex = i % this.length;
-        console.log(segIndex)
-        this.segments[segIndex].hp += 1;
-      }
-    }
-  }
-
-  get length() {
-    return this.segments.length;
-  }
-
-  get destroyed() {
-    return this.totalHP > 0;
-  }
 
   // Does this ship collide with a given position?
   collidesWith(positions) {
@@ -172,7 +188,7 @@ class Ship {
   }
 
   destroy() {
-    this.owner.ships = this.owner.ships.filter(ship => ship !== this)
+    this.owner.ships = this.owner.shipsArr.filter(ship => ship !== this)
   }
 }
 

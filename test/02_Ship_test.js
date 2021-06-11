@@ -72,11 +72,11 @@ describe('Ship', () => {
     })
   })
 
-  describe('setOwner()', () => {
+  describe('owner()', () => {
     it('should require an input Object', () => {
       const testShip = new Ship();
-      const bad = () => testShip.setOwner("hi");
-      const good = () => testShip.setOwner({ key: "value" })
+      const bad = () => testShip.owner = "hi";
+      const good = () => testShip.owner = { key: "value" }
 
       bad.should.throw(Error, /invalid board argument:/i);
       good.should.not.throw(Error);
@@ -85,7 +85,8 @@ describe('Ship', () => {
       const testShip = new Ship()
       const testObj = { blah: 5 };
 
-      testShip.setOwner(testObj).should.equal(testObj);
+      testShip.owner = testObj;
+      testShip.owner.should.equal(testObj);
     });
   })
 
@@ -188,16 +189,15 @@ describe('Ship', () => {
     let testShip;
     let fakeBoard
     before(() => {
-      testShip = new Ship();
-      testShip2 = new Ship();
-      fakeBoard = { ships: [testShip, testShip2] }
-      testShip.setOwner(fakeBoard);
-      testShip2.setOwner(fakeBoard);
+      fakeBoard = {}
+      testShip = new Ship(SHIP_TYPES.DEFAULT, fakeBoard, 1);
+      testShip2 = new Ship(SHIP_TYPES.DEFAULT, fakeBoard, 2);
+      fakeBoard.ships = [testShip, testShip2] 
     })
     it('should remove the ship from its owning object', () => {
       testShip.destroy();
       fakeBoard.ships.includes(testShip).should.be.false;
-      fakeBoard.ships.should.deep.equal([testShip2]);
+      fakeBoard.ships.should.equal([testShip2]);
     })
   })
 })

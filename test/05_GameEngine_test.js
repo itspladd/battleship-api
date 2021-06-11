@@ -80,11 +80,11 @@ describe('GameEngine', () => {
       const result = testEngine.validateGeneralMoveData(move)
       result.valid.should.be.false;
       result.msg.should.match(/missing move data for move PLACE_SHIP/i)
-      result.msg.should.match(/shipType/i)
+      result.msg.should.match(/shipID/i)
       result.msg.should.match(/playerID/i)
     })
     it('should return an object with a false bool and message if the move has keys not found in the MOVE_TYPES[TYPE].REQUIRES constant', () => {
-      const move = { moveType: MOVE_TYPES.PLACE_SHIP.NAME, playerID: '4', targetPlayerID: '4', shipType: "DESTROYER", damage: 5 }
+      const move = { moveType: MOVE_TYPES.PLACE_SHIP.NAME, playerID: '4', targetPlayerID: '4', shipID: 2, damage: 5 }
       const result = testEngine.validateGeneralMoveData(move)
       result.valid.should.be.false;
       result.msg.should.match(/extra move data for move PLACE_SHIP/i)
@@ -99,10 +99,13 @@ describe('GameEngine', () => {
       testEngine = new GameEngine();
     });
     it('should not allow movement of another Player\'s ship', () => {
-      const move = { 
-        moveType: moveShipType, 
+      const move = {
+        moveType: moveShipType,
         playerID: 'p1',
-        targetPlayerID: 'p2'}
+        targetPlayerID: 'p2',
+        shipID: '1'
+      }
+      testEngine.validateMoveShipMove().should.
     });
     it('should not allow the repositioning of an already placed ship')
   })
@@ -112,8 +115,6 @@ describe('GameEngine', () => {
     before(() => {
       testEngine = new GameEngine();
     });
-    it('should add the input move to the moveStack', () => {
-
-    })
+    it('should add the input move to the moveStack')
   })
 })

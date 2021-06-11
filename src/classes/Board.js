@@ -20,6 +20,25 @@ class Board {
     this.tiles = this.initTiles(this.rows, this.columns);
   }
 
+  get ships() {
+    return this._ships
+  }
+
+  get shipsArr() {
+    return Object.values(this._ships)
+  }
+
+  set ships(ships) {
+    this._ships = {};
+    ships.forEach(ship => {
+      this._ships[ship.id] = ship;
+    })
+  }
+
+  get shipTypes() {
+    return this.shipsArr.map(ship => ship.type)
+  }
+
   initTiles(rows, columns) {
     if (!Number.isInteger(rows)
         || !Number.isInteger(columns)
@@ -42,38 +61,20 @@ class Board {
 
   initShips(list) {
     const results = []
+    let id = 1;
     for (const type of list) {
-      const newShip = new Ship(SHIP_TYPES[type], this)
-      results.push(newShip)
+      const newShip = new Ship(SHIP_TYPES[type], this, id);
+      id++;
+      results.push(newShip);
     }
 
     return results;
   }
 
-  get shipTypes() {
-    return this.ships.map(ship => ship.type)
-  }
-
-  // Add a ship to the list of ships tracked by the Board.
-  // Use this to add a Ship to the board after board initialization.
-  addShip(ship) {
-    try {
-      if(!(ship instanceof Ship)) {
-        throw new Error(argErrorMsg(ship, "Ship", this.addShip))
-      }
-    } catch (err) {
-      handleError(err);
-      return false;
-    }
-    ship.setOwner(this);
-    this.ships.push(ship)
-    return true;
-  }
-
   // Validate a Ship's location on the board, and then add it
   // to the placedShips array
   placeShip(ship) {
-    if (!this.ships.includes(ship)) {
+    if (!this.ships[ship.id]) {
       return {
         valid: false,
         msg: `Can't place a ship owned by another board!
@@ -136,14 +137,14 @@ class Board {
   }
 
   noShipCollisions(shipUnderTest) {
-    const results = this.ships
+    const results = this.shipsArr
                     .filter(ship => shipUnderTest.collidesWithShip(ship))
     return results.length === 0;
   }
 
   // Return the Ship at the target position if there is one.
   shipAt(position) {
-    const results = this.ships
+    const results = this.shipsArr
                     .filter(ship => ship.segmentAt(position));
     return results[0] ? results[0] : false;
   }
