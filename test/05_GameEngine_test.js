@@ -93,30 +93,34 @@ describe('GameEngine', () => {
   });
 
   describe('validateMoveShipMove()', () => {
-    const moveShipType = MOVE_TYPES.MOVE_SHIP.NAME;
+    let goodMove
     let testEngine;
     before(() => {
       testEngine = new GameEngine();
-    });
-    it('should not allow movement of a nonexistent ship', () => {
-      const move = {
-        moveType: moveShipType,
+      goodMove = {
+        moveShipType: MOVE_TYPES.MOVE_SHIP.NAME,
         playerID: 'p1',
         targetPlayerID: 'p1',
-        shipID: 'bnananananan'
+        shipID: testEngine.players.p1.board.shipsArr[0].id,
+        position: [0, 0],
+        angle: 180,
+      };
+    });
+    it('should not allow movement of a nonexistent ship', () => {
+      const badMove = {
+        ...goodMove,
+        shipID: 'bananana'
       }
-      testEngine.validateMoveShipMove(move).valid.should.be.false;
+      testEngine.validateMoveShipMove(badMove).valid.should.be.false;
     });
     it('should not allow movement of another Player\'s ship', () => {
-      const move = {
-        moveType: moveShipType,
-        playerID: 'p1',
-        targetPlayerID: 'p2',
-        shipID: testEngine.players.p1.board.shipsArr[0].id
+      const badMove = {
+        ...goodMove,
+        targetPlayerID: 'p2'
       }
-      testEngine.validateMoveShipMove(move).valid.should.be.false;
-      move.targetPlayerID = 'p1';
-      testEngine.validateMoveShipMove(move).valid.should.be.true;
+      testEngine.validateMoveShipMove(badMove).valid.should.be.false;
+      badMove.targetPlayerID = 'p1';
+      testEngine.validateMoveShipMove(badMove).valid.should.be.true;
 
     });
     it('should not allow the repositioning of an already placed ship unless the game state allows', () => {
@@ -125,15 +129,9 @@ describe('GameEngine', () => {
       testEngine.state = GAME_STATES.TAKE_TURNS;
       board.ships.ship0.setPositions([0, 0], 180);
       board.placeShip(board.ships.ship0)
-      const move = {
-        moveType: moveShipType,
-        playerID: 'p1',
-        targetPlayerID: 'p1',
-        shipID: 'ship0'
-      }
-      testEngine.validateMoveShipMove(move).valid.should.be.false;
+      testEngine.validateMoveShipMove(goodMove).valid.should.be.false;
       testEngine.state = GAME_STATES.PLACE_SHIPS;
-      testEngine.validateMoveShipMove(move).valid.should.be.true;
+      testEngine.validateMoveShipMove(goodMove).valid.should.be.true;
     })
   })
 
@@ -143,5 +141,15 @@ describe('GameEngine', () => {
       testEngine = new GameEngine();
     });
     it('should add the input move to the moveStack')
+  })
+
+  describe('inputMove()', () => {
+    let testEngine;
+    before(() => {
+      testEngine = new GameEngine();
+    });
+    it('should return false with an error message if the move is invalid');
+    it('should return true with a success message if the move is valid');
+    it('should add valid moves to the moveStack');
   })
 })

@@ -15,7 +15,8 @@ class GameEngine {
     this._stateStack = [GAME_STATES.INTIALIZING]
     this._players = this.initPlayers(players);
     this._playerOrder = shuffleArray(Object.keys(this._players))
-    this._moveStack = []
+    this._moveStack = [];
+    this._moveHistory = [];
   }
 
   get nextPlayer() {
@@ -56,6 +57,15 @@ class GameEngine {
     return  player.name &&
             player.id &&
             typeof player.name === 'string'
+  }
+
+  inputMove(move) {
+    const validationResults = this.validateMove(move);
+    if (validationResults.valid) {
+      this.addValidatedMove(move);
+    }
+
+    return validationResults;
   }
 
   validateMove(move) {

@@ -11,7 +11,7 @@ const GAME_STATES = {
 const MOVE_TYPES = {
   MOVE_SHIP: {
     NAME: "MOVE_SHIP",
-    REQUIRES: ["moveType", "playerID", "targetPlayerID", "shipID"]
+    REQUIRES: ["moveType", "playerID", "targetPlayerID", "shipID", "position", "angle"]
   },
   PLACE_SHIP: {
     NAME: "PLACE_SHIP",
