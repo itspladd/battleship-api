@@ -87,6 +87,15 @@ class Board {
         msg: `Can't place a ship at position ${ship.position} with angle ${ship.angle}`
       };
     }
+    if (this.placedShips.includes(ship)) {
+      return {
+        valid: false,
+        msg: `Can't place an already placed ship!`
+      }
+    }
+
+    this.placedShips.push(ship);
+    return { valid: true };
   }
 
   validShipLocation(ship) {
@@ -127,8 +136,10 @@ class Board {
   }
 
   noShipCollisions(ship) {
-    const results = this.ships.filter(boardShip => ship.collidesWithShip(boardShip))
-
+    const results = this.ships.filter(boardShip => {
+      return ship.collidesWithShip(boardShip)
+    })
+    console.log("ship collisions:", results)
     return results.length === 0;
   }
 

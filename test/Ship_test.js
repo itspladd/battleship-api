@@ -143,6 +143,9 @@ describe('Ship', () => {
       const results = nonCollidingShip.collidesWithShip(testShip);
       results.should.be.false;
     })
+    it('should return false if attempting to check if a ship collides with itself', () => {
+      testShip.collidesWithShip(testShip).should.be.false;
+    })
   })
 
   describe('segmentAt(position)', () => {

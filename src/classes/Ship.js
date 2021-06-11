@@ -132,7 +132,11 @@ class Ship {
   }
 
   collidesWithShip(ship) {
-    // Positions will be invalid if the target ship has no position.
+    //If this ship is checking itself, no collision.
+    if (ship === this) {
+      return false;
+    }
+    // If the target ship has no position, no collision.
     // And if this ship has position null, then we can skip collision checking as well.
     if (!ship.position || !this.position) {
       return false;

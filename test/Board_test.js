@@ -114,7 +114,6 @@ describe('Board', () => {
       badResult.valid.should.be.false;
       badResult.msg.should.match(/position/i);
       badResult.msg.should.match(/null/i);
-      console.log(badResult.msg)
     });
     it('should return false if the Ship is not owned by the calling Board', () => {
       const otherBoard = new Board();
@@ -123,10 +122,10 @@ describe('Board', () => {
       let badResult = testBoard.placeShip(otherShip);
       badResult.valid.should.be.false;
       badResult.msg.should.match(/owned by another Board/i);
-      console.log(badResult.msg)
     });
     it('should add the ship to the placedShips array and return true if validation succeeds', () => {
       testBoard.ships[0].setPositions([0, 0], 120);
+      console.log(testBoard.validShipLocation(testBoard.ships[0]))
       const result = testBoard.placeShip(testBoard.ships[0]);
       testBoard.placedShips[0].should.equal(testBoard.ships[0]);
       result.valid.should.be.true;
