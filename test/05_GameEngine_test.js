@@ -3,7 +3,7 @@ const GameEngine = require('../src/classes/GameEngine')
 const Board = require('../src/classes/Board')
 const Ship = require('../src/classes/Ship')
 
-const { MOVE_TYPES } = require('../src/constants/GLOBAL')
+const { MOVE_TYPES, GAME_STATES } = require('../src/constants/GLOBAL')
 
 describe('GameEngine', () => {
   describe('GameEngine(), constructed with no parameters', () => {
@@ -98,6 +98,15 @@ describe('GameEngine', () => {
     before(() => {
       testEngine = new GameEngine();
     });
+    it('should not allow movement of a nonexistent ship', () => {
+      const move = {
+        moveType: moveShipType,
+        playerID: 'p1',
+        targetPlayerID: 'p1',
+        shipID: 'bnananananan'
+      }
+      testEngine.validateMoveShipMove(move).valid.should.be.false;
+    });
     it('should not allow movement of another Player\'s ship', () => {
       const move = {
         moveType: moveShipType,
@@ -106,8 +115,25 @@ describe('GameEngine', () => {
         shipID: '1'
       }
       testEngine.validateMoveShipMove(move).valid.should.be.false;
+      move.targetPlayerID = 'p1';
+      testEngine.validateMoveShipMove(move).valid.should.be.true;
+
     });
-    it('should not allow the repositioning of an already placed ship')
+    it('should not allow the repositioning of an already placed ship unless the game state allows', () => {
+      const board = Object.values(testEngine.players)[0].board;
+
+      testEngine.state = GAME_STATES.TAKE_TURNS;
+      board.ships.ship0.setPositions([0, 0], 180);
+      board.placeShip(board.ships.ship0)
+      const move = {
+        moveType: moveShipType,
+        playerID: 'p1',
+        targetPlayerID: 'p1',
+        shipID: '1'
+      }
+      testEngine.validateMoveShipMove(move).valid.should.be.false;
+
+    })
   })
 
   describe('addValidatedMove()', () => {

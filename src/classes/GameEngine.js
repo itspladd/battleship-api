@@ -19,7 +19,15 @@ class GameEngine {
   }
 
   get nextPlayer() {
-    return this_players[0];
+    return this.playerOrder[0];
+  }
+
+  get players() {
+    return this._players;
+  }
+
+  set players(players) {
+    this._players = { ...players };
   }
 
   // Return the most recent state in the stack
@@ -59,10 +67,12 @@ class GameEngine {
     }
     let result;
     try {
+      // General move validation
       result = validation.ANY_MOVE(move)
       if (!result.valid) {
         throw new Error(result.msg);
       }
+      // Validation specific to move type
       result = validation[move.moveType](move);
       if (!result.valid) {
         throw new Error(result.msg);
@@ -105,10 +115,36 @@ class GameEngine {
       msg += `extra move data for move ${move.moveType}: ${extraKeys.join(' ')}`
       return { valid, msg };
     }
+
+    return { valid: true, msg: 'Move successfully validated' };
   }
 
   validateMoveShipMove(move) {
+    let valid = false
+    let msg = `Board.validateMoveShipMove: `
+    const { playerID, targetPlayerID, shipID } = move;
 
+    // Players can only move their own ships, so the IDs should match.
+    if (playerID !== targetPlayerID) {
+      msg += `Tried to move another player's ship. PlayerID must match targetPlayerID:
+      playerID: ${playerID},
+      targetPlayerID: ${targetPlayerID}`
+      return { valid, msg };
+    }
+
+    // Players can't move a placed ship unless they're in PLACE_SHIPS phase
+    if(
+      this.state !== GAME_STATES.PLACE_SHIPS &&
+      this.players[playerID].board.placedShips[shipID]
+    ) {
+      msg += `Can't move placed ships outside of ${GAME_STATES.PLACE_SHIPS} state.
+      Current state: ${this.state},
+      shipID: ${shipID}
+      playerID: ${playerID}`
+      return { valid, msg };
+    }
+
+    return { valid: true, msg: 'Move successfully validated'}
   }
 
   validatePlaceShipMove(move) {
