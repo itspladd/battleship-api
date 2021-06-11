@@ -135,11 +135,9 @@ class Board {
     return true;
   }
 
-  noShipCollisions(ship) {
-    const results = this.ships.filter(boardShip => {
-      return ship.collidesWithShip(boardShip)
-    })
-    console.log("ship collisions:", results)
+  noShipCollisions(shipUnderTest) {
+    const results = this.ships
+                    .filter(ship => shipUnderTest.collidesWithShip(ship))
     return results.length === 0;
   }
 

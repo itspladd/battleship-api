@@ -3,6 +3,8 @@ const GameEngine = require('../src/classes/GameEngine')
 const Board = require('../src/classes/Board')
 const Ship = require('../src/classes/Ship')
 
+const { MOVE_TYPES } = require('../src/constants/GLOBAL')
+
 describe('GameEngine', () => {
   describe('GameEngine(), constructed with no parameters', () => {
     let testEngine;
@@ -69,25 +71,40 @@ describe('GameEngine', () => {
       testEngine = new GameEngine();
     });
     it('should return an object with a false bool and message if the move is not in the MOVE_TYPES constant', () => {
-      const result = testEngine.validateMove({ moveType: 'WIN_GAME' })
+      const result = testEngine.validateGeneralMoveData({ moveType: 'WIN_GAME' })
       result.valid.should.be.false;
       result.msg.should.match(/invalid move type: WIN_GAME/i);
     });
     it('should return an object with a false bool and message if the move does not have the keys in the MOVE_TYPES[TYPE].REQUIRES constant', () => {
-      const move = { moveType: 'PLACE_SHIP', targetPlayerID: '4'}
-      const result = testEngine.validateMove(move)
+      const move = { moveType: MOVE_TYPES.PLACE_SHIP.NAME, targetPlayerID: '4'}
+      const result = testEngine.validateGeneralMoveData(move)
       result.valid.should.be.false;
       result.msg.should.match(/missing move data for move PLACE_SHIP/i)
       result.msg.should.match(/shipType/i)
       result.msg.should.match(/playerID/i)
     })
     it('should return an object with a false bool and message if the move has keys not found in the MOVE_TYPES[TYPE].REQUIRES constant', () => {
-      const move = { moveType: 'PLACE_SHIP', playerID: '4', targetPlayerID: '4', shipType: "DESTROYER", damage: 5 }
-      const result = testEngine.validateMove(move)
+      const move = { moveType: MOVE_TYPES.PLACE_SHIP.NAME, playerID: '4', targetPlayerID: '4', shipType: "DESTROYER", damage: 5 }
+      const result = testEngine.validateGeneralMoveData(move)
       result.valid.should.be.false;
       result.msg.should.match(/extra move data for move PLACE_SHIP/i)
       result.msg.should.match(/damage/i)
     })
+  });
+
+  describe('validateMoveShipMove()', () => {
+    const moveShipType = MOVE_TYPES.MOVE_SHIP.NAME;
+    let testEngine;
+    before(() => {
+      testEngine = new GameEngine();
+    });
+    it('should not allow movement of another Player\'s ship', () => {
+      const move = { 
+        moveType: moveShipType, 
+        playerID: 'p1',
+        targetPlayerID: 'p2'}
+    });
+    it('should not allow the repositioning of an already placed ship')
   })
 
   describe('addValidatedMove()', () => {
