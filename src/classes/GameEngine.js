@@ -120,9 +120,11 @@ class GameEngine {
   }
 
   validateMoveShipMove(move) {
+    // Set up convenience variables
     let valid = false
     let msg = `Board.validateMoveShipMove: `
     const { playerID, targetPlayerID, shipID } = move;
+    const targetBoard = this.players[playerID].board
 
     // Players can only move their own ships, so the IDs should match.
     if (playerID !== targetPlayerID) {
@@ -132,10 +134,17 @@ class GameEngine {
       return { valid, msg };
     }
 
+    // Ship must exist.
+    if (!targetBoard.ships[shipID]) {
+      msg += `Tried to move nonexistent ship.
+      shipID: ${shipID}`
+      return { valid, msg };
+    }
+
     // Players can't move a placed ship unless they're in PLACE_SHIPS phase
     if(
       this.state !== GAME_STATES.PLACE_SHIPS &&
-      this.players[playerID].board.placedShips[shipID]
+      targetBoard.placedShips[shipID]
     ) {
       msg += `Can't move placed ships outside of ${GAME_STATES.PLACE_SHIPS} state.
       Current state: ${this.state},

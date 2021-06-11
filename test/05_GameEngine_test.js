@@ -112,7 +112,7 @@ describe('GameEngine', () => {
         moveType: moveShipType,
         playerID: 'p1',
         targetPlayerID: 'p2',
-        shipID: '1'
+        shipID: testEngine.players.p1.board.shipsArr[0].id
       }
       testEngine.validateMoveShipMove(move).valid.should.be.false;
       move.targetPlayerID = 'p1';
@@ -129,10 +129,11 @@ describe('GameEngine', () => {
         moveType: moveShipType,
         playerID: 'p1',
         targetPlayerID: 'p1',
-        shipID: '1'
+        shipID: 'ship0'
       }
       testEngine.validateMoveShipMove(move).valid.should.be.false;
-
+      testEngine.state = GAME_STATES.PLACE_SHIPS;
+      testEngine.validateMoveShipMove(move).valid.should.be.true;
     })
   })
 
