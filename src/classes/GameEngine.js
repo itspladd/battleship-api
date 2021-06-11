@@ -51,6 +51,30 @@ class GameEngine {
   }
 
   validateMove(move) {
+    const validation = {
+      ANY_MOVE: this.validateGeneralMoveData,
+      MOVE_SHIP: this.validateMoveShipMove,
+      PLACE_SHIP: this.validatePlaceShipMove,
+      FIRE: this.validateFireMove
+    }
+    let result;
+    try {
+      result = validation.ANY_MOVE(move)
+      if (!result.valid) {
+        throw new Error(result.msg);
+      }
+      result = validation[move.moveType](move);
+      if (!result.valid) {
+        throw new Error(result.msg);
+      }
+      return result;
+    } catch (err) {
+      handleError(err);
+      return result;
+    }
+  }
+
+  validateGeneralMoveData(move) {
     // All moves are false until checked!
     let valid = false;
     let msg = `Board.validateMove: `;
@@ -81,6 +105,18 @@ class GameEngine {
       msg += `extra move data for move ${move.moveType}: ${extraKeys.join(' ')}`
       return { valid, msg };
     }
+  }
+
+  validateMoveShipMove(move) {
+
+  }
+
+  validatePlaceShipMove(move) {
+
+  }
+
+  validateFireMove(move) {
+
   }
 
   initPlayers(players) {

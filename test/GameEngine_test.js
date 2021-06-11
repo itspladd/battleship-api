@@ -63,7 +63,7 @@ describe('GameEngine', () => {
     })
   })
 
-  describe('validateMove()', () => {
+  describe('validateGeneralMoveData()', () => {
     let testEngine;
     before(() => {
       testEngine = new GameEngine();
