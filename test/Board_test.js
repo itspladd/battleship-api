@@ -104,6 +104,33 @@ describe('Board', () => {
     })
   })
 
+  describe('placeShip(ship)', () => {
+    let testBoard;
+    before(() => {
+      testBoard = new Board();
+    });
+    it('should return false with a message if the Ship position is not a valid board location', () => {
+      let badResult = testBoard.placeShip(testBoard.ships[0])
+      badResult.valid.should.be.false;
+      badResult.msg.should.match(/position/i);
+      badResult.msg.should.match(/null/i);
+    });
+    it('should return false if the Ship is not owned by the calling Board', () => {
+      const otherBoard = new Board();
+      const otherShip = new Ship(SHIP_TYPES.DEFAULT, otherBoard);
+      let badResult = testBoard.placeShip(otherShip);
+      badResult.valid.should.be.false;
+      badResult.msg.should.match(/owned by another Board/i);
+    });
+    it('should add the ship to the placedShips array and return true if validation succeeds', () => {
+      testBoard.ships[0].setPositions([0, 0], 120);
+      const result = testBoard.placeShip(testBoard.ships[0]);
+      testBoard.placedShips[0].should.equal(testBoard.ships[0]);
+      result.valid.should.be.true;
+    })
+
+  })
+
   describe('positionIsInsideBoard(position)', () => {
     let testBoard;
     before(() => {
