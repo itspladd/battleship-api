@@ -1,6 +1,7 @@
 const { 
   shuffleArray,
-  noDuplicateUnderscoresRecursive
+  noDuplicateUnderscoresRecursive,
+  stripUnderscoresRecursive
 } = require('../src/helpers/generalHelpers')
 
 describe('noDuplicateUnderscoresRecursive()', () => {
@@ -16,3 +17,13 @@ describe('noDuplicateUnderscoresRecursive()', () => {
   }
 })
 
+describe('stripUnderscoresRecursive()', () => {
+  it('should remove leading underscores from all object keys', () => {
+    const obj1 = { _a: 1, _b: 2 };
+    const obj2 = { a: { _b: 2, _c: 1 }, b: { b: 2, c: { _a: 1, b:2 }}}
+    stripUnderscoresRecursive(obj1)
+    stripUnderscoresRecursive(obj2)
+    obj1.should.deep.equal( { a: 1, b: 2 })
+    obj2.should.deep.equal({ a: { b: 2, c: 1 }, b: { b: 2, c: { a: 1, b:2 }}})
+  })
+})

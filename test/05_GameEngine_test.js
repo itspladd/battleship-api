@@ -3,6 +3,8 @@ const GameEngine = require('../src/classes/GameEngine')
 const Board = require('../src/classes/Board')
 const Ship = require('../src/classes/Ship')
 
+const { noDuplicateUnderscoresRecursive } = require('../src/helpers/generalHelpers')
+
 const { MOVE_TYPES, GAME_STATES } = require('../src/constants/GLOBAL')
 
 describe('GameEngine', () => {
@@ -156,7 +158,7 @@ describe('GameEngine', () => {
     })
     it('should not contain any keys duplicated with underscore versions', () => {
       const parsedState = JSON.parse(testEngine.gameState);
-
+      console.log(parsedState._players.p1._board.tiles)
       noDuplicateUnderscoresRecursive(parsedState).should.be.true;
     })
     it('should contain a parseable version of the game state with all data intact', () => {
