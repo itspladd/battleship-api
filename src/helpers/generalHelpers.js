@@ -7,6 +7,22 @@ const shuffleArray = array => {
   return array;
 }
 
+const noDuplicateUnderscoresRecursive = (obj, original = true) => {
+  const keys = Object.keys(obj)
+  for (const key of keys) {
+    if (keys.includes(`_${key}`)) {
+      return false;
+    }
+    if (obj[key] instanceof Object) {
+      noDuplicateUnderscoresRecursive(obj[key], false)
+    }
+  }
+  if (original) {
+    return true;
+  }
+}
+
 module.exports = {
-  shuffleArray
+  shuffleArray,
+  noDuplicateUnderscoresRecursive
 }
