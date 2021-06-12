@@ -156,14 +156,13 @@ describe('GameEngine', () => {
       const test = () => testEngine.gameState;
       test.should.not.throw(Error)
     })
-    it('should not contain any keys duplicated with underscore versions', () => {
-      const parsedState = JSON.parse(testEngine.gameState);
-      console.log(parsedState._players.p1._board.tiles)
+    it('should not contain any keys with leading underscores', () => {
+      const parsedState = testEngine.gameState;
       noDuplicateUnderscoresRecursive(parsedState).should.be.true;
     })
     it('should contain a parseable version of the game state with all data intact', () => {
-      const parsedState = JSON.parse(testEngine.gameState);
-      const parsedCarrier = parsedState._players.p1._board._ships.ship4.typeStr
+      const parsedState = testEngine.gameState;
+      const parsedCarrier = parsedState.players.p1.board.ships.ship4.typeStr
       const engineCarrier = testEngine._players.p1._board.ships.ship4.type;
       parsedCarrier.should.equal(engineCarrier);
     })

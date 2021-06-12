@@ -1,8 +1,13 @@
+const { json } = require('express');
 const Board = require('../classes/Board')
 
 const { GAME_STATES, MOVE_TYPES } = require('../constants/GLOBAL');
 const { argErrorMsg, handleError } = require('../helpers/errorHelpers');
-const { shuffleArray } = require('../helpers/generalHelpers')
+const {
+  shuffleArray,
+  noDuplicateUnderscoresRecursive,
+  stripUnderscoresRecursive
+} = require('../helpers/generalHelpers')
 const Player = require('./Player');
 
 class GameEngine {
@@ -52,7 +57,11 @@ class GameEngine {
     const replacer = (key, val) => {
       return key === '_owner' ? val.id : val;
     }
-    return JSON.stringify(this, replacer)
+    // Stringify then parse to make sure we've broken all references to original objects
+    const parsed = JSON.parse(JSON.stringify(this, replacer))
+    noDuplicateUnderscoresRecursive(parsed);
+    stripUnderscoresRecursive(parsed);
+    return parsed;
   }
 
   advancePlayers() {
@@ -70,7 +79,6 @@ class GameEngine {
 
       const { valid, msg } = this.validateMove(move);
       const { processed, error, gameState } = valid && this.processMove(move);
-      
       resolve({ valid, processed, msg, gameState, time });
     })
   }
