@@ -135,12 +135,24 @@ describe('GameEngine', () => {
     })
   })
 
-  describe('addValidatedMove()', () => {
+  describe('queueValidatedMove()', () => {
     let testEngine;
     before(() => {
       testEngine = new GameEngine();
+      testEngine.state = GAME_STATES.PAUSED; // Pause the engine so it won't process moves.
     });
-    it('should add the input move to the moveStack')
+    it('should add the input move to the moveStack', () => {
+      const goodMove = {
+        moveShipType: MOVE_TYPES.MOVE_SHIP.NAME,
+        playerID: 'p1',
+        targetPlayerID: 'p1',
+        shipID: testEngine.players.p1.board.shipsArr[0].id,
+        position: [0, 0],
+        angle: 180,
+      };
+      testEngine.queueValidatedMove(goodMove);
+      testEngine.nextMove.should.equal(goodMove);
+    })
   })
 
   describe('inputMove()', () => {

@@ -62,10 +62,14 @@ class GameEngine {
   inputMove(move) {
     const validationResults = this.validateMove(move);
     if (validationResults.valid) {
-      this.addValidatedMove(move);
+      this.queueValidatedMove(move);
     }
 
     return validationResults;
+  }
+
+  queueValidatedMove(move) {
+    this._moveStack.push(move);
   }
 
   validateMove(move) {
