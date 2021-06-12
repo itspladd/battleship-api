@@ -154,13 +154,29 @@ describe('GameEngine', () => {
       const test = () => testEngine.gameState;
       test.should.not.throw(Error)
     })
-    it('should not contain any values duplicated with underscore versions', () => {
+    it('should not contain any keys duplicated with underscore versions', () => {
       const parsedState = JSON.parse(testEngine.gameState);
-      
+      const noDuplicateUnderscoresRecursive = (obj, original = true) => {
+        const keys = Object.keys(obj)
+        for (const key of keys) {
+          if (keys.includes(`_${key}`)) {
+            return false;
+          }
+          if (obj[key] instanceof Object) {
+            noDuplicateUnderscoresRecursive(obj[key], false)
+          }
+        }
+        if (original) {
+          return true;
+        }
+      }
+      noDuplicateUnderscoresRecursive({ test: 1, _test: 3 }).should.be.false;
+      noDuplicateUnderscoresRecursive({ a: 1, b: { _a: 3, _b: 2 } }).should.be.true;
+      noDuplicateUnderscoresRecursive({ a: 1, b: { a: 3, b: { b: 1, _b: 2 }}}).should.be.true;
+      noDuplicateUnderscoresRecursive(parsedState).should.be.true;
     })
     it('should contain a parseable version of the game state with all data intact', () => {
       const parsedState = JSON.parse(testEngine.gameState);
-      console.log(parsedState._players.p1._board)
       const parsedCarrier = parsedState._players.p1._board._ships.ship4.typeStr
       const engineCarrier = testEngine._players.p1._board.ships.ship4.type;
       parsedCarrier.should.equal(engineCarrier);

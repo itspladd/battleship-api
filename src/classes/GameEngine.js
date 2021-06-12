@@ -50,7 +50,7 @@ class GameEngine {
     // This is fine in the game operation, but bad for JSON!
     // If we have a circular reference to an owner, replace it with the owner's ID.
     const replacer = (key, val) => {
-      return key === 'owner' || key === '_owner' ? val.id : val;
+      return key === '_owner' ? val.id : val;
     }
     return JSON.stringify(this, replacer)
   }
