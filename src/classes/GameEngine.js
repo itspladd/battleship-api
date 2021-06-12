@@ -10,7 +10,6 @@ class GameEngine {
     players,
     aiPlayers, // Number of AI players
     } = {}) {
-    console.log('constructed')
 
     this._stateStack = [GAME_STATES.INTIALIZING]
     this._players = this.initPlayers(players);
@@ -20,7 +19,7 @@ class GameEngine {
   }
 
   get nextPlayer() {
-    return this.playerOrder[0];
+    return this._players(this.playerOrder[0]);
   }
 
   get players() {
@@ -45,8 +44,15 @@ class GameEngine {
     return this._moveHistory[this._moveHistory.length -1];
   }
 
-  get nextMove() {
-    return this._moveStack[0];
+  // Return a JSON-friendly version of the current game state
+  get gameState() {
+    // The owner properties cause circular references.
+    // This is fine in the game operation, but bad for JSON!
+    // If we have a circular reference to an owner, replace it with the owner's ID.
+    const replacer = (key, val) => {
+      return key === 'owner' || key === '_owner' ? val.id : val;
+    }
+    return JSON.stringify(this, replacer)
   }
 
   advancePlayers() {
@@ -60,16 +66,17 @@ class GameEngine {
   }
 
   inputMove(move) {
-    const validationResults = this.validateMove(move);
-    if (validationResults.valid) {
-      this.queueValidatedMove(move);
-    }
+    const moveResolutionPromise = new Promise ((resolve, reject) => {
 
-    return validationResults;
+      const { valid, msg } = this.validateMove(move);
+      const { processed, error, gameState } = valid && this.processMove(move);
+      
+      resolve({ valid, processed, msg, gameState, time });
+    })
   }
 
-  queueValidatedMove(move) {
-    this._moveStack.push(move);
+  processMove(move) {
+
   }
 
   validateMove(move) {

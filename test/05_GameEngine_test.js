@@ -135,26 +135,6 @@ describe('GameEngine', () => {
     })
   })
 
-  describe('queueValidatedMove()', () => {
-    let testEngine;
-    before(() => {
-      testEngine = new GameEngine();
-      testEngine.state = GAME_STATES.PAUSED; // Pause the engine so it won't process moves.
-    });
-    it('should add the input move to the moveStack', () => {
-      const goodMove = {
-        moveShipType: MOVE_TYPES.MOVE_SHIP.NAME,
-        playerID: 'p1',
-        targetPlayerID: 'p1',
-        shipID: testEngine.players.p1.board.shipsArr[0].id,
-        position: [0, 0],
-        angle: 180,
-      };
-      testEngine.queueValidatedMove(goodMove);
-      testEngine.nextMove.should.equal(goodMove);
-    })
-  })
-
   describe('inputMove()', () => {
     let testEngine;
     before(() => {
@@ -163,5 +143,27 @@ describe('GameEngine', () => {
     it('should return false with an error message if the move is invalid');
     it('should return true with a success message if the move is valid');
     it('should add valid moves to the moveStack');
+  })
+
+  describe('gameState()', () => {
+    let testEngine;
+    before(() => {
+      testEngine = new GameEngine();
+    });
+    it('should not throw an error due to circular references', () => {
+      const test = () => testEngine.gameState;
+      test.should.not.throw(Error)
+    })
+    it('should not contain any values duplicated with underscore versions', () => {
+      const parsedState = JSON.parse(testEngine.gameState);
+      
+    })
+    it('should contain a parseable version of the game state with all data intact', () => {
+      const parsedState = JSON.parse(testEngine.gameState);
+      console.log(parsedState._players.p1._board)
+      const parsedCarrier = parsedState._players.p1._board._ships.ship4.typeStr
+      const engineCarrier = testEngine._players.p1._board.ships.ship4.type;
+      parsedCarrier.should.equal(engineCarrier);
+    })
   })
 })

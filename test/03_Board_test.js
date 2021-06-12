@@ -52,8 +52,6 @@ describe('Board', () => {
           SHIP_TYPES.DESTROYER.NAME,
           SHIP_TYPES.AIRCRAFT_CARRIER.NAME
         ]);
-
-      console.log(testBoard.ships);
       const destroyer = new Ship(SHIP_TYPES.DESTROYER)
       const aircraftCarrier = new Ship(SHIP_TYPES.AIRCRAFT_CARRIER)
       destroyer.owner = testBoard;
@@ -99,7 +97,6 @@ describe('Board', () => {
     });
     it('should return false with a message if the Ship position is not a valid board location', () => {
       let badResult = testBoard.placeShip(testBoard.ships['ship0'])
-      console.log(testBoard.ships)
       badResult.valid.should.be.false;
       badResult.msg.should.match(/position/i);
       badResult.msg.should.match(/null/i);
@@ -114,7 +111,6 @@ describe('Board', () => {
     });
     it('should add the ship to the placedShips array and return true if validation succeeds', () => {
       testBoard.ships['ship0'].setPositions([0, 0], 120);
-      console.log(testBoard.validShipLocation(testBoard.ships['ship0']))
       const result = testBoard.placeShip(testBoard.ships['ship0']);
       testBoard.placedShips['ship0'].should.equal(testBoard.ships['ship0']);
       result.valid.should.be.true;

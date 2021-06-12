@@ -1,3 +1,5 @@
+// For future expansion purposes, it might make sense to break each
+// ship into a separate class, or at least provide that functionality.
 const SHIP_TYPES = {
   DEFAULT: {
     NAME: "DEFAULT",

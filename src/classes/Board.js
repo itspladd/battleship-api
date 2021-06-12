@@ -20,6 +20,14 @@ class Board {
     this.tiles = this.initTiles(this.rows, this.columns);
   }
 
+  get owner() {
+    return this._owner
+  }
+
+  set owner(owner) {
+    this._owner = owner
+  }
+
   get ships() {
     return this._ships
   }
