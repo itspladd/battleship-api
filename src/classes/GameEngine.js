@@ -76,15 +76,16 @@ class GameEngine {
 
   inputMove(move) {
     const moveResolutionPromise = new Promise ((resolve, reject) => {
-
       const { valid, msg } = this.validateMove(move);
-      const { processed, error, gameState } = valid && this.processMove(move);
-      resolve({ valid, processed, msg, gameState, time });
+      if (valid) {
+        const { processed, error, gameState } = this.processMove(move);
+      } else {
+        const processed = false;
+        const error = `Validation failed. Move not processed`;
+        const gameState = this.gameState;
+      }
+      resolve({ valid, processed, error, msg, gameState });
     })
-  }
-
-  processMove(move) {
-
   }
 
   validateMove(move) {
@@ -190,6 +191,42 @@ class GameEngine {
   }
 
   validateFireMove(move) {
+
+  }
+
+  processMove(move) {
+    const moveType = move.moveType;
+    const processor = {
+      MOVE_SHIP: this.processMoveShipMove.bind(this),
+      PLACE_SHIP: this.processPlaceShipMove,
+      FIRE: this.processFireMove
+    }
+    const { processed, error } = processor[moveType](move);
+    const gameState = this.gameState;
+    return { processed, error, gameState }
+  }
+
+  processMoveShipMove(move) {
+    const { playerID, shipID, position, angle } = move;
+    const ship = this.players[playerID].board.ships[shipID];
+    if (ship.setPositions(position, angle)) {
+      return {
+        processed: true,
+        error: null
+      }
+    } else {
+      return {
+        processed: false,
+        error: `Could not process move: ${move}`
+      }
+    }
+  }
+
+  processPlaceShipMove(move) {
+
+  }
+
+  processFireMove(move) {
 
   }
 

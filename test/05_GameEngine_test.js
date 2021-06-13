@@ -100,7 +100,7 @@ describe('GameEngine', () => {
     before(() => {
       testEngine = new GameEngine();
       goodMove = {
-        moveShipType: MOVE_TYPES.MOVE_SHIP.NAME,
+        moveType: MOVE_TYPES.MOVE_SHIP.NAME,
         playerID: 'p1',
         targetPlayerID: 'p1',
         shipID: testEngine.players.p1.board.shipsArr[0].id,
@@ -141,10 +141,49 @@ describe('GameEngine', () => {
     let testEngine;
     before(() => {
       testEngine = new GameEngine();
+      goodMove = {
+        moveType: MOVE_TYPES.MOVE_SHIP.NAME,
+        playerID: 'p1',
+        targetPlayerID: 'p1',
+        shipID: testEngine.players.p1.board.shipsArr[0].id,
+        position: [0, 0],
+        angle: 180,
+      };
     });
     it('should return false with an error message if the move is invalid');
-    it('should return true with a success message if the move is valid');
-    it('should add valid moves to the moveStack');
+    it('should return true with a null error if the move is valid');
+    it('should add valid moves to the move history');
+  })
+
+  describe('processMove()', () => {
+    let testEngine;
+    let goodMove;
+    let shipID;
+    before(() => {
+      testEngine = new GameEngine();
+      shipID = testEngine.players.p1.board.shipsArr[0].id;
+      goodMove = {
+        moveType: MOVE_TYPES.MOVE_SHIP.NAME,
+        playerID: 'p1',
+        targetPlayerID: 'p1',
+        shipID,
+        position: [0, 0],
+        angle: 180,
+      };
+    });
+    it('should return an object: { processed: bool, error: null or string, gameState: Object', () => {
+      const { processed, error, gameState } = testEngine.processMove(goodMove);
+      processed.should.be.a('boolean')
+      should.not.exist(error)
+      should.exist(gameState)
+    });
+    it('should return true, null, and an updated gameState if the move succeeds with no error', () => {
+      const { processed, error, gameState } = testEngine.processMove(goodMove);
+      processed.should.be.true;
+      should.not.exist(error);
+      console.log(gameState)
+      gameState.players.p1.board.ship[shipID].segments[1].should.deep.equal({ hp: 1, position: [0, 1]})
+    })
   })
 
   describe('gameState()', () => {
