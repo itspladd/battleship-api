@@ -89,21 +89,24 @@ class GameEngine {
   }
 
   validateMove(move) {
-    const validation = {
-      ANY_MOVE: this.validateGeneralMoveData,
-      MOVE_SHIP: this.validateMoveShipMove,
-      PLACE_SHIP: this.validatePlaceShipMove,
-      FIRE: this.validateFireMove
+    const validator = {
+      // Bind the functions to the current (GameEngine) context.
+      // Otherwise their internal "this" will refer to the "validator"
+      // object and they won't work!
+      ANY_MOVE: this.validateGeneralMoveData.bind(this),
+      MOVE_SHIP: this.validateMoveShipMove.bind(this),
+      PLACE_SHIP: this.validatePlaceShipMove.bind(this),
+      FIRE: this.validateFireMove.bind(this)
     }
     let result;
     try {
       // General move validation
-      result = validation.ANY_MOVE(move)
+      result = validator.ANY_MOVE(move)
       if (!result.valid) {
         throw new Error(result.msg);
       }
       // Validation specific to move type
-      result = validation[move.moveType](move);
+      result = validator[move.moveType](move);
       if (!result.valid) {
         throw new Error(result.msg);
       }
@@ -197,9 +200,12 @@ class GameEngine {
   processMove(move) {
     const moveType = move.moveType;
     const processor = {
+      // Bind the functions to the current (GameEngine) context.
+      // Otherwise their internal "this" will refer to the "processor"
+      // object and they won't work!
       MOVE_SHIP: this.processMoveShipMove.bind(this),
-      PLACE_SHIP: this.processPlaceShipMove,
-      FIRE: this.processFireMove
+      PLACE_SHIP: this.processPlaceShipMove.bind(this),
+      FIRE: this.processFireMove.bind(this)
     }
     const { processed, error } = processor[moveType](move);
     const gameState = this.gameState;
