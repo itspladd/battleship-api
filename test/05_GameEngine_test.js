@@ -181,8 +181,19 @@ describe('GameEngine', () => {
       const { processed, error, gameState } = testEngine.processMove(goodMove);
       processed.should.be.true;
       should.not.exist(error);
-      console.log(gameState)
-      gameState.players.p1.board.ship[shipID].segments[1].should.deep.equal({ hp: 1, position: [0, 1]})
+      gameState.players.p1.board.ships[shipID].segments.should.deep.equal(
+        [
+          { hp: 1, position: [0, 0]},
+          { hp: 1, position: [0, 1]}
+        ]);
+    })
+    it('should return false, error message, and the original gameState if the move fails', () => {
+      badMove = { ...goodMove, shipID: 'notThere' }
+      prevGameState = testEngine.gameState;
+      const { processed, error, gameState } = testEngine.processMove(badMove);
+      processed.should.be.false;
+      should.exist(error);
+      gameState.should.deep.equal(prevGameState);
     })
   })
 

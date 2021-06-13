@@ -209,15 +209,22 @@ class GameEngine {
   processMoveShipMove(move) {
     const { playerID, shipID, position, angle } = move;
     const ship = this.players[playerID].board.ships[shipID];
-    if (ship.setPositions(position, angle)) {
-      return {
-        processed: true,
-        error: null
+    try {
+      if (ship.setPositions(position, angle)) {
+        return {
+          processed: true,
+          error: null
+        }
+      } else {
+        return {
+          processed: false,
+          error: `Could not process move: ${move}. No error thrown.`
+        }
       }
-    } else {
+    } catch (err) {
       return {
         processed: false,
-        error: `Could not process move: ${move}`
+        error: err.message
       }
     }
   }
