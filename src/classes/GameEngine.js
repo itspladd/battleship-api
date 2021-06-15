@@ -1,8 +1,9 @@
-const { json } = require('express');
+const clone = require('just-clone');
+
 const Board = require('../classes/Board')
 
 const { GAME_STATES } = require('../constants/GLOBAL');
-const { RULES } = require('../constants/RULES')
+const RULES = require('../constants/RULES')
 const { argErrorMsg, handleError } = require('../helpers/errorHelpers');
 const {
   shuffleArray,
@@ -17,7 +18,7 @@ class GameEngine {
     aiPlayers, // Number of AI players
     rules
   } = {}) {
-    this._rules = rules || RULES.DEFAULT_RULES;
+    this.rules = rules;
     this._stateStack = [GAME_STATES.INTIALIZING]
     this._players = this.initPlayers(players);
     this._playerOrder = shuffleArray(Object.keys(this._players))
@@ -49,6 +50,15 @@ class GameEngine {
 
   get lastMove() {
     return this._moveHistory[this._moveHistory.length -1];
+  }
+
+  get rules() {
+    return this._rules;
+  }
+
+  set rules(rulesIn) {
+    const rulesObj = rulesIn ? RULES[rulesIn] : RULES.DEFAULT_RULES;
+    this._rules = clone(rulesObj);
   }
 
   // Return a JSON-friendly version of the current game state
@@ -120,7 +130,7 @@ class GameEngine {
   }
 
   validateGeneralMoveData(move) {
-    const MOVES = this._rules.MOVES;
+    const MOVES = this.rules.MOVES;
     // All moves are false until checked!
     let valid = false;
     let msg = `Board.validateMove: `;
@@ -131,7 +141,7 @@ class GameEngine {
       return { valid, msg }
     }
     // Check that it matches a MOVE_TYPE in GLOBAL.js
-    if (!rules.MOVES[move.moveType]) {
+    if (!this.rules.MOVES[move.moveType]) {
       msg += `invalid move type: ${move.moveType}`;
       return { valid, msg };
     }

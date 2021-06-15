@@ -16,7 +16,7 @@ describe('Player', () => {
     });
     it('should use the default ruleset if no rules are specified', () => {
       testPlayer = new Player({id: 1, name: 'Tautrion'});
-      testPlayer.rules.should.equal(RULES.DEFAULT)
+      testPlayer.rules.should.equal(RULES.DEFAULT_RULES)
     })
   });
 });

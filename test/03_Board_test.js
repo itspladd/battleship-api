@@ -37,7 +37,7 @@ describe('Board', () => {
       newBoard.owner.should.equal('Tautrion');
     }),
     it('should contain the correct ships for its given ruleset', () => {
-      testBoard.shipTypes.should.have.members(RULES.DEFAULT.SHIP_LIST)
+      testBoard.shipTypes.should.have.members(RULES.DEFAULT_RULES.SHIP_LIST)
     })
   });
 

@@ -9,7 +9,7 @@ const RULES = require('../constants/RULES');
 class Board {
   constructor({
     owner = 'none',
-    ships = RULES.DEFAULT.SHIP_LIST
+    ships = RULES.DEFAULT_RULES.SHIP_LIST
   }={}) {
     this.owner = owner;
     this.rows = 10;
