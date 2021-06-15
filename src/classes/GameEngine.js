@@ -101,24 +101,10 @@ class GameEngine {
   }
 
   validateMove(move) {
-    const validator = {
-      // Bind the functions to the current (GameEngine) context.
-      // Otherwise their internal "this" will refer to the "validator"
-      // object and they won't work!
-      ANY_MOVE: this.validateGeneralMoveData.bind(this),
-      MOVE_SHIP: this.validateMoveShipMove.bind(this),
-      PLACE_SHIP: this.validatePlaceShipMove.bind(this),
-      FIRE: this.validateFireMove.bind(this)
-    }
     let result;
     try {
       // General move validation
-      result = validator.ANY_MOVE(move)
-      if (!result.valid) {
-        throw new Error(result.msg);
-      }
-      // Validation specific to move type
-      result = validator[move.moveType](move);
+      result = this.validateGeneralMoveData(move)
       if (!result.valid) {
         throw new Error(result.msg);
       }
@@ -179,23 +165,6 @@ class GameEngine {
     }
 
     return { valid: true, msg: 'Move successfully validated' };
-  }
-
-  validateMoveShipMove(move) {
-    // Set up convenience variables
-    let valid = false
-    let msg = `Board.validateMoveShipMove: `
-    const { playerID, shipID } = move;
-    const targetBoard = this.players[playerID].board
-
-    // Ship must exist.
-    if (!targetBoard.ships[shipID]) {
-      msg += `Tried to move nonexistent ship.
-      shipID: ${shipID}`
-      return { valid, msg };
-    }
-
-    return { valid: true, msg: 'Move successfully validated'}
   }
 
   validatePlaceShipMove(move) {

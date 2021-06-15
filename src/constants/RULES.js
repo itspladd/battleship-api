@@ -1,4 +1,5 @@
 const { SHIP_TYPES } = require('./SHIPS');
+const { TILE_TYPES } = require('./TILES')
 const GLOBAL = require('./GLOBAL');
 
 const { GAME_STATES, TARGETING } = GLOBAL;
@@ -60,6 +61,11 @@ const DEFAULT_RULES = {
       },
       VALID_STATE: (state) => STATE_EQUALS(state, GAME_STATES.TAKE_TURNS),
       VALID_TARGET: TARGETING.OPPONENT,
+      VALID_OTHER: (engine, move) => {
+        const target = engine.players[playerID].board.tileAt(move.position);
+        return !(target.typeStack.includes(TILE_TYPES.HIT) ||
+                 target.typeStack.includes(TILE_TYPES.MISS))
+      }
     }
   }
 }

@@ -36,9 +36,6 @@ const STATE_VALIDATORS = {
 const BOARD_VALIDATORS = {
   SHIP_EXISTS_FOR_PLAYER: (shipID, playerID, engine) => {
     return engine.players[playerID].board.ships[shipID] ? true : false;
-  },
-  TILE_NOT_FIRED_AT: (board, position) => {
-    const tile = board.tileAt(position)
   }
 }
 

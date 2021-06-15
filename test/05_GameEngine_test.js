@@ -95,11 +95,12 @@ describe('GameEngine', () => {
     })
   });
 
-  describe('validateMoveShipMove()', () => {
+  describe('MOVE_SHIP validation()', () => {
     let goodMove
     let testEngine;
     before(() => {
       testEngine = new GameEngine();
+      testEngine.state = GAME_STATES.PLACE_SHIPS
       goodMove = {
         moveType: MOVES.MOVE_SHIP.NAME,
         playerID: 'p1',
@@ -114,16 +115,16 @@ describe('GameEngine', () => {
         ...goodMove,
         shipID: 'bananana'
       }
-      testEngine.validateMoveShipMove(badMove).valid.should.be.false;
+      testEngine.validateGeneralMoveData(badMove).valid.should.be.false;
     });
     it('should not allow movement of another Player\'s ship', () => {
       const badMove = {
         ...goodMove,
         targetPlayerID: 'p2'
       }
-      testEngine.validateMoveShipMove(badMove).valid.should.be.false;
+      testEngine.validateGeneralMoveData(badMove).valid.should.be.false;
       badMove.targetPlayerID = 'p1';
-      testEngine.validateMoveShipMove(badMove).valid.should.be.true;
+      testEngine.validateGeneralMoveData(badMove).valid.should.be.true;
 
     });
     it('should not allow the repositioning of an already placed ship unless the game state allows', () => {
@@ -132,9 +133,9 @@ describe('GameEngine', () => {
       testEngine.state = GAME_STATES.TAKE_TURNS;
       board.ships.ship0.setPositions([0, 0], 180);
       board.placeShip(board.ships.ship0)
-      testEngine.validateMoveShipMove(goodMove).valid.should.be.false;
+      testEngine.validateGeneralMoveData(goodMove).valid.should.be.false;
       testEngine.state = GAME_STATES.PLACE_SHIPS;
-      testEngine.validateMoveShipMove(goodMove).valid.should.be.true;
+      testEngine.validateGeneralMoveData(goodMove).valid.should.be.true;
     })
   })
 
