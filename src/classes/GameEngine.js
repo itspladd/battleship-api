@@ -146,6 +146,8 @@ class GameEngine {
       return { valid, msg };
     }
 
+    const MOVE_RULES = this.rules.MOVES[move.moveType]
+
     // Check that it includes the keys in MOVE_TYPE.REQUIRES
     const moveKeys = Object.keys(move);
     const neededKeys = MOVES[move.moveType].REQUIRES;
@@ -160,6 +162,8 @@ class GameEngine {
     if (extraKeys.length) {
       msg += `extra move data for move ${move.moveType}: ${extraKeys.join(' ')}`
       return { valid, msg };
+
+    // Now check 
     }
 
     return { valid: true, msg: 'Move successfully validated' };

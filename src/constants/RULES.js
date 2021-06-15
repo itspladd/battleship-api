@@ -13,19 +13,19 @@ const DEFAULT_RULES = {
     MOVE_SHIP: {
       NAME: "MOVE_SHIP",
       REQUIRES: ["moveType", "playerID", "targetPlayerID", "shipID", "position", "angle"],
-      VALID_STATES: [GAME_STATES.PLACE_SHIPS],
+      VALID_STATE: [GAME_STATES.PLACE_SHIPS],
       VALID_TARGET: TARGETING.SELF
     },
     PLACE_SHIP: {
       NAME: "PLACE_SHIP",
       REQUIRES: ["moveType", "playerID", "targetPlayerID", "shipID"],
-      VALID_STATES: [GAME_STATES.PLACE_SHIPS],
+      VALID_STATE: [GAME_STATES.PLACE_SHIPS],
       VALID_TARGET: TARGETING.SELF
     },
     FIRE: {
       NAME: "FIRE",
       REQUIRES: ["moveType", "playerID", "targetPlayerID", "position"],
-      VALID_STATES: [GAME_STATES.TAKE_TURNS],
+      VALID_STATE: [GAME_STATES.TAKE_TURNS],
       VALID_TARGET: TARGETING.OTHER
     }
   }

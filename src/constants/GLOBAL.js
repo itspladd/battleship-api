@@ -8,6 +8,12 @@ const TARGETING = {
   ANY: (A, B) => true
 }
 
+const STATE_VALIDATORS = {
+  STATE_EQUALS: (A, B) => A === B,
+  STATE_INCLUDED_IN: (A, B) => B.includes(A),
+  STATE_NOT_INCLUDED_IN: (A, B) => !(B.includes(A))
+}
+
 const GAME_STATES = {
   INTIALIZING: "INITIALIZING", // Game is setting itself up.
   PLACE_SHIPS: "PLACE_SHIPS", // Game allows players to place ships.
@@ -15,6 +21,7 @@ const GAME_STATES = {
   GAME_OVER: "GAME_OVER",
   PAUSED: "PAUSED" // Game will not process moves
 }
+
 
 module.exports = {
   VALID_ANGLES,
