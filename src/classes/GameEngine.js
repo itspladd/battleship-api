@@ -1,7 +1,7 @@
 const { json } = require('express');
 const Board = require('../classes/Board')
 
-const { GAME_STATES, MOVE_TYPES } = require('../constants/GLOBAL');
+const { GAME_STATES, MOVES } = require('../constants/GLOBAL');
 const { argErrorMsg, handleError } = require('../helpers/errorHelpers');
 const {
   shuffleArray,
@@ -128,14 +128,14 @@ class GameEngine {
       return { valid, msg }
     }
     // Check that it matches a MOVE_TYPE in GLOBAL.js
-    if (!MOVE_TYPES[move.moveType]) {
+    if (!MOVES[move.moveType]) {
       msg += `invalid move type: ${move.moveType}`;
       return { valid, msg };
     }
 
     // Check that it includes the keys in MOVE_TYPE.REQUIRES
     const moveKeys = Object.keys(move);
-    const neededKeys = MOVE_TYPES[move.moveType].REQUIRES;
+    const neededKeys = MOVES[move.moveType].REQUIRES;
     const missingKeys = neededKeys.filter(key => !moveKeys.includes(key));
     const extraKeys = moveKeys.filter(key => !neededKeys.includes(key))
     if (missingKeys.length) {
@@ -190,7 +190,28 @@ class GameEngine {
   }
 
   validatePlaceShipMove(move) {
+    // Set up convenience variables
+    let valid = false
+    let msg = `Board.validatePlaceShipMove: `
+    const { playerID, targetPlayerID, shipID } = move;
+    const targetBoard = this.players[playerID].board;
 
+    // Players can only move their own ships, so the IDs should match.
+    if (playerID !== targetPlayerID) {
+      msg += `Tried to move another player's ship. PlayerID must match targetPlayerID:
+      playerID: ${playerID},
+      targetPlayerID: ${targetPlayerID}`
+      return { valid, msg };
+    }
+
+    // Ship must exist.
+    if (!targetBoard.ships[shipID]) {
+      msg += `Tried to move nonexistent ship.
+      shipID: ${shipID}`
+      return { valid, msg };
+    }
+
+    // Game state must be PLACE_SHIP
   }
 
   validateFireMove(move) {

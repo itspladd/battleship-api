@@ -5,7 +5,7 @@ const Ship = require('../src/classes/Ship')
 
 const { noDuplicateUnderscoresRecursive } = require('../src/helpers/generalHelpers')
 
-const { MOVE_TYPES, GAME_STATES } = require('../src/constants/GLOBAL')
+const { MOVES, GAME_STATES } = require('../src/constants/GLOBAL')
 
 describe('GameEngine', () => {
   describe('GameEngine(), constructed with no parameters', () => {
@@ -72,21 +72,21 @@ describe('GameEngine', () => {
     before(() => {
       testEngine = new GameEngine();
     });
-    it('should return an object with a false bool and message if the move is not in the MOVE_TYPES constant', () => {
+    it('should return an object with a false bool and message if the move is not in the MOVES constant', () => {
       const result = testEngine.validateGeneralMoveData({ moveType: 'WIN_GAME' })
       result.valid.should.be.false;
       result.msg.should.match(/invalid move type: WIN_GAME/i);
     });
-    it('should return an object with a false bool and message if the move does not have the keys in the MOVE_TYPES[TYPE].REQUIRES constant', () => {
-      const move = { moveType: MOVE_TYPES.PLACE_SHIP.NAME, targetPlayerID: '4'}
+    it('should return an object with a false bool and message if the move does not have the keys in the MOVES[TYPE].REQUIRES constant', () => {
+      const move = { moveType: MOVES.PLACE_SHIP.NAME, targetPlayerID: '4'}
       const result = testEngine.validateGeneralMoveData(move)
       result.valid.should.be.false;
       result.msg.should.match(/missing move data for move PLACE_SHIP/i)
       result.msg.should.match(/shipID/i)
       result.msg.should.match(/playerID/i)
     })
-    it('should return an object with a false bool and message if the move has keys not found in the MOVE_TYPES[TYPE].REQUIRES constant', () => {
-      const move = { moveType: MOVE_TYPES.PLACE_SHIP.NAME, playerID: '4', targetPlayerID: '4', shipID: 2, damage: 5 }
+    it('should return an object with a false bool and message if the move has keys not found in the MOVES[TYPE].REQUIRES constant', () => {
+      const move = { moveType: MOVES.PLACE_SHIP.NAME, playerID: '4', targetPlayerID: '4', shipID: 2, damage: 5 }
       const result = testEngine.validateGeneralMoveData(move)
       result.valid.should.be.false;
       result.msg.should.match(/extra move data for move PLACE_SHIP/i)
@@ -100,7 +100,7 @@ describe('GameEngine', () => {
     before(() => {
       testEngine = new GameEngine();
       goodMove = {
-        moveType: MOVE_TYPES.MOVE_SHIP.NAME,
+        moveType: MOVES.MOVE_SHIP.NAME,
         playerID: 'p1',
         targetPlayerID: 'p1',
         shipID: testEngine.players.p1.board.shipsArr[0].id,
@@ -142,7 +142,7 @@ describe('GameEngine', () => {
     before(() => {
       testEngine = new GameEngine();
       goodMove = {
-        moveType: MOVE_TYPES.MOVE_SHIP.NAME,
+        moveType: MOVES.MOVE_SHIP.NAME,
         playerID: 'p1',
         targetPlayerID: 'p1',
         shipID: testEngine.players.p1.board.shipsArr[0].id,
@@ -166,7 +166,7 @@ describe('GameEngine', () => {
       testEngine = new GameEngine();
       shipID = testEngine.players.p1.board.shipsArr[0].id;
       goodMove = {
-        moveType: MOVE_TYPES.MOVE_SHIP.NAME,
+        moveType: MOVES.MOVE_SHIP.NAME,
         playerID: 'p1',
         targetPlayerID: 'p1',
         shipID,

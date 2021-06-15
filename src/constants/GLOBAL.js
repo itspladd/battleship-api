@@ -9,23 +9,24 @@ const GAME_STATES = {
   PAUSED: "PAUSED" // Game will not process moves
 }
 
-const MOVE_TYPES = {
+const MOVES = {
   MOVE_SHIP: {
     NAME: "MOVE_SHIP",
-    REQUIRES: ["moveType", "playerID", "targetPlayerID", "shipID", "position", "angle"]
+    REQUIRES: ["moveType", "playerID", "targetPlayerID", "shipID", "position", "angle"],
+    VALID_STATES: ["PLACE_SHIPS"]
   },
   PLACE_SHIP: {
     NAME: "PLACE_SHIP",
-    REQUIRES: ["moveType", "playerID", "targetPlayerID", "shipID"]
+    REQUIRES: ["moveType", "playerID", "targetPlayerID", "shipID"],
   },
   FIRE: {
     NAME: "FIRE",
-    REQUIRES: ["moveType", "playerID", "targetPlayerID", "position"]
+    REQUIRES: ["moveType", "playerID", "targetPlayerID", "position"],
   }
 }
 
 module.exports = {
   VALID_ANGLES,
   GAME_STATES,
-  MOVE_TYPES
+  MOVES
 }
