@@ -11,7 +11,7 @@ class Player {
   constructor ({ id, name, rules }) {
     this.id = id;
     this.name = name;
-    this.rules = rules || RULES.DEFAULT;
+    this.rules = rules || RULES.DEFAULT_RULES;
     this.board = new Board({ owner: this, ships: this.rules.SHIP_LIST });
   }
 

@@ -1,7 +1,8 @@
 const { json } = require('express');
 const Board = require('../classes/Board')
 
-const { GAME_STATES, MOVES } = require('../constants/GLOBAL');
+const { GAME_STATES } = require('../constants/GLOBAL');
+const { RULES } = require('../constants/RULES')
 const { argErrorMsg, handleError } = require('../helpers/errorHelpers');
 const {
   shuffleArray,
@@ -14,8 +15,9 @@ class GameEngine {
   constructor({
     players,
     aiPlayers, // Number of AI players
-    } = {}) {
-
+    rules
+  } = {}) {
+    this._rules = rules || RULES.DEFAULT_RULES;
     this._stateStack = [GAME_STATES.INTIALIZING]
     this._players = this.initPlayers(players);
     this._playerOrder = shuffleArray(Object.keys(this._players))
@@ -118,6 +120,7 @@ class GameEngine {
   }
 
   validateGeneralMoveData(move) {
+    const MOVES = this._rules.MOVES;
     // All moves are false until checked!
     let valid = false;
     let msg = `Board.validateMove: `;
@@ -128,7 +131,7 @@ class GameEngine {
       return { valid, msg }
     }
     // Check that it matches a MOVE_TYPE in GLOBAL.js
-    if (!MOVES[move.moveType]) {
+    if (!rules.MOVES[move.moveType]) {
       msg += `invalid move type: ${move.moveType}`;
       return { valid, msg };
     }

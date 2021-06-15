@@ -5,7 +5,8 @@ const Ship = require('../src/classes/Ship')
 
 const { noDuplicateUnderscoresRecursive } = require('../src/helpers/generalHelpers')
 
-const { MOVES, GAME_STATES } = require('../src/constants/GLOBAL')
+const { GAME_STATES } = require('../src/constants/GLOBAL')
+const { MOVES } = require('../src/constants/RULES').DEFAULT_RULES
 
 describe('GameEngine', () => {
   describe('GameEngine(), constructed with no parameters', () => {
