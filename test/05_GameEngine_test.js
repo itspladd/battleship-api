@@ -156,6 +156,9 @@ describe('GameEngine', () => {
   })
 
   describe('processMove()', () => {
+  })
+
+  describe('processMoveShipMove()', () => {
     let testEngine;
     let goodMove;
     let shipID;
