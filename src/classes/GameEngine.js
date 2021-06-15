@@ -148,22 +148,34 @@ class GameEngine {
 
     const MOVE_RULES = this.rules.MOVES[move.moveType]
 
-    // Check that it includes the keys in MOVE_TYPE.REQUIRES
-    const moveKeys = Object.keys(move);
-    const neededKeys = MOVES[move.moveType].REQUIRES;
-    const missingKeys = neededKeys.filter(key => !moveKeys.includes(key));
-    const extraKeys = moveKeys.filter(key => !neededKeys.includes(key))
-    if (missingKeys.length) {
-      msg += `missing move data for move ${move.moveType}: ${missingKeys.join(' ')}`
+    // Check that it includes the necessary keys for that move
+    const invalidKeys = MOVE_RULES.INVALID_DATA(move)
+    if(invalidKeys.length > 0) {
+      msg += `${move.moveType} called with missing/extra data.
+      move data: ${move}
+      bad keys: ${invalidKeys}`
+    }
+
+    // Now check that we're in a valid state
+    if (!MOVE_RULES.VALID_STATE(this.state)) {
+      msg += `${move.moveType} not valid during ${this.state} state.
+      Current state: ${this.state}`
       return { valid, msg };
     }
 
-    // And check that we didn't accidentally include extra data
-    if (extraKeys.length) {
-      msg += `extra move data for move ${move.moveType}: ${extraKeys.join(' ')}`
+    // Check that the target of the move is valid
+    if (!MOVE_RULES.VALID_TARGET(move.playerID, move.targetPlayerID)) {
+      msg += `Invalid target for ${move.moveType}. Valid target type is ${MOVE_RULES.VALID_TARGET.name}.
+      playerID: ${move.playerID},
+      targetPlayerID: ${move.targetPlayerID}`
       return { valid, msg };
+    }
 
-    // Now check 
+    // If there's other validation functions for this move and they return false,
+    // report back.
+    if (MOVE_RULES.VALID_OTHER && !MOVE_RULES.VALID_OTHER(this, move)) {
+      msg += `Additional validation failed for ${move.moveType}.`
+      return { valid, msg };
     }
 
     return { valid: true, msg: 'Move successfully validated' };
@@ -173,33 +185,13 @@ class GameEngine {
     // Set up convenience variables
     let valid = false
     let msg = `Board.validateMoveShipMove: `
-    const { playerID, targetPlayerID, shipID } = move;
+    const { playerID, shipID } = move;
     const targetBoard = this.players[playerID].board
-
-    // Players can only move their own ships, so the IDs should match.
-    if (playerID !== targetPlayerID) {
-      msg += `Tried to move another player's ship. PlayerID must match targetPlayerID:
-      playerID: ${playerID},
-      targetPlayerID: ${targetPlayerID}`
-      return { valid, msg };
-    }
 
     // Ship must exist.
     if (!targetBoard.ships[shipID]) {
       msg += `Tried to move nonexistent ship.
       shipID: ${shipID}`
-      return { valid, msg };
-    }
-
-    // Players can't move a placed ship unless they're in PLACE_SHIPS phase
-    if(
-      this.state !== GAME_STATES.PLACE_SHIPS &&
-      targetBoard.placedShips[shipID]
-    ) {
-      msg += `Can't move placed ships outside of ${GAME_STATES.PLACE_SHIPS} state.
-      Current state: ${this.state},
-      shipID: ${shipID}
-      playerID: ${playerID}`
       return { valid, msg };
     }
 

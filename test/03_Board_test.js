@@ -222,4 +222,19 @@ describe('Board', () => {
       testBoard.shipAt([0, 2]).should.be.false;
     });
   })
+
+  describe('tileAt(position)', () => {
+    let testBoard;
+    before(() => {
+      testBoard = new Board();
+    });
+    it('should return the tile at the given position if there is one', () => {
+      const targetTile = testBoard.tiles[1][3];
+      testBoard.tileAt([3,1]).should.equal(targetTile)
+    });
+    it('should return undefined if there is no tile at that position', () => {
+      should.not.exist(testBoard.tileAt([10, 2]));
+      should.not.exist(testBoard.tileAt([9, -1]));
+    });
+  })
 })

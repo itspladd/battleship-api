@@ -154,6 +154,13 @@ class Board {
     return results[0] ? results[0] : false;
   }
 
+  // Return the tile at the target position if there is one.
+  // Since the tiles are created as an array of rows,
+  // then we need to flip the coordinates to get the expected tile.
+  tileAt(position) {
+    const [x, y] = position;
+    return this.tiles[y] && this.tiles[y][x] ? this.tiles[y][x] : undefined;
+  }
 }
 
 module.exports = Board;

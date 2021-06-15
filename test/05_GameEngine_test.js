@@ -82,7 +82,7 @@ describe('GameEngine', () => {
       const move = { moveType: MOVES.PLACE_SHIP.NAME, targetPlayerID: '4'}
       const result = testEngine.validateGeneralMoveData(move)
       result.valid.should.be.false;
-      result.msg.should.match(/missing move data for move PLACE_SHIP/i)
+      result.msg.should.match(/called with missing\/extra data/i)
       result.msg.should.match(/shipID/i)
       result.msg.should.match(/playerID/i)
     })
@@ -90,7 +90,7 @@ describe('GameEngine', () => {
       const move = { moveType: MOVES.PLACE_SHIP.NAME, playerID: '4', targetPlayerID: '4', shipID: 2, damage: 5 }
       const result = testEngine.validateGeneralMoveData(move)
       result.valid.should.be.false;
-      result.msg.should.match(/extra move data for move PLACE_SHIP/i)
+      result.msg.should.match(/called with missing\/extra data/i)
       result.msg.should.match(/damage/i)
     })
   });

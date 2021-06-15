@@ -1,5 +1,10 @@
 const { SHIP_TYPES } = require('./SHIPS');
-const { GAME_STATES, TARGETING } = require('./GLOBAL');
+const GLOBAL = require('./GLOBAL');
+
+const { GAME_STATES, TARGETING } = GLOBAL;
+const { STATE_EQUALS } = GLOBAL.STATE_VALIDATORS;
+const { SHIP_EXISTS_FOR_PLAYER } = GLOBAL.BOARD_VALIDATORS;
+const { FIND_BAD_KEYS } = GLOBAL.DATA_VALIDATORS;
 
 const DEFAULT_RULES = {
   SHIP_LIST: [
@@ -12,21 +17,49 @@ const DEFAULT_RULES = {
   MOVES: {
     MOVE_SHIP: {
       NAME: "MOVE_SHIP",
-      REQUIRES: ["moveType", "playerID", "targetPlayerID", "shipID", "position", "angle"],
-      VALID_STATE: [GAME_STATES.PLACE_SHIPS],
-      VALID_TARGET: TARGETING.SELF
+      INVALID_DATA: (move) => {
+        const requiredKeys = [
+          "moveType",
+          "playerID",
+          "targetPlayerID",
+          "shipID",
+          "position",
+          "angle"
+        ]
+        return FIND_BAD_KEYS(move, requiredKeys)
+      },
+      VALID_STATE: (state) => STATE_EQUALS(state, GAME_STATES.PLACE_SHIPS),
+      VALID_TARGET: TARGETING.SELF,
+      VALID_OTHER: (engine, move) => SHIP_EXISTS_FOR_PLAYER(move.shipID, move.playerID, engine)
     },
     PLACE_SHIP: {
       NAME: "PLACE_SHIP",
-      REQUIRES: ["moveType", "playerID", "targetPlayerID", "shipID"],
-      VALID_STATE: [GAME_STATES.PLACE_SHIPS],
-      VALID_TARGET: TARGETING.SELF
+      INVALID_DATA: (move) => {
+        const requiredKeys = [
+          "moveType",
+          "playerID",
+          "targetPlayerID",
+          "shipID"
+        ];
+        return FIND_BAD_KEYS(move, requiredKeys)
+      },
+      VALID_STATE: (state) => STATE_EQUALS(state, GAME_STATES.PLACE_SHIPS),
+      VALID_TARGET: TARGETING.SELF,
+      VALID_OTHER: (engine, move) => SHIP_EXISTS_FOR_PLAYER(move.shipID, move.playerID, engine)
     },
     FIRE: {
       NAME: "FIRE",
-      REQUIRES: ["moveType", "playerID", "targetPlayerID", "position"],
-      VALID_STATE: [GAME_STATES.TAKE_TURNS],
-      VALID_TARGET: TARGETING.OTHER
+      INVALID_DATA: (move) => {
+        const requiredKeys = [
+          "moveType",
+          "playerID",
+          "targetPlayerID",
+          "position"
+        ];
+        return FIND_BAD_KEYS(move, requiredKeys)
+      },
+      VALID_STATE: (state) => STATE_EQUALS(state, GAME_STATES.TAKE_TURNS),
+      VALID_TARGET: TARGETING.OPPONENT,
     }
   }
 }
