@@ -191,13 +191,25 @@ describe('DEFAULT_RULES', () => {
       let testEngine, move, board;
       before(() => {
         testEngine = new GameEngine();
-        board = testEngine.players.p2.board;
+        p1Board = testEngine.players.p1.board;
+        p2Board = testEngine.players.p2.board;
+        p1Ship = p1Board.shipsArr[0]
+        p2Ship = p2Board.shipsArr[0]
+        p1Ship.setPositions([0,0], 180);
+        p2Ship.setPositions([0,0], 180);
+        p1Board.placeShip(p1Ship)
+        p2Board.placeShip(p2Ship)
+        p1Ship.segmentAt([0, 1]).should.deep.equal({ hp: 1, position: [0, 1]})
+        p2Ship.segmentAt([0, 1]).should.deep.equal({ hp: 1, position: [0, 1]})
         move = {
           moveType: MOVES.FIRE.NAME,
           playerID: 'p1',
           targetPlayerID: 'p2',
-          position: [0, 0]
+          position: [0, 1]
         }
+      })
+      it('should return true and damage the ship segment at that position if the move succeeds', () => {
+        MOVES.FIRE.PROCESS();
       })
     })
   })

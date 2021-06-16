@@ -80,6 +80,22 @@ const DEFAULT_RULES = {
         return targetTile &&
                !(targetTile.typeStack.includes(TILE_TYPES.HIT) ||
                  targetTile.typeStack.includes(TILE_TYPES.MISS))
+      },
+      PROCESS: (engine, move) => {
+        try {
+          const board = engine.players[move.targetPlayerID].board;
+          const targetTile = board.tileAt(move.position)
+          const targetShip = board.shipAt(move.position);
+          if (targetShip) {
+            targetShip.damageSegmentsAt(move.position);
+            targetTile.typeStack = TILE_TYPES.HIT
+          } else {
+            targetTile.typeStack = TILE_TYPES.MISS
+          }
+        } catch (err) {
+          return false;
+        }
+        return true;
       }
     }
   }
