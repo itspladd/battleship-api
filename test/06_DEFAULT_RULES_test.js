@@ -181,6 +181,10 @@ describe('DEFAULT_RULES', () => {
 
         MOVES.FIRE.VALID_OTHER(testEngine, { ...move, position: [-1 , 1]}).should.be.false;
         MOVES.FIRE.VALID_OTHER(testEngine, { ...move, position: [6 , 10]}).should.be.false;
+      });
+      it('should return true if validation succeeds', () => {
+        board.tileAt([0, 0]).typeStack = [TILE_TYPES.EMPTY]
+        MOVES.FIRE.VALID_OTHER(testEngine, move).should.be.true
       })
     })
     describe('Processing', () => {
