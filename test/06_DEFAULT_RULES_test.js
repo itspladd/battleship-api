@@ -5,6 +5,7 @@ const { noDuplicateUnderscoresRecursive } = require('../src/helpers/generalHelpe
 
 const { GAME_STATES } = require('../src/constants/GLOBAL')
 const { MOVES } = require('../src/constants/RULES').DEFAULT_RULES
+const { TILE_TYPES } = require('../src/constants/TILES')
 
 describe('DEFAULT_RULES', () => {
   describe('MOVE_SHIP move', () => {
@@ -159,9 +160,36 @@ describe('DEFAULT_RULES', () => {
 
   describe('FIRE move', () => {
     describe('Validation', () => {
-
+      let testEngine, move, board;
+      before(() => {
+        testEngine = new GameEngine();
+        board = testEngine.players.p2.board;
+        move = {
+          moveType: MOVES.FIRE.NAME,
+          playerID: 'p1',
+          playerID: 'p2',
+          position: [0, 0]
+        }
+      })
+      it('should not allow a FIRE move on a tile that has already been fired upon', () => {
+        board.tileAt([0, 0]).type = TILE_TYPES.MISS;
+        board.tileAt([0, 1]).type = TILE_TYPES.HIT;
+        MOVES.FIRE.PROCESS(testEngine, move).should.be.false;
+        MOVES.FIRE.PROCESS(testEngine, { ...move, position: [0 , 1]}).should.be.false;
+      })
     })
     describe('Processing', () => {
+      let testEngine, move, board;
+      before(() => {
+        testEngine = new GameEngine();
+        board = testEngine.players.p2.board;
+        move = {
+          moveType: MOVES.FIRE.NAME,
+          playerID: 'p1',
+          playerID: 'p2',
+          position: [0, 0]
+        }
+      })
     })
   })
 })

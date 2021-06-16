@@ -59,7 +59,7 @@ const DEFAULT_RULES = {
       PROCESS: (engine, move) => {
         const ship = engine.getPlayerShip(move.playerID, move.shipID);
         const board = engine.players[move.playerID].board;
-        board.placeShip(ship);
+        return board.placeShip(ship);
       }
     },
     FIRE: {
