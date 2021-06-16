@@ -140,7 +140,23 @@ describe('GameEngine', () => {
   })
 
   describe('PLACE_SHIP validation', () =>{
-    it('should not allow placement of a ship outside the PLACE_SHIPS state')
+    let goodMove, testEngine;
+    before(() => {
+      testEngine = new GameEngine();
+      testEngine.state = GAME_STATES.PLACE_SHIPS
+      goodMove = {
+        moveType: MOVES.MOVE_SHIP.NAME,
+        playerID: 'p1',
+        targetPlayerID: 'p1',
+        shipID: testEngine.players.p1.board.shipsArr[0].id,
+        position: [0, 0],
+        angle: 180,
+      };
+    });
+    it('should not allow placement of a ship outside the PLACE_SHIPS state', () => {
+      testEngine.state = GAME_STATES.TAKE_TURNS;
+      testEngine.validateGeneralMoveData(goodMove).valid.should.be.false;
+    })
     it('should not allow placement of another player\'s ship')
     it('should not allow placement of a ship outside the bounds of the board')
     it('should not allow placement of a ship colliding with another ship')
