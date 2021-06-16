@@ -74,7 +74,7 @@ class Ship {
   }
 
   get destroyed() {
-    return this.totalHP > 0;
+    return this.totalHP <= 0;
   }
 
   // Spread each segment from the constants into a new object.

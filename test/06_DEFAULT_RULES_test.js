@@ -188,7 +188,7 @@ describe('DEFAULT_RULES', () => {
       })
     })
     describe('Processing', () => {
-      let testEngine, move, board;
+      let testEngine, move, p1Board, p2Board, p1Ship, p2Ship;
       before(() => {
         testEngine = new GameEngine();
         p1Board = testEngine.players.p1.board;
@@ -209,7 +209,14 @@ describe('DEFAULT_RULES', () => {
         }
       })
       it('should return true and damage the ship segment at that position if the move succeeds', () => {
-        MOVES.FIRE.PROCESS();
+        MOVES.FIRE.PROCESS(testEngine, move).should.be.true;
+        move = { ...move, playerID: 'p2', targetPlayerID: 'p1' } // Other player fires
+        MOVES.FIRE.PROCESS(testEngine, move).should.be.true;
+        p1Ship.segmentAt([0, 1]).should.deep.equal({ hp: 0, position: [0, 1]})
+        p2Ship.segmentAt([0, 1]).should.deep.equal({ hp: 0, position: [0, 1]})
+        move = { ...move, playerID: 'p1', targetPlayerID: 'p2' } // Switch again
+        MOVES.FIRE.PROCESS(testEngine, move).should.be.true;
+        p2Ship.destroyed.should.be.true;
       })
     })
   })
