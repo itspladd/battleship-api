@@ -234,9 +234,9 @@ describe('Board', () => {
       const targetTile = testBoard.tiles[1][3];
       testBoard.tileAt([3,1]).should.equal(targetTile)
     });
-    it('should return undefined if there is no tile at that position', () => {
-      should.not.exist(testBoard.tileAt([10, 2]));
-      should.not.exist(testBoard.tileAt([9, -1]));
+    it('should return false if there is no tile at that position', () => {
+      testBoard.tileAt([10, 2]).should.be.false;
+      testBoard.tileAt([9, -1]).should.be.false;
     });
   })
 })

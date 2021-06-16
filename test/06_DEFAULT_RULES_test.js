@@ -176,6 +176,11 @@ describe('DEFAULT_RULES', () => {
         board.tileAt([0, 1]).type = TILE_TYPES.HIT;
         MOVES.FIRE.VALID_OTHER(testEngine, move).should.be.false;
         MOVES.FIRE.VALID_OTHER(testEngine, { ...move, position: [0 , 1]}).should.be.false;
+      });
+      it('should not allow a FIRE move on a tile outside the target board', () => {
+
+        MOVES.FIRE.VALID_OTHER(testEngine, { ...move, position: [-1 , 1]}).should.be.false;
+        MOVES.FIRE.VALID_OTHER(testEngine, { ...move, position: [6 , 10]}).should.be.false;
       })
     })
     describe('Processing', () => {

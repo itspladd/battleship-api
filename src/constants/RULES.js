@@ -76,9 +76,10 @@ const DEFAULT_RULES = {
       VALID_STATE: (state) => STATE_EQUALS(state, GAME_STATES.TAKE_TURNS),
       VALID_TARGET: TARGETING.OPPONENT,
       VALID_OTHER: (engine, move) => {
-        const target = engine.players[move.targetPlayerID].board.tileAt(move.position);
-        return !(target.typeStack.includes(TILE_TYPES.HIT) ||
-                 target.typeStack.includes(TILE_TYPES.MISS))
+        const targetTile = engine.players[move.targetPlayerID].board.tileAt(move.position);
+        return targetTile &&
+               !(targetTile.typeStack.includes(TILE_TYPES.HIT) ||
+                 targetTile.typeStack.includes(TILE_TYPES.MISS))
       }
     }
   }

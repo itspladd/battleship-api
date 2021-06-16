@@ -157,7 +157,7 @@ class Board {
   // then we need to flip the coordinates to get the expected tile.
   tileAt(position) {
     const [x, y] = position;
-    return this.tiles[y] && this.tiles[y][x] ? this.tiles[y][x] : undefined;
+    return this.tiles[y] && this.tiles[y][x] ? this.tiles[y][x] : false;
   }
 }
 
