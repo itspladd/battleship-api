@@ -156,8 +156,14 @@ describe('GameEngine', () => {
     it('should not allow placement of a ship outside the PLACE_SHIPS state', () => {
       testEngine.state = GAME_STATES.TAKE_TURNS;
       testEngine.validateGeneralMoveData(goodMove).valid.should.be.false;
+      testEngine.state = GAME_STATES.PLACE_SHIPS;
+      testEngine.validateGeneralMoveData(goodMove).valid.should.be.true;
+
     })
-    it('should not allow placement of another player\'s ship')
+    it('should not allow placement of another player\'s ship', () => {
+      const badMove = { ...goodMove, playerID: 'p2' }
+      testEngine.validateGeneralMoveData(badMove).valid.should.be.false;
+    })
     it('should not allow placement of a ship outside the bounds of the board')
     it('should not allow placement of a ship colliding with another ship')
   })
