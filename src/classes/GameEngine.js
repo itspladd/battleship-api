@@ -24,10 +24,11 @@ class GameEngine {
     this._playerOrder = shuffleArray(Object.keys(this._players))
     this._moveStack = [];
     this._moveHistory = [];
+    this.state = GAME_STATES.PLACE_SHIPS
   }
 
   get nextPlayer() {
-    return this._players(this.playerOrder[0]);
+    return this._players[this._playerOrder[0]];
   }
 
   get players() {
@@ -71,6 +72,7 @@ class GameEngine {
     }
     // Stringify then parse to make sure we've broken all references to original objects
     const parsed = JSON.parse(JSON.stringify(this, replacer))
+    // Remove underscores from property names
     noDuplicateUnderscoresRecursive(parsed);
     stripUnderscoresRecursive(parsed);
     return parsed;
@@ -80,23 +82,40 @@ class GameEngine {
     this._playerOrder.push(this._playerOrder.shift())
   }
 
+  declareWinner(player) {
+    this.winnerID = player.id;
+    this.state = GAME_STATES.GAME_OVER;
+  }
+
+  playersWithIntactShips() {
+    const players = Object.values(this.players)
+    return players.filter(player => player.board.shipsStillAlive.length > 0)
+
+  }
+
   validPlayerData(player) {
     return  player.name &&
             player.id &&
             typeof player.name === 'string'
   }
 
-  inputMove(move) {
+  makeMove(move) {
     const moveResolutionPromise = new Promise ((resolve, reject) => {
-      const { valid, msg } = this.validateMove(move);
+      let moveResults = this.validateMove(move);
       if (valid) {
-        const { processed, error, gameState } = this.processMove(move);
+        moveResults = { ...moveResults, ...(this.processMove(move)) }
       } else {
-        const processed = false;
-        const error = `Validation failed. Move not processed`;
-        const gameState = this.gameState;
+        moveResults = {
+          ...moveResults,
+          processed: false,
+          error: `Validation failed. Move not processed`,
+          gameState: this.gameState
+        }
       }
-      resolve({ valid, processed, error, msg, gameState });
+      const winner = this.rules.WINNER(this);
+      winner && this.declareWinner(winner)
+      // moveResults now contains { valid, processed, error, validationMsg, gameState }
+      resolve({ valid, validationMsg, processed, error, gameState });
     })
   }
 
@@ -106,7 +125,7 @@ class GameEngine {
       // General move validation
       result = this.validateGeneralMoveData(move)
       if (!result.valid) {
-        throw new Error(result.msg);
+        throw new Error(result.validationMsg);
       }
       return result;
     } catch (err) {
@@ -119,17 +138,17 @@ class GameEngine {
     const MOVES = this.rules.MOVES;
     // All moves are false until checked!
     let valid = false;
-    let msg = `Board.validateMove: `;
+    let validationMsg = `Board.validateMove: `;
 
     // Check that we got an Object for the move
     if (!(move instanceof Object)) {
-      msg += `invalid move argument: ${typeof move}, should be an object`;
-      return { valid, msg }
+      validationMsg += `invalid move argument: ${typeof move}, should be an object`;
+      return { valid, validationMsg }
     }
     // Check that it matches a MOVE_TYPE in GLOBAL.js
     if (!this.rules.MOVES[move.moveType]) {
-      msg += `invalid move type: ${move.moveType}`;
-      return { valid, msg };
+      validationMsg += `invalid move type: ${move.moveType}`;
+      return { valid, validationMsg };
     }
 
     const MOVE_RULES = this.rules.MOVES[move.moveType]
@@ -137,63 +156,34 @@ class GameEngine {
     // Check that it includes the necessary keys for that move
     const invalidKeys = MOVE_RULES.INVALID_DATA(move)
     if(invalidKeys.length > 0) {
-      msg += `${move.moveType} called with missing/extra data.
+      validationMsg += `${move.moveType} called with missing/extra data.
       move data: ${move}
       bad keys: ${invalidKeys}`
     }
 
     // Now check that we're in a valid state
     if (!MOVE_RULES.VALID_STATE(this.state)) {
-      msg += `${move.moveType} not valid during ${this.state} state.
+      validationMsg += `${move.moveType} not valid during ${this.state} state.
       Current state: ${this.state}`
-      return { valid, msg };
+      return { valid, validationMsg };
     }
 
     // Check that the target of the move is valid
     if (!MOVE_RULES.VALID_TARGET(move.playerID, move.targetPlayerID)) {
-      msg += `Invalid target for ${move.moveType}. Valid target type is ${MOVE_RULES.VALID_TARGET.name}.
+      validationMsg += `Invalid target for ${move.moveType}. Valid target type is ${MOVE_RULES.VALID_TARGET.name}.
       playerID: ${move.playerID},
       targetPlayerID: ${move.targetPlayerID}`
-      return { valid, msg };
+      return { valid, validationMsg };
     }
 
     // If there's other validation functions for this move and they return false,
     // report back.
     if (MOVE_RULES.VALID_OTHER && !MOVE_RULES.VALID_OTHER(this, move)) {
-      msg += `Additional validation failed for ${move.moveType}.`
-      return { valid, msg };
+      validationMsg += `Additional validation failed for ${move.moveType}.`
+      return { valid, validationMsg };
     }
 
-    return { valid: true, msg: 'Move successfully validated' };
-  }
-
-  validatePlaceShipMove(move) {
-    // Set up convenience variables
-    let valid = false
-    let msg = `Board.validatePlaceShipMove: `
-    const { playerID, targetPlayerID, shipID } = move;
-    const targetBoard = this.players[playerID].board;
-
-    // Players can only move their own ships, so the IDs should match.
-    if (playerID !== targetPlayerID) {
-      msg += `Tried to move another player's ship. PlayerID must match targetPlayerID:
-      playerID: ${playerID},
-      targetPlayerID: ${targetPlayerID}`
-      return { valid, msg };
-    }
-
-    // Ship must exist.
-    if (!targetBoard.ships[shipID]) {
-      msg += `Tried to move nonexistent ship.
-      shipID: ${shipID}`
-      return { valid, msg };
-    }
-
-    // Game state must be PLACE_SHIP
-  }
-
-  validateFireMove(move) {
-
+    return { valid: true, validationMsg: 'Move successfully validated' };
   }
 
   processMove(move) {
@@ -201,14 +191,6 @@ class GameEngine {
     const processed = MOVE_RULES.PROCESS(this, move);
     const gameState = this.gameState;
     return { processed, gameState }
-  }
-
-  processPlaceShipMove(move) {
-
-  }
-
-  processFireMove(move) {
-
   }
 
   initPlayers(players) {

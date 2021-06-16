@@ -14,6 +14,12 @@ const DEFAULT_RULES = {
     SHIP_TYPES.BATTLESHIP.NAME,
     SHIP_TYPES.AIRCRAFT_CARRIER.NAME
   ],
+  WINNER: (engine) => {
+    // When one player is left, return that player's ID.
+    // Otherwise, return false.
+    const playersRemaining = engine.playersWithIntactShips()
+    return playersRemaining.length === 1 && playersRemaining[0]
+  },
   MOVES: {
     MOVE_SHIP: {
       NAME: "MOVE_SHIP",
@@ -76,10 +82,16 @@ const DEFAULT_RULES = {
       VALID_STATE: (state) => STATE_EQUALS(state, GAME_STATES.TAKE_TURNS),
       VALID_TARGET: TARGETING.OPPONENT,
       VALID_OTHER: (engine, move) => {
+        // It must be the attacking player's turn.
+        const isPlayersTurn = engine.nextPlayer.id === move.playerID;
+        // Target tile must exist
         const targetTile = engine.players[move.targetPlayerID].board.tileAt(move.position);
-        return targetTile &&
-               !(targetTile.typeStack.includes(TILE_TYPES.HIT) ||
-                 targetTile.typeStack.includes(TILE_TYPES.MISS))
+        // Tile must not have been fired upon already.
+        // ('targetTile &&' on the following line is just to check that the tile exists)
+        const tilePreviouslyTargeted = targetTile &&
+          (targetTile.typeStack.includes(TILE_TYPES.HIT) ||
+          targetTile.typeStack.includes(TILE_TYPES.MISS));
+        return isPlayersTurn && targetTile && !tilePreviouslyTargeted;
       },
       PROCESS: (engine, move) => {
         try {
@@ -92,6 +104,7 @@ const DEFAULT_RULES = {
           } else {
             targetTile.typeStack = TILE_TYPES.MISS
           }
+          engine.advancePlayers();
         } catch (err) {
           return false;
         }

@@ -26,7 +26,6 @@ const DATA_VALIDATORS = {
   }
 }
 
-
 const STATE_VALIDATORS = {
   STATE_EQUALS: (A, B) => A === B,
   STATE_INCLUDED_IN: (A, B) => B.includes(A),

@@ -4,14 +4,34 @@ const GameEngine = require('../src/classes/GameEngine')
 const { noDuplicateUnderscoresRecursive } = require('../src/helpers/generalHelpers')
 
 const { GAME_STATES } = require('../src/constants/GLOBAL')
-const { MOVES } = require('../src/constants/RULES').DEFAULT_RULES
+const { MOVES, WINNER } = require('../src/constants/RULES').DEFAULT_RULES
 const { TILE_TYPES } = require('../src/constants/TILES')
 
 describe('DEFAULT_RULES', () => {
+  describe('WINNER', () => {
+    it('should return false if the multiple players have intact ships', () => {
+      const testEngine = new GameEngine();
+      WINNER(testEngine).should.be.false
+      const p1Board = testEngine.players.p1.board;
+      const p2Board = testEngine.players.p2.board;
+      // Place all ships
+      p1Board.shipsArr.forEach((ship, index) => {
+        ship.setPositions([0, index], 180);
+        p1Board.placeShip(ship);
+      })
+      p2Board.shipsArr.forEach((ship, index) => {
+        ship.setPositions([0, index], 180);
+        p2Board.placeShip(ship);
+      })
+      WINNER(testEngine).should.be.false;
+      // Kill all of p2's ships
+      testEngine.players.p2.board.shipsArr.forEach(ship => ship.totalHP = 0);
+      WINNER(testEngine).id.should.equal('p1')
+    })
+  })
   describe('MOVE_SHIP move', () => {
     describe('Validation: ', () => {
-      let goodMove
-      let testEngine;
+      let goodMove, testEngine;
       before(() => {
         testEngine = new GameEngine();
         testEngine.state = GAME_STATES.PLACE_SHIPS
@@ -163,6 +183,7 @@ describe('DEFAULT_RULES', () => {
       let testEngine, move, board;
       before(() => {
         testEngine = new GameEngine();
+        testEngine._playerOrder = ['p1', 'p2'];
         board = testEngine.players.p2.board;
         move = {
           moveType: MOVES.FIRE.NAME,
@@ -217,6 +238,7 @@ describe('DEFAULT_RULES', () => {
         move = { ...move, playerID: 'p1', targetPlayerID: 'p2' } // Switch again
         MOVES.FIRE.PROCESS(testEngine, move).should.be.true;
         p2Ship.destroyed.should.be.true;
+        p2Board.shipsStillAlive.length.should.equal(4)
       })
     })
   })

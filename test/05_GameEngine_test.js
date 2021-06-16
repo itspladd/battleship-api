@@ -76,26 +76,26 @@ describe('GameEngine', () => {
     it('should return an object with a false bool and message if the move is not in the MOVES constant', () => {
       const result = testEngine.validateGeneralMoveData({ moveType: 'WIN_GAME' })
       result.valid.should.be.false;
-      result.msg.should.match(/invalid move type: WIN_GAME/i);
+      result.validationMsg.should.match(/invalid move type: WIN_GAME/i);
     });
     it('should return an object with a false bool and message if the move does not have the keys in the MOVES[TYPE].REQUIRES constant', () => {
-      const move = { moveType: MOVES.PLACE_SHIP.NAME, targetPlayerID: '4'}
+      const move = { moveType: MOVES.PLACE_SHIP.NAME, targetPlayerID: 'p2'}
       const result = testEngine.validateGeneralMoveData(move)
       result.valid.should.be.false;
-      result.msg.should.match(/called with missing\/extra data/i)
-      result.msg.should.match(/shipID/i)
-      result.msg.should.match(/playerID/i)
+      result.validationMsg.should.match(/called with missing\/extra data/i)
+      result.validationMsg.should.match(/shipID/i)
+      result.validationMsg.should.match(/playerID/i)
     })
     it('should return an object with a false bool and message if the move has keys not found in the MOVES[TYPE].REQUIRES constant', () => {
-      const move = { moveType: MOVES.PLACE_SHIP.NAME, playerID: '4', targetPlayerID: '4', shipID: 2, damage: 5 }
+      const move = { moveType: MOVES.PLACE_SHIP.NAME, playerID: 'p1', targetPlayerID: 'p1', shipID: 2, damage: 5 }
       const result = testEngine.validateGeneralMoveData(move)
       result.valid.should.be.false;
-      result.msg.should.match(/called with missing\/extra data/i)
-      result.msg.should.match(/damage/i)
+      result.validationMsg.should.match(/called with missing\/extra data/i)
+      result.validationMsg.should.match(/damage/i)
     })
   });
 
-  describe('inputMove()', () => {
+  describe('makeMove()', () => {
     let testEngine;
     before(() => {
       testEngine = new GameEngine();
@@ -112,6 +112,7 @@ describe('GameEngine', () => {
     it('should return true with a null error if the move is valid');
     it('should add valid moves to the move history');
   })
+
   describe('gameState()', () => {
     let testEngine;
     before(() => {

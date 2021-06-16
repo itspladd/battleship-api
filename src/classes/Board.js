@@ -48,6 +48,10 @@ class Board {
     return Object.values(this.placedShips)
   }
 
+  get shipsStillAlive() {
+    return this.shipsArr.filter(ship => !ship.destroyed)
+  }
+
   initTiles(rows, columns) {
     if (!Number.isInteger(rows)
         || !Number.isInteger(columns)
