@@ -124,7 +124,6 @@ describe('GameEngine', () => {
       }
       testEngine.validateGeneralMoveData(badMove).valid.should.be.false;
       badMove.targetPlayerID = 'p1';
-      console.log(testEngine.validateGeneralMoveData(badMove))
       testEngine.validateGeneralMoveData(badMove).valid.should.be.true;
     });
     it('should not allow the repositioning of an already placed ship unless the game state allows', () => {
@@ -228,7 +227,7 @@ describe('GameEngine', () => {
           { hp: 1, position: [0, 0]},
           { hp: 1, position: [0, 1]}
         ]);
-    })
+    })Retweet
     it('should return false and the original gameState if the move fails', () => {
       badMove = { ...goodMove, shipID: 'notThere' }
       prevGameState = testEngine.gameState;
