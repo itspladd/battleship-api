@@ -254,7 +254,11 @@ describe('GameEngine', () => {
         shipID: ship.id
       };
     });
-    it('should add the ship to the placedShips object', () => {
+    it('should add the ship to the placedShips object and return an updated gameState', () => {
+      const { processed, gameState } = testEngine.processMove(move);
+      gameState.players.p1.board.placedShips[ship.id].segments.should.deep.equal(ship.segments)
+    }),
+    it('should return false and the original gameState if the move fails', () => {
       testEngine.processMove(move);
       board.placedShips[ship.id].should.equal(ship)
     })
