@@ -1,19 +1,59 @@
 const Tile = require('./Tile');
 const Ship = require('./Ship');
 const { validPosition, validatePositionAndAngle } = require('../helpers/positionHelpers');
-const { handleError } = require('../helpers/errorHelpers');
+const { handleError, argErrorMsg } = require('../helpers/errorHelpers');
 const { VALID_ANGLES } = require('../constants/GLOBAL');
+const { SHIP_TYPES } = require('../constants/SHIPS');
+const RULES = require('../constants/RULES');
 
 class Board {
   constructor({
-    owner = 'AI'
+    owner = 'none',
+    ships = RULES.DEFAULT_RULES.SHIP_LIST
   }={}) {
     this.owner = owner;
     this.rows = 10;
     this.columns = 10;
     this.maxPosition = [this.columns - 1, this.rows - 1];
-    this.ships = [];
+    this.ships = this.initShips(ships);
+    this.placedShips = {};
     this.tiles = this.initTiles(this.rows, this.columns);
+  }
+
+  get owner() {
+    return this._owner
+  }
+
+  set owner(owner) {
+    this._owner = owner
+  }
+
+  get ships() {
+    return this._ships
+  }
+
+  get shipsArr() {
+    return Object.values(this._ships)
+  }
+
+  set ships(ships) {
+    this._ships = ships
+  }
+
+  get shipTypes() {
+    return this.shipsArr.map(ship => ship.type)
+  }
+
+  get placedShipsArr() {
+    return Object.values(this.placedShips)
+  }
+
+  get shipsStillAlive() {
+    return this.shipsArr.filter(ship => !ship.destroyed)
+  }
+
+  get allShipsPlaced() {
+    return this.placedShipsArr.length === this.shipsArr.length;
   }
 
   initTiles(rows, columns) {
@@ -36,30 +76,38 @@ class Board {
     return result;
   }
 
-  addShip(ship) {
-    try {
-      validatePositionAndAngle(ship.position, ship.angle);
-      if (!(ship instanceof Ship)) {
-        throw new Error(`Board.addShip called with invalid ship argument: ${ship}`);
-      }
-      if (!this.positionIsInsideBoard(ship.position)) {
-        throw new Error(`Board.addShip tried to add a ship outside the board bounds: 
-          position: ${ship.position}
-          rows: ${this.rows}
-          columns: ${this.columns}`);
-      }
-    } catch (err) {
-      handleError(err);
-      return false;
+  initShips(list) {
+    const results = {}
+    let id = 0;
+    for (const type of list) {
+      const newShip = new Ship(SHIP_TYPES[type], this, id);
+      results[newShip.id] = newShip;
+      id++;
     }
 
-    // Input validation passed, now see if this is a legal placement
-    if (this.validShipLocation(ship)) {
-      this.ships.push(ship)
-      return true;
-    } else {
-      return false;
+    return results;
+  }
+
+  // Validate a Ship's location on the board, and then add it
+  // to the placedShips array
+  placeShip(ship) {
+    if (!this.ships[ship.id]) {
+      return {
+        valid: false,
+        msg: `Can't place a ship owned by another board!
+        This board owned by: ${this.owner.name}
+        Ship is on board owned by: ${ship.owner.owner.name}`
+      }
     }
+    if (!this.validShipLocation(ship)) {
+      return {
+        valid: false,
+        msg: `Can't place a ship at position ${ship.position} with angle ${ship.angle}`
+      };
+    }
+
+    this.placedShips[ship.id] = ship;
+    return { valid: true, msg: 'Ship placed successfully' };
   }
 
   validShipLocation(ship) {
@@ -99,12 +147,26 @@ class Board {
     return true;
   }
 
-  noShipCollisions(ship) {
-    const results = this.ships.filter(boardShip => ship.collidesWithShip(boardShip))
-
+  noShipCollisions(shipUnderTest) {
+    const results = this.placedShipsArr
+                    .filter(ship => shipUnderTest.collidesWithShip(ship))
     return results.length === 0;
   }
 
+  // Return the Ship at the target position if there is one.
+  shipAt(position) {
+    const results = this.shipsArr
+                    .filter(ship => ship.segmentAt(position));
+    return results[0] ? results[0] : false;
+  }
+
+  // Return the tile at the target position if there is one.
+  // Since the tiles are created as an array of rows,
+  // then we need to flip the coordinates to get the expected tile.
+  tileAt(position) {
+    const [x, y] = position;
+    return this.tiles[y] && this.tiles[y][x] ? this.tiles[y][x] : false;
+  }
 }
 
 module.exports = Board;

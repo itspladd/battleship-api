@@ -1,5 +1,11 @@
 const argErrorMsg = (arg, argName, callingFunc) => {
-    return `${callingFunc.name} called with invalid ${argName} argument: [${typeof arg}]${arg}`
+  let argStr = "";
+  if(arg instanceof Object) {
+    argStr = JSON.stringify(arg);
+  }
+  return `${callingFunc.name} called with invalid ${argName} argument:
+  * [${typeof arg}]
+  * ${argStr || arg}`
 }
 
 const handleError = err => {
