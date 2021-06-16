@@ -95,7 +95,7 @@ describe('GameEngine', () => {
     })
   });
 
-  describe('makeMove()', () => {
+  describe('inputMove()', () => {
     let testEngine;
     before(() => {
       testEngine = new GameEngine();

@@ -19,7 +19,7 @@ class GameEngine {
     rules
   } = {}) {
     this.rules = rules;
-    this._stateStack = [GAME_STATES.INTIALIZING]
+    this._stateStack = [GAME_STATES.INITIALIZING]
     this._players = this.initPlayers(players);
     this._playerOrder = shuffleArray(Object.keys(this._players))
     this._moveStack = [];
@@ -99,11 +99,12 @@ class GameEngine {
             typeof player.name === 'string'
   }
 
-  makeMove(move) {
+  inputMove(move) {
     const moveResolutionPromise = new Promise ((resolve, reject) => {
       let moveResults = this.validateMove(move);
-      if (valid) {
+      if (moveResults.valid) {
         moveResults = { ...moveResults, ...(this.processMove(move)) }
+        moveResults.processed && this._moveHistory.push(move);
       } else {
         moveResults = {
           ...moveResults,
@@ -115,8 +116,9 @@ class GameEngine {
       const winner = this.rules.WINNER(this);
       winner && this.declareWinner(winner)
       // moveResults now contains { valid, processed, error, validationMsg, gameState }
-      resolve({ valid, validationMsg, processed, error, gameState });
+      resolve(moveResults);
     })
+    return moveResolutionPromise;
   }
 
   validateMove(move) {
@@ -162,14 +164,14 @@ class GameEngine {
     }
 
     // Now check that we're in a valid state
-    if (!MOVE_RULES.VALID_STATE(this.state)) {
+    if (MOVE_RULES.VALID_STATE && !MOVE_RULES.VALID_STATE(this.state)) {
       validationMsg += `${move.moveType} not valid during ${this.state} state.
       Current state: ${this.state}`
       return { valid, validationMsg };
     }
 
     // Check that the target of the move is valid
-    if (!MOVE_RULES.VALID_TARGET(move.playerID, move.targetPlayerID)) {
+    if (MOVE_RULES.VALID_TARGET && !MOVE_RULES.VALID_TARGET(move.playerID, move.targetPlayerID)) {
       validationMsg += `Invalid target for ${move.moveType}. Valid target type is ${MOVE_RULES.VALID_TARGET.name}.
       playerID: ${move.playerID},
       targetPlayerID: ${move.targetPlayerID}`

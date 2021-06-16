@@ -52,6 +52,10 @@ class Board {
     return this.shipsArr.filter(ship => !ship.destroyed)
   }
 
+  get allShipsPlaced() {
+    return this.placedShipsArr.length === this.shipsArr.length;
+  }
+
   initTiles(rows, columns) {
     if (!Number.isInteger(rows)
         || !Number.isInteger(columns)

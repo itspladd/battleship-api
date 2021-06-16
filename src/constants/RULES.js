@@ -21,6 +21,27 @@ const DEFAULT_RULES = {
     return playersRemaining.length === 1 && playersRemaining[0]
   },
   MOVES: {
+    START_GAME: {
+      NAME: "START_GAME",
+      INVALID_DATA: (move) => {
+        const requiredKeys = ["moveType"];
+        return FIND_BAD_KEYS(move, requiredKeys);
+      },
+      VALID_STATE: (state) => STATE_EQUALS(state, GAME_STATES.PLACE_SHIPS),
+      VALID_OTHER: (engine) => {
+        // Valid only if all players have placed all their ships
+        for (const playerID in engine.players) {
+          if (!engine.players[playerID].board.allShipsPlaced) {
+            return false;
+          }
+        };
+        return true;
+      },
+      PROCESS: (engine) => {
+        engine.state = GAME_STATES.TAKE_TURNS;
+        return true;
+      }
+    },
     MOVE_SHIP: {
       NAME: "MOVE_SHIP",
       INVALID_DATA: (move) => {
