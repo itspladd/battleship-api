@@ -55,6 +55,11 @@ const DEFAULT_RULES = {
         const ship = engine.getPlayerShip(move.playerID, move.shipID);
         const board = engine.players[move.playerID].board;
         return ship && board.validShipLocation(ship)
+      },
+      PROCESS: (engine, move) => {
+        const ship = engine.getPlayerShip(move.playerID, move.shipID);
+        const board = engine.players[move.playerID].board;
+        board.placeShip(ship);
       }
     },
     FIRE: {

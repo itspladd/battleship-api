@@ -199,10 +199,7 @@ describe('GameEngine', () => {
     it('should add valid moves to the move history');
   })
 
-  describe('processMove()', () => {
-  })
-
-  describe('processMoveShipMove()', () => {
+  describe('MOVE_SHIP processing()', () => {
     let testEngine;
     let goodMove;
     let shipID;
@@ -218,12 +215,12 @@ describe('GameEngine', () => {
         angle: 180,
       };
     });
-    it('should return an object: { processed: bool, error: null or string, gameState: Object', () => {
+    it('should return an object: { processed: bool, gameState: Object }', () => {
       const { processed, gameState } = testEngine.processMove(goodMove);
       processed.should.be.a('boolean')
       should.exist(gameState)
     });
-    it('should return true, null, and an updated gameState if the move succeeds with no error', () => {
+    it('should return true and an updated gameState if the move succeeds with no error', () => {
       const { processed, error, gameState } = testEngine.processMove(goodMove);
       processed.should.be.true;
       gameState.players.p1.board.ships[shipID].segments.should.deep.equal(
@@ -232,12 +229,34 @@ describe('GameEngine', () => {
           { hp: 1, position: [0, 1]}
         ]);
     })
-    it('should return false, error message, and the original gameState if the move fails', () => {
+    it('should return false and the original gameState if the move fails', () => {
       badMove = { ...goodMove, shipID: 'notThere' }
       prevGameState = testEngine.gameState;
       const { processed, gameState } = testEngine.processMove(badMove);
       processed.should.be.false;
       gameState.should.deep.equal(prevGameState);
+    })
+  })
+
+  describe('PLACE_SHIP processing', () => {
+    let testEngine, move, board, ship, collidingShip;
+    before(() => {
+      testEngine = new GameEngine();
+      board = testEngine.players.p1.board;
+      ship = board.shipsArr[0];
+      collidingShip = board.shipsArr[1];
+      ship.setPositions([0, 0], 180);
+      collidingShip.setPositions([[0, 3], 0])
+      move = {
+        moveType: MOVES.PLACE_SHIP.NAME,
+        playerID: 'p1',
+        targetPlayerID: 'p1',
+        shipID: ship.id
+      };
+    });
+    it('should add the ship to the placedShips object', () => {
+      testEngine.processMove(move);
+      board.placedShips[ship.id].should.equal(ship)
     })
   })
 
