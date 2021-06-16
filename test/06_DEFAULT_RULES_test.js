@@ -167,15 +167,15 @@ describe('DEFAULT_RULES', () => {
         move = {
           moveType: MOVES.FIRE.NAME,
           playerID: 'p1',
-          playerID: 'p2',
+          targetPlayerID: 'p2',
           position: [0, 0]
         }
       })
       it('should not allow a FIRE move on a tile that has already been fired upon', () => {
         board.tileAt([0, 0]).type = TILE_TYPES.MISS;
         board.tileAt([0, 1]).type = TILE_TYPES.HIT;
-        MOVES.FIRE.PROCESS(testEngine, move).should.be.false;
-        MOVES.FIRE.PROCESS(testEngine, { ...move, position: [0 , 1]}).should.be.false;
+        MOVES.FIRE.VALID_OTHER(testEngine, move).should.be.false;
+        MOVES.FIRE.VALID_OTHER(testEngine, { ...move, position: [0 , 1]}).should.be.false;
       })
     })
     describe('Processing', () => {
@@ -186,7 +186,7 @@ describe('DEFAULT_RULES', () => {
         move = {
           moveType: MOVES.FIRE.NAME,
           playerID: 'p1',
-          playerID: 'p2',
+          targetPlayerID: 'p2',
           position: [0, 0]
         }
       })
