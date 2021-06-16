@@ -99,7 +99,7 @@ class Board {
     }
 
     this.placedShips[ship.id] = ship;
-    return { valid: true };
+    return { valid: true, msg: 'Ship placed successfully' };
   }
 
   validShipLocation(ship) {
