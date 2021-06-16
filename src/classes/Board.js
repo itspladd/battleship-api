@@ -93,12 +93,6 @@ class Board {
         msg: `Can't place a ship at position ${ship.position} with angle ${ship.angle}`
       };
     }
-    if (this.placedShips[ship.id]) {
-      return {
-        valid: false,
-        msg: `Can't place an already placed ship!`
-      }
-    }
 
     this.placedShips[ship.id] = ship;
     return { valid: true };

@@ -138,7 +138,7 @@ class Ship {
       return newSeg;
     });
 
-    return this.segments;
+    return true;
   }
 
 

@@ -33,12 +33,6 @@ const STATE_VALIDATORS = {
   STATE_NOT_INCLUDED_IN: (A, B) => !(B.includes(A))
 }
 
-const BOARD_VALIDATORS = {
-  SHIP_EXISTS_FOR_PLAYER: (shipID, playerID, engine) => {
-    return engine.players[playerID].board.ships[shipID] ? true : false;
-  }
-}
-
 const GAME_STATES = {
   INTIALIZING: "INITIALIZING", // Game is setting itself up.
   PLACE_SHIPS: "PLACE_SHIPS", // Game allows players to place ships.
@@ -53,6 +47,5 @@ module.exports = {
   GAME_STATES,
   TARGETING,
   STATE_VALIDATORS,
-  BOARD_VALIDATORS,
   DATA_VALIDATORS
 }

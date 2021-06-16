@@ -124,8 +124,8 @@ describe('GameEngine', () => {
       }
       testEngine.validateGeneralMoveData(badMove).valid.should.be.false;
       badMove.targetPlayerID = 'p1';
+      console.log(testEngine.validateGeneralMoveData(badMove))
       testEngine.validateGeneralMoveData(badMove).valid.should.be.true;
-
     });
     it('should not allow the repositioning of an already placed ship unless the game state allows', () => {
       const board = Object.values(testEngine.players)[0].board;
@@ -137,6 +137,13 @@ describe('GameEngine', () => {
       testEngine.state = GAME_STATES.PLACE_SHIPS;
       testEngine.validateGeneralMoveData(goodMove).valid.should.be.true;
     })
+  })
+
+  describe('PLACE_SHIP validation', () =>{
+    it('should not allow placement of a ship outside the PLACE_SHIPS state')
+    it('should not allow placement of another player\'s ship')
+    it('should not allow placement of a ship outside the bounds of the board')
+    it('should not allow placement of a ship colliding with another ship')
   })
 
   describe('inputMove()', () => {
@@ -177,15 +184,13 @@ describe('GameEngine', () => {
       };
     });
     it('should return an object: { processed: bool, error: null or string, gameState: Object', () => {
-      const { processed, error, gameState } = testEngine.processMove(goodMove);
+      const { processed, gameState } = testEngine.processMove(goodMove);
       processed.should.be.a('boolean')
-      should.not.exist(error)
       should.exist(gameState)
     });
     it('should return true, null, and an updated gameState if the move succeeds with no error', () => {
       const { processed, error, gameState } = testEngine.processMove(goodMove);
       processed.should.be.true;
-      should.not.exist(error);
       gameState.players.p1.board.ships[shipID].segments.should.deep.equal(
         [
           { hp: 1, position: [0, 0]},
@@ -195,9 +200,8 @@ describe('GameEngine', () => {
     it('should return false, error message, and the original gameState if the move fails', () => {
       badMove = { ...goodMove, shipID: 'notThere' }
       prevGameState = testEngine.gameState;
-      const { processed, error, gameState } = testEngine.processMove(badMove);
+      const { processed, gameState } = testEngine.processMove(badMove);
       processed.should.be.false;
-      should.exist(error);
       gameState.should.deep.equal(prevGameState);
     })
   })

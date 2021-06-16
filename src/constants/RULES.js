@@ -4,7 +4,6 @@ const GLOBAL = require('./GLOBAL');
 
 const { GAME_STATES, TARGETING } = GLOBAL;
 const { STATE_EQUALS } = GLOBAL.STATE_VALIDATORS;
-const { SHIP_EXISTS_FOR_PLAYER } = GLOBAL.BOARD_VALIDATORS;
 const { FIND_BAD_KEYS } = GLOBAL.DATA_VALIDATORS;
 
 const DEFAULT_RULES = {
@@ -31,7 +30,13 @@ const DEFAULT_RULES = {
       },
       VALID_STATE: (state) => STATE_EQUALS(state, GAME_STATES.PLACE_SHIPS),
       VALID_TARGET: TARGETING.SELF,
-      VALID_OTHER: (engine, move) => SHIP_EXISTS_FOR_PLAYER(move.shipID, move.playerID, engine)
+      VALID_OTHER: (engine, move) => {
+        return engine.getPlayerShip(move.playerID, move.shipID)
+      },
+      PROCESS: (engine, move) => {
+        const ship = engine.getPlayerShip(move.playerID, move.shipID);
+        return ship ? ship.setPositions(move.position, move.angle) : false;
+      }
     },
     PLACE_SHIP: {
       NAME: "PLACE_SHIP",
@@ -46,7 +51,11 @@ const DEFAULT_RULES = {
       },
       VALID_STATE: (state) => STATE_EQUALS(state, GAME_STATES.PLACE_SHIPS),
       VALID_TARGET: TARGETING.SELF,
-      VALID_OTHER: (engine, move) => SHIP_EXISTS_FOR_PLAYER(move.shipID, move.playerID, engine)
+      VALID_OTHER: (engine, move) => {
+        const ship = engine.getPlayerShip(move.playerID, move.shipID);
+        const board = engine.players[move.playerID].board;
+        return ship && board.validShipLocation(ship)
+      }
     },
     FIRE: {
       NAME: "FIRE",

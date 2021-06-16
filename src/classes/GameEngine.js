@@ -197,41 +197,10 @@ class GameEngine {
   }
 
   processMove(move) {
-    const moveType = move.moveType;
-    const processor = {
-      // Bind the functions to the current (GameEngine) context.
-      // Otherwise their internal "this" will refer to the "processor"
-      // object and they won't work!
-      MOVE_SHIP: this.processMoveShipMove.bind(this),
-      PLACE_SHIP: this.processPlaceShipMove.bind(this),
-      FIRE: this.processFireMove.bind(this)
-    }
-    const { processed, error } = processor[moveType](move);
+    const MOVE_RULES = this.rules.MOVES[move.moveType]
+    const processed = MOVE_RULES.PROCESS(this, move);
     const gameState = this.gameState;
-    return { processed, error, gameState }
-  }
-
-  processMoveShipMove(move) {
-    const { playerID, shipID, position, angle } = move;
-    const ship = this.players[playerID].board.ships[shipID];
-    try {
-      if (ship.setPositions(position, angle)) {
-        return {
-          processed: true,
-          error: null
-        }
-      } else {
-        return {
-          processed: false,
-          error: `Could not process move: ${move}. No error thrown.`
-        }
-      }
-    } catch (err) {
-      return {
-        processed: false,
-        error: err.message
-      }
-    }
+    return { processed, gameState }
   }
 
   processPlaceShipMove(move) {
@@ -276,6 +245,13 @@ class GameEngine {
     const p1 = new Player({id: "p1", name: 'DEFAULT-PLAYER-1' })
     const p2 = new Player({id: "p2", name: 'DEFAULT-PLAYER-2' })
     return { p1, p2 }
+  }
+
+  getPlayerShip(playerID, shipID) {
+    return  playerID &&
+            shipID &&
+            this.players[playerID] &&
+            this.players[playerID].board.ships[shipID]
   }
 }
 
