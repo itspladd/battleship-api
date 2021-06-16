@@ -140,12 +140,12 @@ describe('GameEngine', () => {
   })
 
   describe('PLACE_SHIP validation', () =>{
-    let goodMove, ship, testEngine;
+    let move, ship, testEngine;
     before(() => {
       testEngine = new GameEngine();
       ship = testEngine.players.p1.board.shipsArr[0];
       ship.setPositions([0, 0], 180);
-      goodMove = {
+      move = {
         moveType: MOVES.PLACE_SHIP.NAME,
         playerID: 'p1',
         targetPlayerID: 'p1',
@@ -154,21 +154,31 @@ describe('GameEngine', () => {
     });
     it('should not allow placement of a ship outside the PLACE_SHIPS state', () => {
       testEngine.state = GAME_STATES.TAKE_TURNS;
-      testEngine.validateGeneralMoveData(goodMove).valid.should.be.false;
+      testEngine.validateGeneralMoveData(move).valid.should.be.false;
       testEngine.state = GAME_STATES.PLACE_SHIPS;
-      testEngine.validateGeneralMoveData(goodMove).valid.should.be.true;
+      testEngine.validateGeneralMoveData(move).valid.should.be.true;
 
     })
     it('should not allow placement of another player\'s ship', () => {
-      const badMove = { ...goodMove, playerID: 'p2' }
+      const badMove = { ...move, playerID: 'p2' }
       testEngine.validateGeneralMoveData(badMove).valid.should.be.false;
     })
     it('should not allow placement of a ship outside the bounds of the board', () => {
       ship.setPositions([0, 0], 60); // Put a segment outside the board
-      testEngine.validateGeneralMoveData(goodMove).valid.should.be.false;
+      testEngine.validateGeneralMoveData(move).valid.should.be.false;
+      ship.setPositions([1, 0], 0); // Another bad orientation
+      testEngine.validateGeneralMoveData(move).valid.should.be.false;
+      ship.setPositions([1, 0], 120); // Now we put it back in the board
+      testEngine.validateGeneralMoveData(move).valid.should.be.true;
+    })
+    it('should not allow placement of a ship colliding with another ship', () => {
+      const collidingShip = testEngine.players.p1.board.shipsArr[1];
+      collidingShip.setPositions([3, 2], 300);
+      ship.setPositions([3, 1], 180);
+      testEngine.players.p1.board.placeShip(collidingShip);
+      testEngine.validateGeneralMoveData(move).valid.should.be.false;
 
     })
-    it('should not allow placement of a ship colliding with another ship')
   })
 
   describe('inputMove()', () => {

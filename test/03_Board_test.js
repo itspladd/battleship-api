@@ -167,16 +167,17 @@ describe('Board', () => {
     let testShip2;
     before(() => {
       testBoard = new Board();
-      testShip1 = testBoard.ships['ship0']
-      testShip2 = testBoard.ships['ship1']
+      testShip1 = testBoard.ships['ship0'];
+      testShip2 = testBoard.ships['ship1'];
       testShip1.setPositions([0, 0], 180);
+      testBoard.placeShip(testShip1);
     });
-    it('should return true if no ships on the board collide with the input ship', () => {
+    it('should return true if no placed ships on the board collide with the input ship', () => {
       testShip2 = new Ship();
       testShip2.setPositions([1, 0], 120);
       testBoard.noShipCollisions(testShip2).should.be.true;
     })
-    it('should return false if any ships collide with the input ship', () => {
+    it('should return false if any placed ships collide with the input ship', () => {
       testShip2 = new Ship();
       testShip2.setPositions([2, 0], 240);
       testBoard.noShipCollisions(testShip2).should.be.false;
@@ -190,6 +191,7 @@ describe('Board', () => {
       testBoard = new Board();
       testShip1 = testBoard.ships['ship0'];
       testShip1.setPositions([0, 0], 180);
+      testBoard.placeShip(testShip1)
     });
     it('should return true if the ship is in the board and will not collide with other ships', () => {
       const newShip = new Ship();

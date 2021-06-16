@@ -44,6 +44,10 @@ class Board {
     return this.shipsArr.map(ship => ship.type)
   }
 
+  get placedShipsArr() {
+    return Object.values(this.placedShips)
+  }
+
   initTiles(rows, columns) {
     if (!Number.isInteger(rows)
         || !Number.isInteger(columns)
@@ -136,7 +140,7 @@ class Board {
   }
 
   noShipCollisions(shipUnderTest) {
-    const results = this.shipsArr
+    const results = this.placedShipsArr
                     .filter(ship => shipUnderTest.collidesWithShip(ship))
     return results.length === 0;
   }
