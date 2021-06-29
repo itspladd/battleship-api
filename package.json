@@ -1,7 +1,7 @@
 {
-  "name": "battleship-api",
+  "name": "ship-game-engine",
   "version": "1.0.0",
-  "description": "A database API for a React-frontend battleship game.",
+  "description": "A standalone engine for running Battleship-like games.",
   "main": "src/index.js",
   "scripts": {
     "test": "mocha --file ./test/errorStub.js",

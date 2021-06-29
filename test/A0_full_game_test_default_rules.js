@@ -4,7 +4,7 @@ const GameEngine = require('../src/classes/GameEngine');
 const { MOVES } = require('../src/constants/RULES').DEFAULT_RULES;
 const { GAME_STATES } = require('../src/constants/GLOBAL')
 
-describe('Full game with default rules', () => {
+describe('Full game test with default rules', () => {
   it('should run and report a winner with no errors', async () => {
     const testEngine = new GameEngine();
     // Set up template moves with missing data to be filled in
