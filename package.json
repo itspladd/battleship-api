@@ -4,9 +4,7 @@
   "description": "A standalone engine for running Battleship-like games.",
   "main": "src/index.js",
   "scripts": {
-    "test": "nyc mocha --file ./test/errorStub.js",
-    "db:reset": "node ./src/db/reset.js",
-    "dev": "nodemon ./src/server.js localhost 8080"
+    "test": "nyc mocha --file ./test/errorStub.js"
   },
   "repository": {
     "type": "git",
@@ -19,17 +17,12 @@
   },
   "homepage": "https://github.com/itspladd/battleship-api#readme",
   "dependencies": {
-    "dotenv": "^10.0.0",
-    "just-clone": "^3.2.1",
-    "nyc": "^15.1.0",
-    "pg": "^8.6.0",
-    "socket.io": "^4.1.2"
+    "just-clone": "^3.2.1"
   },
   "devDependencies": {
     "chai": "^4.3.4",
     "chai-things": "^0.2.0",
     "mocha": "^8.4.0",
-    "nodemon": "^2.0.7",
-    "pg-native": "^3.0.0"
+    "nyc": "^15.1.0"
   }
 }
