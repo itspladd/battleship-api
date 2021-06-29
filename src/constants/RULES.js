@@ -15,7 +15,7 @@ const DEFAULT_RULES = {
     SHIP_TYPES.AIRCRAFT_CARRIER.NAME
   ],
   WINNER: (engine) => {
-    // When one player is left, return that player's ID.
+    // When one player is left, return that Player object.
     // Otherwise, return false.
     const playersRemaining = engine.playersWithIntactShips()
     return playersRemaining.length === 1 && playersRemaining[0]

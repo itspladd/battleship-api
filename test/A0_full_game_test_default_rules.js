@@ -48,6 +48,8 @@ describe('Full game test with default rules', () => {
       targetPlayerID :'p1',
       position: null
     }
+    // Make sure player one is the first player!
+    testEngine.nextPlayer.id === 'p2' && testEngine.advancePlayers();
     // Set up an alternating sequence of moves for both players
     const moveList = [
       { ...p1MoveShip, shipID: 'ship0', position: [0, 0] }, // 0 (Move numbering for reference)
