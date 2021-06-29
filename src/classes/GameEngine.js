@@ -44,9 +44,9 @@ class GameEngine {
     return this._stateStack[this._stateStack.length - 1]
   }
 
-  // Add a new current state to the stack
+  // Add a new current state to the stack if it's not the same as the current state
   set state(newState) {
-    this._stateStack.push(newState);
+    newState !== this.state && this._stateStack.push(newState);
   }
 
   get lastMove() {
@@ -109,13 +109,14 @@ class GameEngine {
         moveResults = {
           ...moveResults,
           processed: false,
-          error: `Validation failed. Move not processed`,
-          gameState: this.gameState
+          error: `Validation failed. Move not processed`
         }
       }
       const winner = this.rules.WINNER(this);
       winner && this.declareWinner(winner)
-      // moveResults now contains { valid, processed, error, validationMsg, gameState }
+      // moveResults now contains { valid, processed, error, validationMsg }
+      // add gameState to moveResults and resolve.
+      moveResults.gameState = this.gameState;
       resolve(moveResults);
     })
     return moveResolutionPromise;
@@ -191,8 +192,7 @@ class GameEngine {
   processMove(move) {
     const MOVE_RULES = this.rules.MOVES[move.moveType]
     const processed = MOVE_RULES.PROCESS(this, move);
-    const gameState = this.gameState;
-    return { processed, gameState }
+    return { processed }
   }
 
   initPlayers(players) {
