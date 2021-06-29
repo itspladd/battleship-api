@@ -1,5 +1,5 @@
 {
-  "name": "ship-game-engine",
+  "name": "@itspladd/battleship-engine",
   "version": "1.0.0",
   "description": "A standalone engine for running Battleship-like games.",
   "main": "src/index.js",
