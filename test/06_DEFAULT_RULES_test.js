@@ -87,15 +87,14 @@ describe('DEFAULT_RULES', () => {
           angle: 180,
         };
       });
-      it('should return an object: { processed: bool, gameState: Object }', () => {
-        const { processed, gameState } = testEngine.processMove(goodMove);
+      it('should return an object: { processed: bool }', () => {
+        const { processed } = testEngine.processMove(goodMove);
         processed.should.be.a('boolean')
-        should.exist(gameState)
       });
-      it('should return true and an updated gameState if the move succeeds with no error', () => {
-        const { processed, error, gameState } = testEngine.processMove(goodMove);
+      it('should return true and update the internal gameState if the move succeeds with no error', () => {
+        const { processed } = testEngine.processMove(goodMove);
         processed.should.be.true;
-        gameState.players.p1.board.ships[shipID].segments.should.deep.equal(
+        testEngine.gameState.players.p1.board.ships[shipID].segments.should.deep.equal(
           [
             { hp: 1, position: [0, 0]},
             { hp: 1, position: [0, 1]}
@@ -104,9 +103,9 @@ describe('DEFAULT_RULES', () => {
       it('should return false and the original gameState if the move fails', () => {
         badMove = { ...goodMove, shipID: 'notThere' }
         prevGameState = testEngine.gameState;
-        const { processed, gameState } = testEngine.processMove(badMove);
+        const { processed } = testEngine.processMove(badMove);
         processed.should.be.false;
-        gameState.should.deep.equal(prevGameState);
+        testEngine.gameState.should.deep.equal(prevGameState);
       })
     })
   })
@@ -167,9 +166,9 @@ describe('DEFAULT_RULES', () => {
           shipID: ship.id
         };
       });
-      it('should add the ship to the placedShips object and return an updated gameState', () => {
-        const { processed, gameState } = testEngine.processMove(move);
-        gameState.players.p1.board.placedShips[ship.id].segments.should.deep.equal(ship.segments)
+      it('should add the ship to the placedShips object and update gameState', () => {
+        const { processed } = testEngine.processMove(move);
+        testEngine.gameState.players.p1.board.placedShips[ship.id].segments.should.deep.equal(ship.segments)
       }),
       it('should return false and the original gameState if the move fails', () => {
         testEngine.processMove(move);
