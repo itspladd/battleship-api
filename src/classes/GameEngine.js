@@ -22,7 +22,6 @@ class GameEngine {
     this._stateStack = [GAME_STATES.INITIALIZING]
     this._players = this.initPlayers(players);
     this._playerOrder = shuffleArray(Object.keys(this._players))
-    this._moveStack = [];
     this._moveHistory = [];
     this.state = GAME_STATES.PLACE_SHIPS
   }
