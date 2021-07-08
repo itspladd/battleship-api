@@ -5,7 +5,7 @@ A stand-alone engine for running Battleship-style games on a hexagonal game boar
 
 ## 👉 I'm building a 3D interface for this engine! 👈
 
-Check out my [React 3D Battleship](https://github.com/itspladd/react-3d-battleship) repository to see how it's going!
+Check it out at [React 3D Battleship](https://github.com/itspladd/react-3d-battleship)!
 
 ## Overview
 
