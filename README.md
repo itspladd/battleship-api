@@ -3,6 +3,10 @@ A stand-alone engine for running Battleship-style games on a hexagonal game boar
 
 ## 🚧 Currently in development 🚧
 
+## 👉 I'm building a 3D interface for this engine! 👈
+
+Check out my [React 3D Battleship](https://github.com/itspladd/react-3d-battleship) repository to see how it's going!
+
 ## Overview
 
 This module exposes a GameEngine class and several objects representing constant values for the game. An instantiated GameEngine object can receive moves through its promise-based inputMove function. When the move has been fully validated and processed, the promise resolves with information about the move's success or failure and the entire current state of the game.
