@@ -4,6 +4,8 @@ const RULES = require('./constants/RULES');
 const SHIPS = require('./constants/SHIPS');
 const TILES = require('./constants/TILES');
 
+const positionHelpers = require('./helpers/positionHelpers')
+
 const GameEngine = require('./classes/GameEngine');
 
 module.exports = {
@@ -13,6 +15,9 @@ module.exports = {
     RULES,
     SHIPS,
     TILES
+  },
+  HELPERS: {
+    positionHelpers
   },
   GameEngine
 }
