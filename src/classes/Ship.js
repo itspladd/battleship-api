@@ -118,7 +118,7 @@ class Ship {
    */
   setPositions(position, angle) {
     try {
-      validatePositionAndAngle(position, angle);
+      validatePositionAndAngle(position, angle, this.setPositions);
     } catch (err) {
       handleError(err);
       return false;

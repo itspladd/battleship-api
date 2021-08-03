@@ -1,6 +1,6 @@
 const Tile = require('./Tile');
 const Ship = require('./Ship');
-const { validPosition, validatePositionAndAngle } = require('../helpers/positionHelpers');
+const { validPosition } = require('../helpers/positionHelpers');
 const { handleError, argErrorMsg } = require('../helpers/errorHelpers');
 const { VALID_ANGLES } = require('../constants/GLOBAL');
 const { SHIP_TYPES } = require('../constants/SHIPS');

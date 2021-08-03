@@ -2,7 +2,8 @@ const { VALID_ANGLES } = require('../constants/GLOBAL')
 const { argErrorMsg, handleError } = require('./errorHelpers')
 
 const validPosition = position => {
-  return (
+  return position === null ||
+  (
     Array.isArray(position) &&
     position.length === 2 &&
     Number.isInteger(position[0]) &&
@@ -26,7 +27,7 @@ const validatePositionAndAngle = (position, angle, callingFunc) => {
 
 const getNeighbor = (position, angle) => {
   try {
-    validatePositionAndAngle(position, angle);
+    validatePositionAndAngle(position, angle, getNeighbor);
   } catch(err) {
     handleError(err);
     return false;
@@ -88,7 +89,7 @@ const getNeighbor = (position, angle) => {
 // length represents the final length of the return array.
 const getNeighborsInDirection = (position, angle, length) => {
   try {
-    validatePositionAndAngle(position, angle);
+    validatePositionAndAngle(position, angle, getNeighborsInDirection);
     if (!Number.isInteger(length) || length < 1) {
       throw new Error(`getNeighborsInDirection called with invalid length argument: ${length}`);
     }
