@@ -33,6 +33,10 @@ const getNeighbor = (position, angle) => {
     return false;
   }
 
+  if(position === null) {
+    return null;
+  }
+
   const x = position[0];
   const y = position[1];
   let neighborPosition;
