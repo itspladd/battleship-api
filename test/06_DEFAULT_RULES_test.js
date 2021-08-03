@@ -3,7 +3,7 @@ const GameEngine = require('../src/classes/GameEngine')
 
 const { noDuplicateUnderscoresRecursive } = require('../src/helpers/generalHelpers')
 
-const { GAME_STATES } = require('../src/constants/GLOBAL')
+const { GAME_STATES, MOVE_KEYS } = require('../src/constants/GLOBAL')
 const { MOVES, WINNER } = require('../src/constants/RULES').DEFAULT_RULES
 const { TILE_TYPES } = require('../src/constants/TILES')
 
@@ -36,7 +36,7 @@ describe('DEFAULT_RULES', () => {
         testEngine = new GameEngine();
         testEngine.state = GAME_STATES.PLACE_SHIPS
         goodMove = {
-          moveType: MOVES.MOVE_SHIP.NAME,
+          [MOVE_KEYS.TYPE]: MOVES.MOVE_SHIP.NAME,
           playerID: 'p1',
           targetPlayerID: 'p1',
           shipID: testEngine.players.p1.board.shipsArr[0].id,
@@ -79,7 +79,7 @@ describe('DEFAULT_RULES', () => {
         testEngine = new GameEngine();
         shipID = testEngine.players.p1.board.shipsArr[0].id;
         goodMove = {
-          moveType: MOVES.MOVE_SHIP.NAME,
+          [MOVE_KEYS.TYPE]: MOVES.MOVE_SHIP.NAME,
           playerID: 'p1',
           targetPlayerID: 'p1',
           shipID,
@@ -118,7 +118,7 @@ describe('DEFAULT_RULES', () => {
         ship = testEngine.players.p1.board.shipsArr[0];
         ship.setPositions([0, 0], 180);
         move = {
-          moveType: MOVES.PLACE_SHIP.NAME,
+          [MOVE_KEYS.TYPE]: MOVES.PLACE_SHIP.NAME,
           playerID: 'p1',
           targetPlayerID: 'p1',
           shipID: ship.id
@@ -160,7 +160,7 @@ describe('DEFAULT_RULES', () => {
         ship.setPositions([0, 0], 180);
         collidingShip.setPositions([[0, 3], 0])
         move = {
-          moveType: MOVES.PLACE_SHIP.NAME,
+          [MOVE_KEYS.TYPE]: MOVES.PLACE_SHIP.NAME,
           playerID: 'p1',
           targetPlayerID: 'p1',
           shipID: ship.id
@@ -177,6 +177,65 @@ describe('DEFAULT_RULES', () => {
     })
   })
 
+  describe('UNPLACE_SHIP move', () =>{
+    describe('Validation', () => {
+      let move, ship, testEngine;
+      before(() => {
+        testEngine = new GameEngine();
+        ship = testEngine.players.p1.board.shipsArr[0];
+        ship2 = testEngine.players.p1.board.shipsArr[1];
+        ship.setPositions([0, 0], 180);
+        move = {
+          [MOVE_KEYS.TYPE]: MOVES.UNPLACE_SHIP.NAME,
+          playerID: 'p1',
+          targetPlayerID: 'p1',
+          shipID: ship.id
+        };
+        console.log(ship.id)
+        testEngine.players.p1.board.placeShip(ship);
+      });
+      it('should not allow unplacement of a ship outside the PLACE_SHIPS state', () => {
+        testEngine.state = GAME_STATES.TAKE_TURNS;
+        testEngine.validateGeneralMoveData(move).valid.should.be.false;
+        testEngine.state = GAME_STATES.PLACE_SHIPS;
+        testEngine.validateGeneralMoveData(move).valid.should.be.true;
+      })
+      it('should not allow unplacement of another player\'s ship', () => {
+        const badMove = { ...move, playerID: 'p2' }
+        testEngine.validateGeneralMoveData(badMove).valid.should.be.false;
+      })
+      it('should not allow unplacement of an unplaced ship', () => {
+        const badMove = { ...move, shipID: ship2.id }
+        testEngine.validateGeneralMoveData(badMove).valid.should.be.false;
+      })
+    })
+    describe('Processing', () => {
+      let testEngine, move, board, ship, collidingShip;
+      before(() => {
+        testEngine = new GameEngine();
+        board = testEngine.players.p1.board;
+        ship = board.shipsArr[0];
+        ship.setPositions([0, 0], 180);
+        board.placeShip(ship)
+        move = {
+          [MOVE_KEYS.TYPE]: MOVES.UNPLACE_SHIP.NAME,
+          playerID: 'p1',
+          targetPlayerID: 'p1',
+          shipID: ship.id
+        };
+      });
+      it('should remove the ship from the placedShips object and update gameState', () => {
+        testEngine.gameState.players.p1.board.placedShips[ship.id].segments.should.deep.equal(ship.segments)
+        const { processed } = testEngine.processMove(move);
+        testEngine.gameState.players.p1.board.placedShips.should.deep.equal({})
+      });
+      it('should return false and the original gameState if the move fails', () => {
+        testEngine.processMove(move);
+        testEngine.gameState.players.p1.board.placedShips.should.deep.equal({})
+      })
+    })
+  })
+
   describe('FIRE move', () => {
     describe('Validation', () => {
       let testEngine, move, board;
@@ -185,7 +244,7 @@ describe('DEFAULT_RULES', () => {
         testEngine._playerOrder = ['p1', 'p2'];
         board = testEngine.players.p2.board;
         move = {
-          moveType: MOVES.FIRE.NAME,
+          [MOVE_KEYS.TYPE]: MOVES.FIRE.NAME,
           playerID: 'p1',
           targetPlayerID: 'p2',
           position: [0, 0]
@@ -222,7 +281,7 @@ describe('DEFAULT_RULES', () => {
         p1Ship.segmentAt([0, 1]).should.deep.equal({ hp: 1, position: [0, 1]})
         p2Ship.segmentAt([0, 1]).should.deep.equal({ hp: 1, position: [0, 1]})
         move = {
-          moveType: MOVES.FIRE.NAME,
+          [MOVE_KEYS.TYPE]: MOVES.FIRE.NAME,
           playerID: 'p1',
           targetPlayerID: 'p2',
           position: [0, 1]

@@ -2,14 +2,14 @@ const should = require('chai').should()
 const GameEngine = require('../src/classes/GameEngine');
 
 const { MOVES } = require('../src/constants/RULES').DEFAULT_RULES;
-const { GAME_STATES } = require('../src/constants/GLOBAL')
+const { GAME_STATES, MOVE_KEYS } = require('../src/constants/GLOBAL')
 
 describe('Full game test with default rules', () => {
   it('should run and report a winner with no errors', async () => {
     const testEngine = new GameEngine();
     // Set up template moves with missing data to be filled in
     const p1MoveShip = {
-      moveType: MOVES.MOVE_SHIP.NAME,
+      [MOVE_KEYS.TYPE]: MOVES.MOVE_SHIP.NAME,
       playerID: 'p1',
       targetPlayerID: 'p1',
       shipID: null,
@@ -17,7 +17,7 @@ describe('Full game test with default rules', () => {
       angle: 180 // All ships pointing down for clarity
     }
     const p2MoveShip = {
-      moveType: MOVES.MOVE_SHIP.NAME,
+      [MOVE_KEYS.TYPE]: MOVES.MOVE_SHIP.NAME,
       playerID: 'p2',
       targetPlayerID: 'p2',
       shipID: null,
@@ -25,25 +25,25 @@ describe('Full game test with default rules', () => {
       angle: 180
     }
     const p1PlaceShip = {
-      moveType: MOVES.PLACE_SHIP.NAME,
+      [MOVE_KEYS.TYPE]: MOVES.PLACE_SHIP.NAME,
       playerID: 'p1',
       targetPlayerID: 'p1',
       shipID: null
     }
     const p2PlaceShip = {
-      moveType: MOVES.PLACE_SHIP.NAME,
+      [MOVE_KEYS.TYPE]: MOVES.PLACE_SHIP.NAME,
       playerID :'p2',
       targetPlayerID: 'p2',
       shipID: null
     }
     const p1Fire = {
-      moveType: MOVES.FIRE.NAME,
+      [MOVE_KEYS.TYPE]: MOVES.FIRE.NAME,
       playerID: 'p1',
       targetPlayerID: 'p2',
       position: null
     }
     const p2Fire = {
-      moveType: MOVES.FIRE.NAME,
+      [MOVE_KEYS.TYPE]: MOVES.FIRE.NAME,
       playerID: 'p2',
       targetPlayerID :'p1',
       position: null
@@ -76,7 +76,7 @@ describe('Full game test with default rules', () => {
       { ...p2MoveShip, shipID: 'ship4', position: [4, 0] }, // 20 repositions ship4
       { ...p2PlaceShip, shipID: 'ship4' }, // 21 should succeed
       // All ships placed. Start the game.
-      { moveType: MOVES.START_GAME.NAME }, // 22
+      { [MOVE_KEYS.TYPE]: MOVES.START_GAME.NAME }, // 22
       { ...p1Fire, position: [0, 0] }, // 23
       { ...p1Fire, position: [0, 0] }, // 24 should return an error - not p1's turn
       { ...p2Fire, position: [0, 0] }, // 25

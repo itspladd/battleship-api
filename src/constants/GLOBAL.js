@@ -39,10 +39,20 @@ const GAME_STATES = {
   GAME_OVER: "GAME_OVER",
 }
 
+// Keys that can be input/required for a move's data set.
+const MOVE_KEYS = {
+  TYPE: "moveType",
+  PLAYER_ID: "playerID",
+  TARGET_PLAYER_ID: "targetPlayerID",
+  SHIP_ID: "shipID",
+  POSITION: "position",
+  ANGLE: "angle"
+}
 
 module.exports = {
   VALID_ANGLES,
   GAME_STATES,
+  MOVE_KEYS,
   TARGETING,
   STATE_VALIDATORS,
   DATA_VALIDATORS

@@ -5,7 +5,7 @@ const Ship = require('../src/classes/Ship')
 
 const { noDuplicateUnderscoresRecursive } = require('../src/helpers/generalHelpers')
 
-const { GAME_STATES } = require('../src/constants/GLOBAL')
+const { GAME_STATES, MOVE_KEYS } = require('../src/constants/GLOBAL')
 const { MOVES } = require('../src/constants/RULES').DEFAULT_RULES
 
 describe('GameEngine', () => {
@@ -74,12 +74,12 @@ describe('GameEngine', () => {
       testEngine = new GameEngine();
     });
     it('should return an object with a false bool and message if the move is not in the MOVES constant', () => {
-      const result = testEngine.validateGeneralMoveData({ moveType: 'WIN_GAME' })
+      const result = testEngine.validateGeneralMoveData({ [MOVE_KEYS.TYPE]: 'WIN_GAME' })
       result.valid.should.be.false;
       result.validationMsg.should.match(/invalid move type: WIN_GAME/i);
     });
     it('should return an object with a false bool and message if the move does not have the keys in the MOVES[TYPE].REQUIRES constant', () => {
-      const move = { moveType: MOVES.PLACE_SHIP.NAME, targetPlayerID: 'p2'}
+      const move = { [MOVE_KEYS.TYPE]: MOVES.PLACE_SHIP.NAME, targetPlayerID: 'p2'}
       const result = testEngine.validateGeneralMoveData(move)
       result.valid.should.be.false;
       result.validationMsg.should.match(/called with missing\/extra data/i)
@@ -87,7 +87,7 @@ describe('GameEngine', () => {
       result.validationMsg.should.match(/playerID/i)
     })
     it('should return an object with a false bool and message if the move has keys not found in the MOVES[TYPE].REQUIRES constant', () => {
-      const move = { moveType: MOVES.PLACE_SHIP.NAME, playerID: 'p1', targetPlayerID: 'p1', shipID: 2, damage: 5 }
+      const move = { [MOVE_KEYS.TYPE]: MOVES.PLACE_SHIP.NAME, playerID: 'p1', targetPlayerID: 'p1', shipID: 2, damage: 5 }
       const result = testEngine.validateGeneralMoveData(move)
       result.valid.should.be.false;
       result.validationMsg.should.match(/called with missing\/extra data/i)
@@ -100,7 +100,7 @@ describe('GameEngine', () => {
     before(() => {
       testEngine = new GameEngine();
       goodMove = {
-        moveType: MOVES.MOVE_SHIP.NAME,
+        [MOVE_KEYS.TYPE]: MOVES.MOVE_SHIP.NAME,
         playerID: 'p1',
         targetPlayerID: 'p1',
         shipID: testEngine.players.p1.board.shipsArr[0].id,
