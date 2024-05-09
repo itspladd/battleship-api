@@ -1,11 +1,11 @@
 # battleship-engine
-A stand-alone engine for running Battleship-style games on a hexagonal game board. Currently lacking an interface; all interaction is done through tests.
+A stand-alone engine for running Battleship-style games on a hexagonal game board. Does not have a built-in interface; all interaction in this repo is done through tests.
 
 ## 🚧 Currently in development 🚧
 
-## 👉 I'm building a 3D interface for this engine! 👈
+## 👉 I built a 3D interface for this engine! 👈
 
-Check it out at https://github.com/itspladd/react-3d-battleship!
+Check it out at https://github.com/itspladd/shootyboats!
 
 ## Overview
 
