@@ -1,7 +1,7 @@
 # battleship-engine
 A stand-alone engine for running Battleship-style games on a hexagonal game board. Does not have a built-in interface; all interaction in this repo is done through tests.
 
-## 🚧 Currently in development 🚧
+## 🚧 Development paused 🚧
 
 ## I built a 3D interface for this engine!
 
